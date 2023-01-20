@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       const { id, username, email } = this; // context will be the User instance
       return { id, username, email };
     }
+    validatePassword(password) {
+      return bcrypt.compareSync(password, this.hashedPassword.toString());
+    }
     static getCurrentUserById(id) {
       return User.scope("currentUser").findByPk(id);
     }
