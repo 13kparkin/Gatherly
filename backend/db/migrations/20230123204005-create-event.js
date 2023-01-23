@@ -20,10 +20,10 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       type: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('In Person', 'Online'),
         allowNull: false,
       },
       capacity: {

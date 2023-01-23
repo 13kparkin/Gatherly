@@ -27,10 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       type: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
+        values: ['In Person', 'Online'],
         allowNull: false,
       },
       capacity: {
@@ -38,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       startDate: {
