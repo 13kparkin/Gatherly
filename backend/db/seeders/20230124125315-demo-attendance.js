@@ -11,7 +11,7 @@ module.exports = {
     options.tableName = "Attendances";
     return queryInterface.bulkInsert(options, [
       {
-        status: "co-host",
+        status: "waitlist",
       },
       {
         status: "Pending",
