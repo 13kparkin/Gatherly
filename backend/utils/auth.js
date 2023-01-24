@@ -62,5 +62,56 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 };
 
+const auth = (requiredRoles = [], requiredPermissions = []) => {
+  return (req, res, next) => {
+    // check to see if user is authenticated same as above but a bit more cleaned up
+    if (!req.user) {
+      const err = new Error("Authentication required");
+      err.title = "Authentication required";
+      err.errors = ["Authentication required"];
+      err.status = 401;
+      return next(err);
+    }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+    // check to see if user has the required roles
+    const userRoles = req.user.roles;
+    let requiredRoles = true;
+    requiredRoles.forEach((role) => {
+      if (!userRoles.includes(role)) {
+        requiredRoles = false;
+      }
+    });
+    if (!requiredRoles) {
+      const err = new Error("Forbidden");
+      err.title = "Forbidden";
+      err.errors = ["Forbidden"];
+      err.status = 403;
+      return next(err);
+    }
+
+    // check if user has the required permissions
+    const userPermissions = req.user.permissions;
+    let requiredPermissions = true;
+    requiredPermissions.forEach((permission) => {
+      if (!userPermissions.includes(permission)) {
+        requiredPermissions = false;
+      }
+    });
+    if (!requiredPermissions) {
+      const err = new Error("Forbidden");
+      err.title = "Forbidden";
+      err.errors = ["Forbidden"];
+      err.status = 403;
+      return next(err);
+    }
+
+    //  example:
+    //                                                role
+    // router.get('/authNeeded', checkAuthorization(['admin'],['read']), (req, res) => {
+    //  ...
+    // });
+    next();
+  };
+};
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, auth };
