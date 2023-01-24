@@ -9,18 +9,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Event.belongsTo(models.Venue, { foreignKey: 'venueId' });
+      Event.belongsTo(models.Groups, { foreignKey: 'groupId' });
     }
   }
   Event.init(
     {
       venueId: {
         type: DataTypes.INTEGER,
-      },
-      venueId: {
-        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Venue',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       groupId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Group',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       name: {
         type: DataTypes.STRING,

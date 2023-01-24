@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Group.belongsTo(models.User, {
+        foreignKey: 'organizerId',
+        as: 'organizer'
+     });
     }
   }
   Group.init({
@@ -18,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Organizers',
+        model: 'User',
         key: 'id'
       },
       onUpdate: 'CASCADE',
