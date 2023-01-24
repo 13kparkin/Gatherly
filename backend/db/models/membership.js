@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Membership.belongsTo(models.User, { foreignKey: "userId" });
-      Membership.belongsTo(models.Group, { foreignKey: "groupId" });
+      models.Membership.belongsTo(models.User, { foreignKey: "userId" });
+      models.Membership.belongsTo(models.Group, { foreignKey: "groupId" });
     }
   }
   Membership.init(
@@ -36,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       },
       status: {
-        type: DataTypes.ENUM("co-host", "member", "pending"),
+        type: DataTypes.ENUM,
+        values: ["co-host", "member", "pending"],
         allowNull: false,
       },
     },
