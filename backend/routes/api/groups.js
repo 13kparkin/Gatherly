@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { Group, sequelize, Membership, GroupImage } = require("../../db/models");
+const { Group, sequelize, Membership, GroupImage, User } = require("../../db/models");
 
+// done and production ready
 router.get("/", async (req, res, next) => {
   try {
     const groups = await Group.findAll();
@@ -32,30 +33,41 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// still needs some work with error handling
 router.post("/", async (req, res, next) => {
+
+  // todo: create object to start building info for err response
+
+
   try {
     const { name, about, type, private, city, state } = req.body;
     const { id } = req.user;
+    const user = await User.findByPk(id);
 
-    const newGroup = await Group.create({
-      name,
-      about,
-      type,
-      private,
-      city,
-      state,
-      organizerId: id,
-    });
+    if (user) {
+      const newGroup = await Group.create({
+        name,
+        about,
+        type,
+        private,
+        city,
+        state,
+        organizerId: id,
+      });
+        // this membersip is the organizer
+      const membership = await Membership.create({
+        userId: id,
+        groupId: newGroup.id,
+        status: "member"
+      });
+      res.status(201);
+      return res.json(newGroup);
+    }
 
-    const membership = await Membership.create({
-      userId: id,
-      groupId: newGroup.id
-    });
-
-    return res.status(201).json(newGroup);
   } catch (err) {
     console.log(err);
-    return res.status.json({ message: err }); // come back to this later and work on error handling
+    res.status(400)
+    return res.json({ message: err }); // come back to this later and work on error handling
     /*
     Example of error handling
     {
@@ -73,5 +85,8 @@ router.post("/", async (req, res, next) => {
     */
   }
 });
+
+
+
 
 module.exports = router;
