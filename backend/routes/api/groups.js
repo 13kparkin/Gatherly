@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
     );
 
 
-    const NumMembersAndPreviewImage = await Promise.all(
+    const NumMembersPreviewImage = await Promise.all(
       NumMembers.map(async (group) => {
 
         const previewImage = await GroupImage.findOne({
@@ -32,7 +32,7 @@ router.get("/", async (req, res, next) => {
     );
 
 
-    return res.json({ groups: NumMembersAndPreviewImage });
+    return res.json({ Groups: NumMembersPreviewImage });
   } catch (err) {
     console.log(err);
     return res.json({ message: err });
