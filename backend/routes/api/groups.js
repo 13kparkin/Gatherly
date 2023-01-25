@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { Group, sequelize, Membership, GroupImage, User } = require("../../db/models");
+const {
+  Group,
+  sequelize,
+  Membership,
+  GroupImage,
+  User,
+} = require("../../db/models");
 
-
-//Let redo the following route 
-
+//finished route
 router.get("/", async (req, res, next) => {
   try {
     const groups = await Group.findAll();
@@ -20,11 +24,14 @@ router.get("/", async (req, res, next) => {
 
     const NumMembersPreviewImage = await Promise.all(
       NumMembers.map(async (group) => {
-        const previewImage = await GroupImage.findOne({
-          where: { groupId: group.id, preview: true },
-        });
+          const previewImage = await GroupImage.findOne({
+            where: { groupId: group.id, preview: true },
+          });
 
-        console.log(previewImage.dataValues.url)
+          if (!previewImage) {
+            return { ...group, previewImage: 'No preview image inclued' };
+          }
+
 
         return { ...group, previewImage: previewImage.dataValues.url };
       })
@@ -37,10 +44,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
+// needs work on error handling
 router.post("/", async (req, res, next) => {
-
   // todo: create object to start building info for err response
-
 
   try {
     const { name, about, type, private, city, state } = req.body;
@@ -57,19 +64,18 @@ router.post("/", async (req, res, next) => {
         state,
         organizerId: id,
       });
-        // this membersip is the organizer
+      // this membersip is the organizer
       const membership = await Membership.create({
         userId: id,
         groupId: newGroup.id,
-        status: "member"
+        status: "member",
       });
       res.status(201);
       return res.json(newGroup);
     }
-
   } catch (err) {
     console.log(err);
-    res.status(400)
+    res.status(400);
     return res.json({ message: err }); // come back to this later and work on error handling
     /*
     Example of error handling
@@ -88,5 +94,9 @@ router.post("/", async (req, res, next) => {
     */
   }
 });
+
+
+
+
 
 module.exports = router;
