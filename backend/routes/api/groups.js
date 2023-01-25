@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { Group, sequelize, Membership, GroupImage, User } = require("../../db/models");
 
-// done and production ready
+
+//Let redo the following route 
+
 router.get("/", async (req, res, next) => {
   try {
     const groups = await Group.findAll();
@@ -22,6 +24,8 @@ router.get("/", async (req, res, next) => {
           where: { groupId: group.id, preview: true },
         });
 
+        console.log(previewImage.dataValues.url)
+
         return { ...group, previewImage: previewImage.dataValues.url };
       })
     );
@@ -33,7 +37,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// still needs some work with error handling
 router.post("/", async (req, res, next) => {
 
   // todo: create object to start building info for err response
@@ -85,8 +88,5 @@ router.post("/", async (req, res, next) => {
     */
   }
 });
-
-
-
 
 module.exports = router;
