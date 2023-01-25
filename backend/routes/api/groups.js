@@ -106,6 +106,8 @@ router.post("/:groupId/images", async (req, res, next) => {
       where: { groupId },
     });
 
+    // could do with some clean up later but works for now
+
     if (!group) {
       const err = {}
       err.message = "Group couldn't be found";
@@ -129,8 +131,13 @@ router.post("/:groupId/images", async (req, res, next) => {
       });
       res.status(200);
       return res.json(finalNewImage);
+    } 
+    else {
+      const err = {}
+      err.message = "You are not the organizer of this group";
+      err.statusCode = 401;
+      return res.json(err);
     }
-
   } catch (err) {
     // all other errors
     console.log(err);
