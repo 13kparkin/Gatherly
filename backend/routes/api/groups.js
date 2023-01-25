@@ -95,6 +95,48 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// finished route 
+router.post("/:groupId/images", async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+    const { url, preview } = req.body;
+    const { id } = req.user;
+    const group = await Group.findByPk(groupId);
+    const usedGroupImage = await GroupImage.findOne({
+      where: { groupId },
+    });
+
+    if (!group) {
+      const err = {}
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      return res.json(err);
+    } 
+    else if (usedGroupImage) {
+      const err = {}
+      err.message = "Group already has a preview image";
+      err.statusCode = 400;
+      return res.json(err);
+    } 
+    else if (group.organizerId === id) {
+      const newImage = await GroupImage.create({
+        url,
+        preview,
+        groupId,
+      });
+      const finalNewImage = await GroupImage.findByPk(newImage.id, {
+        attributes : ['id', 'url', 'preview']
+      });
+      res.status(200);
+      return res.json(finalNewImage);
+    }
+
+  } catch (err) {
+    // all other errors
+    console.log(err);
+    return res.json({ message: err });
+  }
+});
 
 
 
