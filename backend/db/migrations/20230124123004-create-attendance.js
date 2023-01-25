@@ -1,4 +1,6 @@
 'use strict';
+
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -18,7 +20,7 @@ module.exports = {
       eventId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'events',
+          model: 'Events',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -27,7 +29,7 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'Users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
