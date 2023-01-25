@@ -14,7 +14,7 @@ module.exports = {
         status: "waitlist",
       },
       {
-        status: "Pending",
+        status: "pending",
       },
       {
         status: "member",

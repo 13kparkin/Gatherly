@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       });
       Group.belongsToMany(models.User, {
         through: 'Membership',
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        otherKey: 'userId'
       });      
       //Group to user association
       Group.belongsTo(models.User, {
@@ -29,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
   Group.init({
     organizerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'User',
         key: 'id'
