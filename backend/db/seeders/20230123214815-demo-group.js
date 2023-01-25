@@ -19,7 +19,7 @@ module.exports = {
       state: 'NY',
   }, {
       organizerId: 2,
-      name: 'demo-group-1',
+      name: 'demo-group-2',
       about: 'This is the second demo group',
       type: 'Online',
       private: true,
