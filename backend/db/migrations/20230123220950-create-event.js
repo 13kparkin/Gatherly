@@ -46,7 +46,7 @@ module.exports = {
         allowNull: false,
       },
       capacity: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       price: {

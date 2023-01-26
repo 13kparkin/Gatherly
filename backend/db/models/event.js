@@ -47,16 +47,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
       },
       type: {
-        type: DataTypes.ENUM,
-        values: ['in person', 'online'],
+        type: DataTypes.ENUM('in person', 'online'),
         allowNull: false,
       },
       capacity: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
+        validate: {
+          isDecimal: true,
+        }
       },
       price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       startDate: {
