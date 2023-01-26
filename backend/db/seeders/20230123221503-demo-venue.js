@@ -10,6 +10,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = "Venues";
     return queryInterface.bulkInsert(options, [{
+      groupId: 1,
       address: '123 Main St',
       city: 'New York',
       state: 'NY',
@@ -17,6 +18,7 @@ module.exports = {
       lng: -73.935242,
     },
     {
+      groupId: 1,
       address: '456 Park Ave',
       city: 'Chicago',
       state: 'IL',
@@ -24,6 +26,7 @@ module.exports = {
       lng: -87.623177,
     },
     {
+      groupId: 2,
       address: '789 Market St',
       city: 'San Francisco',
       state: 'CA',

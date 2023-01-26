@@ -382,7 +382,6 @@ router.post("/:groupId/venues", async (req, res, next) => {
         address,
         city,
         state,
-        zip,
         lat,
         lng,
       });
@@ -422,10 +421,11 @@ router.post("/:groupId/venues", async (req, res, next) => {
       }
 
       const finalVenue = {
+        id: venue.id,
+        groupId: venue.groupId,
         address: address,
         city: city,
         state: state,
-        zip: zip,
         lat: lat,
         lng: lng,
       };
@@ -449,13 +449,22 @@ router.post("/:groupId/venues", async (req, res, next) => {
           address,
           city,
           state,
-          zip,
           lat,
           lng,
         });
 
+        const finalVenue = {
+          id: venue.id,
+          groupId: venue.groupId,
+          address: address,
+          city: city,
+          state: state,
+          lat: lat,
+          lng: lng,
+        };
+
         res.status(200);
-        return res.json(venue);
+        return res.json(finalVenue);
       }
     }
   } catch (err) {
@@ -464,5 +473,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
+
+
 
 module.exports = router;
