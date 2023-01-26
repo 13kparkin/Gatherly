@@ -6,6 +6,7 @@ const {
   Membership,
   GroupImage,
   User,
+  Venue
 } = require("../../db/models");
 
 //finished route
@@ -121,13 +122,6 @@ router.post("/:groupId/images", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      return res.json(err);
-    } 
-    
-    else if (usedGroupImage) {
-      const err = {};
-      err.message = "Group already has a preview image";
-      err.statusCode = 400;
       return res.json(err);
     } 
     
@@ -273,8 +267,53 @@ router.get("/current", async (req, res, next) => {
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
+ 
 
+router.get("/:groupId", async (req, res, next) => {
+  const { user } = req;
+  try {
+    const { groupId } = req.params;
+    const group = await Group.findByPk(groupId);
+    const numMembers = await Membership.count({
+      where: { groupId },
+    });
+    const groupImages = await GroupImage.findAll({
+      where: { groupId },
+    });
+    const organizer = await User.findByPk(group.organizerId);
+    const venues = await Venue.findAll({
+      where: { groupId },
+    });
 
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      return res.json(err);
+    } 
+    
+    else {
+      const finalGroup = {
+        ...group.dataValues,
+        numMembers,
+        groupImages,
+        organizer: {
+          id: organizer.id,
+          firstName: organizer.firstName,
+          lastName: organizer.lastName,
+        },
+        venues,
+      };
+
+      res.status(200);
+      return res.json(finalGroup);
+    }
+  } catch (err) {
+    // all other errors
+    console.log(err);
+    return res.json({ message: "Internal Server Error", statusCode: 500 });
+  }
+});
 
 
 

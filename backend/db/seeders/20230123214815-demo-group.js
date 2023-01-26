@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -7,26 +7,35 @@ if (process.env.NODE_ENV === "production") {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     options.tableName = "Groups";
-    return queryInterface.bulkInsert(options, [{
-      name: 'demo-group-1',
-      about: 'This is the first demo group',
-      type: 'Online',
-      private: false,
-      city: 'New York',
-      state: 'NY',
-  }, {
-      name: 'demo-group-2',
-      about: 'This is the second demo group',
-      type: 'Online',
-      private: true,
-      city: 'Los Angeles',
-      state: 'CA',
-  }], {});
+    return queryInterface.bulkInsert(
+      options,
+      [
+        {
+          organizerId: 1,
+          name: "demo-group-1",
+          about: "This is the first demo group",
+          type: "Online",
+          private: false,
+          city: "New York",
+          state: "NY",
+        },
+        {
+          organizerId: 1,
+          name: "demo-group-2",
+          about: "This is the second demo group",
+          type: "Online",
+          private: true,
+          city: "Los Angeles",
+          state: "CA",
+        },
+      ],
+      {}
+    );
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = "Groups";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
@@ -36,5 +45,5 @@ module.exports = {
       },
       {}
     );
-  }
+  },
 };
