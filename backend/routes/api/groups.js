@@ -474,6 +474,6 @@ router.post("/:groupId/venues", async (req, res, next) => {
   }
 });
 
-
+// create a route that creates a event for a group by its id and returns the event require authentication true require authorization current user must be the organizer of the group or a member of the group with the status of co-host 
 
 module.exports = router;
