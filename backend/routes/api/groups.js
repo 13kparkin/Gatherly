@@ -6,7 +6,7 @@ const {
   Membership,
   GroupImage,
   User,
-  Venue
+  Venue,
 } = require("../../db/models");
 
 //finished route
@@ -70,7 +70,6 @@ router.post("/", async (req, res, next) => {
 
     const lowerCaseType = type.toLowerCase();
 
-
     if (user) {
       const newGroup = await Group.create({
         name,
@@ -94,7 +93,7 @@ router.post("/", async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(400);
-    return res.json({ message: "Validation Error", statusCode: 400 }); 
+    return res.json({ message: "Validation Error", statusCode: 400 });
   }
 });
 
@@ -123,9 +122,7 @@ router.post("/:groupId/images", async (req, res, next) => {
       err.message = "Group couldn't be found";
       err.statusCode = 404;
       return res.json(err);
-    } 
-    
-    else if (group.organizerId === id) {
+    } else if (group.organizerId === id) {
       const newImage = await GroupImage.create({
         url,
         preview,
@@ -151,7 +148,6 @@ router.post("/:groupId/images", async (req, res, next) => {
   }
 });
 
-
 // finished route // Question about checking errors that come from sequelize db
 router.put("/:groupId", async (req, res, next) => {
   const { user } = req;
@@ -173,9 +169,7 @@ router.put("/:groupId", async (req, res, next) => {
       err.message = "Group couldn't be found";
       err.statusCode = 404;
       return res.json(err);
-    } 
-    
-    else if (group.organizerId === id) {
+    } else if (group.organizerId === id) {
       const updatedGroup = await group.update({
         name,
         about,
@@ -185,20 +179,14 @@ router.put("/:groupId", async (req, res, next) => {
         state,
       });
 
-      
-
       res.status(200);
       return res.json(updatedGroup);
-
-    } 
-    
-    else {
+    } else {
       const err = {};
       err.message = "Forbidden";
       err.statusCode = 403;
       return res.json(err);
     }
-
   } catch (err) {
     // all other errors
     console.log(err);
@@ -216,58 +204,56 @@ router.get("/current", async (req, res, next) => {
     return res.json(err);
   }
   try {
-      const groups = await Group.findAll();
-    
-      const NumMembers = await Promise.all(
-        groups.map(async (group) => {
-          const numMembers = await Membership.count({
-            where: { groupId: group.id },
-          });
-          return { ...group.dataValues, numMembers };
-        })
-      );
-    
-      const NumMembersPreviewImage = await Promise.all(
-        NumMembers.map(async (group) => {
-          const previewImage = await GroupImage.findOne({
-            where: { groupId: group.id, preview: true },
-          });
-    
-          if (!previewImage) {
-            return { ...group, previewImage: "No preview image inclued" };
-          }
-    
-          return { ...group, previewImage: previewImage.dataValues.url };
-        })
-      );
-    
-      const allGroups = NumMembersPreviewImage;
+    const groups = await Group.findAll();
 
-
-      const memberships = await Membership.findAll({
-        where: { userId: user.id, status: "member" },
-      });
-
-
-      const filteredGroups = allGroups.filter((group) => {
-        return memberships.some((membership) => {
-          return membership.groupId === group.id;
+    const NumMembers = await Promise.all(
+      groups.map(async (group) => {
+        const numMembers = await Membership.count({
+          where: { groupId: group.id },
         });
-      });
+        return { ...group.dataValues, numMembers };
+      })
+    );
 
-      const filteredGroups2 = allGroups.filter((group) => {
-        return group.organizerId === user.id || filteredGroups.includes(group);
-      });    
+    const NumMembersPreviewImage = await Promise.all(
+      NumMembers.map(async (group) => {
+        const previewImage = await GroupImage.findOne({
+          where: { groupId: group.id, preview: true },
+        });
+
+        if (!previewImage) {
+          return { ...group, previewImage: "No preview image inclued" };
+        }
+
+        return { ...group, previewImage: previewImage.dataValues.url };
+      })
+    );
+
+    const allGroups = NumMembersPreviewImage;
+
+    const memberships = await Membership.findAll({
+      where: { userId: user.id, status: "member" },
+    });
+
+    const filteredGroups = allGroups.filter((group) => {
+      return memberships.some((membership) => {
+        return membership.groupId === group.id;
+      });
+    });
+
+    const filteredGroups2 = allGroups.filter((group) => {
+      return group.organizerId === user.id || filteredGroups.includes(group);
+    });
 
     res.status(200);
-    return res.json({Groups: filteredGroups2});
+    return res.json({ Groups: filteredGroups2 });
   } catch (err) {
     // all other errors
     console.log(err);
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
- 
+
 // finished route
 router.get("/:groupId", async (req, res, next) => {
   const { user } = req;
@@ -290,9 +276,7 @@ router.get("/:groupId", async (req, res, next) => {
       err.message = "Group couldn't be found";
       err.statusCode = 404;
       return res.json(err);
-    } 
-    
-    else {
+    } else {
       const finalGroup = {
         ...group.dataValues,
         numMembers,
@@ -343,7 +327,6 @@ router.get("/:groupId/venues", async (req, res, next) => {
 
       res.status(200);
       return res.json({ Venues: venues });
-
     } else {
       const membership = await Membership.findOne({
         where: { userId: id, groupId, status: "co-host" },
@@ -370,8 +353,116 @@ router.get("/:groupId/venues", async (req, res, next) => {
   }
 });
 
+router.post("/:groupId/venues", async (req, res, next) => {
+  const { user } = req;
+  if (!user) {
+    err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    return res.json(err);
+  }
+  try {
+    const { groupId } = req.params;
+    const group = await Group.findByPk(groupId);
+    const { id } = req.user;
 
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      return res.json(err);
+    }
 
+    // exclude createdAt and updatedAt
 
+    if (group.organizerId === id) {
+      const { address, city, state, zip, lat, lng } = req.body;
+      const venue = await Venue.create({
+        groupId,
+        address,
+        city,
+        state,
+        zip,
+        lat,
+        lng,
+      });
+
+      // error handling object
+      let statusCode;
+      const err = {
+        message: "validation error",
+        statusCode,
+        errors: {
+          address,
+          city,
+          state,
+          lat,
+          lng
+        }
+      };
+      if (!address || !city || !state || lat >= 90 || lat <= -90 || lng >= 180 || lng <= -180) {
+        statusCode = err.statusCode = 400;
+        if (!address) {
+          err.errors.address = "Street address is required"; 
+          err.statusCode = statusCode;
+        } else if (!city) {
+          err.errors.city = "City is required";
+          err.statusCode = statusCode;
+        } else if (!state) {
+          err.errors.state = "State is required";
+          err.statusCode = statusCode;
+        } else if (lat >= 90 || lat <= -90) {
+          err.errors.lat = "Latitude is not valid";
+          err.errors.statusCode = statusCode;
+        } else if (lng >= 180 || lng <= -180) {
+          err.errors.lng = "Longitude is not valid";
+          err.statusCode = statusCode;
+        }
+        return res.json(err);
+      }
+
+      const finalVenue = {
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
+        lat: lat,
+        lng: lng,
+      };
+
+      res.status(200);
+      return res.json(finalVenue);
+    } else {
+      const membership = await Membership.findOne({
+        where: { userId: id, groupId, status: "co-host" },
+      });
+
+      if (!membership) {
+        const err = {};
+        err.message = "Forbidden";
+        err.statusCode = 403;
+        return res.json(err);
+      } else {
+        const { address, city, state, zip, lat, lng } = req.body;
+        const venue = await Venue.create({
+          groupId,
+          address,
+          city,
+          state,
+          zip,
+          lat,
+          lng,
+        });
+
+        res.status(200);
+        return res.json(venue);
+      }
+    }
+  } catch (err) {
+    // all other errors
+    console.log(err);
+    return res.json({ message: "Internal Server Error", statusCode: 500 });
+  }
+});
 
 module.exports = router;
