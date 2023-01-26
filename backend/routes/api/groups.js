@@ -268,7 +268,7 @@ router.get("/current", async (req, res, next) => {
   }
 });
  
-
+// finished route
 router.get("/:groupId", async (req, res, next) => {
   const { user } = req;
   try {
@@ -314,6 +314,7 @@ router.get("/:groupId", async (req, res, next) => {
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
+
 
 
 
