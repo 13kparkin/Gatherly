@@ -29,19 +29,16 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-
       },
       about: {
         type: Sequelize.TEXT,
-
       },
       type: {
         type: Sequelize.ENUM('in person', 'online'),
-
+        allowNull: false,
       },
       private: {
         type: Sequelize.BOOLEAN,
-
       },
       city: {
         type: Sequelize.STRING,

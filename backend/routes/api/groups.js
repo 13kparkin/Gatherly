@@ -315,6 +315,62 @@ router.get("/:groupId", async (req, res, next) => {
   }
 });
 
+// finished route
+router.get("/:groupId/venues", async (req, res, next) => {
+  const { user } = req;
+  if (!user) {
+    err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    return res.json(err);
+  }
+  try {
+    const { groupId } = req.params;
+    const group = await Group.findByPk(groupId);
+    const { id } = req.user;
+
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      return res.json(err);
+    }
+
+    if (group.organizerId === id) {
+      const venues = await Venue.findAll({
+        where: { groupId },
+      });
+
+      res.status(200);
+      return res.json({ Venues: venues });
+
+    } else {
+      const membership = await Membership.findOne({
+        where: { userId: id, groupId, status: "co-host" },
+      });
+
+      if (!membership) {
+        const err = {};
+        err.message = "Forbidden";
+        err.statusCode = 403;
+        return res.json(err);
+      } else {
+        const venues = await Venue.findAll({
+          where: { groupId },
+        });
+
+        res.status(200);
+        return res.json({ Venues: venues });
+      }
+    }
+  } catch (err) {
+    // all other errors
+    console.log(err);
+    return res.json({ message: "Internal Server Error", statusCode: 500 });
+  }
+});
+
+
 
 
 
