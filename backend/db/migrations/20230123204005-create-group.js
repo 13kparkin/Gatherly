@@ -1,5 +1,7 @@
 'use strict';
 
+const { all } = require('../../routes/api/groups');
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -27,25 +29,27 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+
       },
       about: {
         type: Sequelize.TEXT,
-        allowNull: false,
+
       },
       type: {
-        type: Sequelize.ENUM('In Person', 'Online'),
-        allowNull: false,
+        type: Sequelize.ENUM('in person', 'online'),
+
       },
       private: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+
       },
       city: {
         type: Sequelize.STRING,
+        allowNull: false
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

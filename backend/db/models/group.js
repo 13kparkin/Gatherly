@@ -9,6 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    static getOrganizedGroups(id) {
+      return Group.findAll({
+        where: {
+          organizerId: id
+        }
+      });
+    }
+
     static associate(models) {
       // define association here
       // Group to user through membership
@@ -39,26 +48,40 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [3, 60]
+      }
     },
     about: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [50]
+      }
     },
     type: {
       type: DataTypes.ENUM,
-      values: ['In Person', 'Online'],
-      allowNull: false
+      values: ['in person', 'online'],
+      allowNull: false,
+      validate: {
+        isIn: [['in person', 'online']]
+      }
     },
     private: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
+      validate: {
+        isBoolean: true
+      }
     },
     city: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     state: {
       type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,
