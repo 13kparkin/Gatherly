@@ -21,13 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       venueId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Venue',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       groupId: {
         type: DataTypes.INTEGER,
@@ -51,11 +44,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       capacity: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-          isDecimal: true,
-        }
       },
       price: {
         type: DataTypes.FLOAT,

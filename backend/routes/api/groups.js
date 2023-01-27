@@ -575,8 +575,12 @@ router.post("/:groupId/events", async (req, res, next) => {
       startDate = new Date(startDate);
       endDate = new Date(endDate);
 
+      // query for venueId
+      const venue = await Venue.findByPk(venueId);
+
       if (
         !venueId ||
+        !venue ||
         name < 5 ||
         type === "online" ||
         type === "in person" ||
@@ -586,7 +590,7 @@ router.post("/:groupId/events", async (req, res, next) => {
         endDate < startDate
       ) {
         statusCode = err.statusCode = 400;
-        if (!venueId) {
+        if (!venueId || !venue) {
           err.errors.venueId = "Venue does not exist";
           err.statusCode = statusCode;
         } else if ( name < 5) {

@@ -18,13 +18,6 @@ module.exports = {
       },
       venueId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Venues',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       groupId: {
         type: Sequelize.INTEGER,
@@ -44,11 +37,11 @@ module.exports = {
         type: Sequelize.TEXT
       },
       type: {
-        type: Sequelize.ENUM('In Person', 'Online'),
+        type: Sequelize.ENUM('in person', 'online'),
         allowNull: false,
       },
       capacity: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       price: {

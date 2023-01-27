@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  Attendance,
   EventImage,
   Event,
   Group,
@@ -64,7 +65,7 @@ router.post("/:eventId/images", async (req, res) => {
   return res.json(finalImage);
 });
 
-// need to come back to and fix error for forien key constraint
+// finished route
 router.put("/:eventId", async (req, res) => {
   const { user } = req;
   if (!user) {
@@ -79,7 +80,6 @@ router.put("/:eventId", async (req, res) => {
     const event = await Event.findByPk(eventId);
     const { id } = req.user;
 
-
     if (!event) {
       const err = {};
       err.message = "Event couldn't be found";
@@ -90,7 +90,6 @@ router.put("/:eventId", async (req, res) => {
 
     const groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId);
-
 
     if (group.dataValues.organizerId === id) {
       let {
@@ -237,12 +236,12 @@ router.put("/:eventId", async (req, res) => {
         });
 
         if (!event.dataValues.venueId) {
-            const err = {};
-            err.message = "Venue couldn't be found";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-          }
+          const err = {};
+          err.message = "Venue couldn't be found";
+          err.statusCode = 404;
+          res.status(404);
+          return res.json(err);
+        }
 
         // error handling object
         let statusCode;
@@ -323,12 +322,91 @@ router.put("/:eventId", async (req, res) => {
     }
   } catch (err) {
     if (err.name === "SequelizeForeignKeyConstraintError") {
-        const err = {};
-        err.message = "Venue couldn't be found";
-        err.statusCode = 404;
-        res.status(404);
-        return res.json(err);
+      const err = {};
+      err.message = "Venue couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
+// finished route
+router.get("/", async (req, res) => {
+  try {
+    const events = await Event.findAll({
+      include: [
+        {
+          model: Group,
+          attributes: ["id", "name", "city", "state"],
+        },
+        {
+          model: Venue,
+          attributes: ["id", "city", "state"],
+        },
+        {
+          model: EventImage,
+          attributes: ["id", "url"],
+        },
+      ],
+    });
+
+    const eventIds = events.map((event) => event.id);
+
+    const numAttending = await Attendance.findAll({
+      where: {
+        eventId: eventIds,
+      },
+      attributes: [
+        "eventId",
+        [sequelize.fn("COUNT", sequelize.col("eventId")), "numAttending"],
+      ],
+      group: ["eventId"],
+    });
+
+    // if there is numAttending for an event 
+
+    const finalEvents = events.map((event) => {
+        let eventNumAttending = numAttending.find(
+          (num) => num.eventId === event.id
+        )
+
+        if (!eventNumAttending) {
+          eventNumAttending = { numAttending: 0 };
+        }
+
+        if (numAttending){
+            eventNumAttending = {numAttending: numAttending[0].dataValues.numAttending}
+        }
+
+      let previewImage = event.EventImages.find((image) => image.url);
+      if (!previewImage) {
+        previewImage = { url: null };
+      }
+      return {
+        id: event.id,
+        groupId: event.groupId,
+        venueId: event.venueId,
+        name: event.name,
+        type: event.type,
+        capacity: event.capacity,
+        price: event.price,
+        description: event.description,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        numAttending: eventNumAttending.numAttending,
+        previewImage: previewImage.url,
+        Group: event.Group,
+        Venue: event.Venue,
+      };
+    });
+
+    res.status(200);
+    return res.json({ Events: finalEvents });
+  } catch (err) {
     console.log(err);
     res.status(500);
     return res.json(err);
