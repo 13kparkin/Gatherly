@@ -414,6 +414,90 @@ router.get("/", async (req, res) => {
 });
 
 
+// finished route
+router.get("/:eventId", async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const event = await Event.findByPk(eventId, {
+            include: [
+                {
+                    model: Group,
+                    attributes: ["id", "name", "city", "state"],
+                },
+                {
+                    model: Venue,
+                    attributes: ["id", "city", "state"],
+                },
+                {
+                    model: EventImage,
+                    attributes: ["id", "url"],
+                },
+            ],
+        });
+
+
+        if (!event) {
+            const err = {};
+            err.message = "Event couldn't be found";
+            err.statusCode = 404;
+            res.status(404);
+            return res.json(err);
+        }
+        
+        const numAttending = await Attendance.findAll({
+            where: {
+                eventId: eventId,
+            },
+            attributes: [
+                "eventId",
+                [sequelize.fn("COUNT", sequelize.col("eventId")), "numAttending"],
+            ],
+            group: ["eventId"],
+        });
+
+        let eventNumAttending = numAttending.find(
+            (num) => num.eventId === event.id
+        )
+
+        if (!eventNumAttending) {
+            eventNumAttending = { numAttending: 0 };
+        } else {
+            if (numAttending){
+                eventNumAttending = {numAttending: numAttending[0].dataValues.numAttending}
+            }
+        }
+        if (event.EventImages.length === 0) {
+            event.EventImages = null;
+        }
+
+        const finalEvent = {
+            id: event.id,
+            groupId: event.groupId,
+            venueId: event.venueId,
+            name: event.name,
+            type: event.type,
+            capacity: event.capacity,
+            price: event.price,
+            description: event.description,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            numAttending: eventNumAttending.numAttending,
+            Group: event.Group,
+            Venue: event.Venue,
+            EventImages: event.EventImages,
+        };
+
+        res.status(200);
+        return res.json(finalEvent);
+    } catch (err) {
+        console.log(err);
+        res.status(500);
+        return res.json(err);
+    }
+});
+
+
+
 
 
 
