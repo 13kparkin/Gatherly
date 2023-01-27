@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   EventImage.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     eventId: {
       type: DataTypes.INTEGER,
       references: {

@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Membership.init(
     {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+      },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -37,8 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       },
       status: {
-        type: DataTypes.ENUM,
-        values: ["co-host", "member", "pending"],
+        type: DataTypes.ENUM('co-host', 'member', 'pending'),
         allowNull: false,
       },
     },

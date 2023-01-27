@@ -756,6 +756,7 @@ router.post("/:groupId/events", async (req, res, next) => {
   }
 });
 
+// finished route
 router.get("/:groupId/events", async (req, res) => {
   const { groupId } = req.params;
   try {
@@ -852,9 +853,10 @@ router.get("/:groupId/events", async (req, res) => {
   }
 });
 
+// finished route
 router.post("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
-  const {user} = req;
+  const { user } = req;
   const userId = user.id;
 
   if (!user) {
@@ -874,6 +876,9 @@ router.post("/:groupId/membership", async (req, res) => {
       return res.json(err);
     }
 
+    const test = await Membership.findAll();
+    console.log(test);
+
     const membership = await Membership.findOne({
       where: {
         groupId,
@@ -881,12 +886,41 @@ router.post("/:groupId/membership", async (req, res) => {
       },
     });
 
+    const organizer = await Group.findOne({
+      where: {
+        id: groupId,
+        organizerId: userId,
+      },
+    });
+
     if (membership) {
-      const err = {};
-      err.message = "Membership has already been requested";
-      err.statusCode = 400;
-      res.status(400);
-      return res.json(err);
+      if (membership.status === "co-host") {
+        const err = {};
+        err.message = "User is already a co-host";
+        err.statusCode = 400;
+        res.status(400);
+        return res.json(err);
+      } else if (membership.status === "member") {
+        if (organizer) {
+          const err = {};
+          err.message = "User is the organizer";
+          err.statusCode = 400;
+          res.status(400);
+          return res.json(err);
+        }
+
+        const err = {};
+        err.message = "User is already a member";
+        err.statusCode = 400;
+        res.status(400);
+        return res.json(err);
+      } else if (membership) {
+        const err = {};
+        err.message = "Membership has already been requested";
+        err.statusCode = 400;
+        res.status(400);
+        return res.json(err);
+      }
     }
 
     const newMembership = await Membership.create({
@@ -910,6 +944,334 @@ router.post("/:groupId/membership", async (req, res) => {
     return res.json(err);
   }
 });
+
+// finished route
+router.put("/:groupId/membership", async (req, res) => {
+  const { groupId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+  let { memberId, status } = req.body;
+  status = status.toLowerCase();
+
+  if (!memberId) {
+    const err = {};
+    err.message = "Validation Error";
+    err.statusCode = 400;
+    err.errors = { memberId: "User couldn't be found" };
+    res.status(400);
+    return res.json(err);
+  }
+
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group could not be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const membership = await Membership.findOne({
+      where: {
+        groupId,
+        userId: memberId,
+      },
+    });
+
+    if (!membership) {
+      const err = {};
+      err.message = "Membership between the user and the group does not exits";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    if (status === "pending") {
+      const err = {};
+      err.message = "Cannot change a membership status to pending";
+      err.statusCode = 400;
+      res.status(400);
+      return res.json(err);
+    }
+
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
+
+    const coHost = await Membership.findOne({
+      where: {
+        groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
+
+    if (status === "member") {
+      if (!organizer) {
+        if (coHost) {
+          const updatedMembership = await membership.update({
+            status,
+          });
+        } else {
+          const err = {};
+          err.message = "Authorization required";
+          err.statusCode = 403;
+          res.status(403);
+          return res.json(err);
+        }
+      }
+    }
+
+    if (status === "co-host") {
+      if (!organizer) {
+        const err = {};
+        err.message = "Authorization required";
+        err.statusCode = 403;
+        res.status(403);
+        return res.json(err);
+      }
+    }
+
+    const updatedMembership = await membership.update({
+      status,
+    });
+
+    const finalMembership = {
+      id: membership.id,
+      groupId: membership.groupId,
+      userId: membership.userId,
+      status: membership.status,
+    };
+
+    res.status(200);
+    return res.json(finalMembership);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
+// finished route
+router.get("/:groupId/members", async (req, res) => {
+  const { groupId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
+
+    const coHost = await Membership.findOne({
+      where: {
+        groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
+
+    const memberships = await Membership.findAll({
+      where: {
+        groupId,
+      },
+      include: User,
+    });
+
+    const members = memberships.map((membership) => {
+      const member = {
+        id: membership.User.id,
+        firstName: membership.User.firstName,
+        lastName: membership.User.lastName,
+        Membership: {
+          status: membership.status,
+        },
+      };
+      return member;
+    });
+
+    if (!organizer) {
+      if (coHost) {
+        res.status(200);
+        return res.json({ Members: members });
+      }
+      const finalMembers = members.filter(
+        (member) => member.Membership.status !== "pending"
+      );
+      res.status(200);
+    return res.json({ Members: finalMembers });
+    }
+
+    res.status(200);
+    return res.json({ Members: members });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
+// finished route
+router.delete("/:groupId/membership", async (req, res) => {
+  const { groupId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+  
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const membership = await Membership.findOne({
+      where: {
+        groupId,
+        userId: userId,
+      },
+    });
+
+    if (!membership) {
+      const err = {};
+      err.message = "Validation Error"
+      err.errors =  {memberId: "User couldn't be found"};
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
+
+    const coHost = await Membership.findOne({
+      where: {
+        groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
+
+    if (!organizer) {
+      if (coHost) {
+        if (coHost.userId === memberId) {
+          const err = {};
+          err.message = "Cannot delete co-host";
+          err.statusCode = 403;
+          res.status(403);
+          return res.json(err);
+        }
+      } else {
+        const err = {};
+        err.message = "Authorization required";
+        err.statusCode = 403;
+        res.status(403);
+        return res.json(err);
+      }
+    }
+
+    await membership.destroy();
+
+    res.status(200);
+    return res.json({ message: "Successfully deleted membership from group" });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
+
+// finished route
+router.delete("/:groupId", async (req, res) => {
+  const { groupId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+
+  
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const organizerId = group.organizerId
+
+
+    if (organizerId !== userId) {
+      const err = {};
+      err.message = "Authorization required";
+      err.statusCode = 403;
+      res.status(403);
+      return res.json(err);
+    }
+
+    await group.destroy();  
+
+    res.status(200);
+    return res.json({ message: "Successfully deleted group" });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
 
 
 
