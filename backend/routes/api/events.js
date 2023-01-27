@@ -322,6 +322,13 @@ router.put("/:eventId", async (req, res) => {
       }
     }
   } catch (err) {
+    if (err.name === "SequelizeForeignKeyConstraintError") {
+        const err = {};
+        err.message = "Venue couldn't be found";
+        err.statusCode = 404;
+        res.status(404);
+        return res.json(err);
+    }
     console.log(err);
     res.status(500);
     return res.json(err);
