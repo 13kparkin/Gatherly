@@ -373,6 +373,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
   }
 });
 
+// finished route
 router.post("/:groupId/venues", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -507,6 +508,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
   }
 });
 
+// finished route
 router.post("/:groupId/events", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -747,5 +749,9 @@ router.post("/:groupId/events", async (req, res, next) => {
     return res.json(err);
   }
 });
+
+
+
+
 
 module.exports = router;
