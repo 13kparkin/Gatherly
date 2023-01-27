@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const {
+  Attendance,
+  EventImage,
   Event,
   Group,
   sequelize,
@@ -19,7 +21,7 @@ router.get("/", async (req, res, next) => {
       err = {};
       err.message = "Authentication required";
       err.statusCode = 401;
-      res.status(401)
+      res.status(401);
       return res.json(err);
     }
 
@@ -47,11 +49,11 @@ router.get("/", async (req, res, next) => {
         return { ...group, previewImage: previewImage.dataValues.url };
       })
     );
-    res.status(200)
+    res.status(200);
     return res.json({ Groups: NumMembersPreviewImage });
   } catch (err) {
     console.log(err);
-    res.status(500)
+    res.status(500);
     return res.json({ message: err });
   }
 });
@@ -63,7 +65,7 @@ router.post("/", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
 
@@ -108,7 +110,7 @@ router.post("/:groupId/images", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -126,7 +128,7 @@ router.post("/:groupId/images", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     } else if (group.organizerId === id) {
       const newImage = await GroupImage.create({
@@ -145,13 +147,13 @@ router.post("/:groupId/images", async (req, res, next) => {
       const err = {};
       err.message = "Forbidden";
       err.statusCode = 403;
-      res.status(403)
+      res.status(403);
       return res.json(err);
     }
   } catch (err) {
     // all other errors
     console.log(err);
-    res.status(500)
+    res.status(500);
     return res.json({ message: err });
   }
 });
@@ -163,7 +165,7 @@ router.put("/:groupId", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -177,7 +179,7 @@ router.put("/:groupId", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     } else if (group.organizerId === id) {
       const updatedGroup = await group.update({
@@ -195,13 +197,13 @@ router.put("/:groupId", async (req, res, next) => {
       const err = {};
       err.message = "Forbidden";
       err.statusCode = 403;
-      res.status(403)
+      res.status(403);
       return res.json(err);
     }
   } catch (err) {
     // all other errors
     console.log(err);
-    res.status(400)
+    res.status(400);
     return res.json({ message: "Validation Error", statusCode: 400 });
   }
 });
@@ -213,7 +215,7 @@ router.get("/current", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -263,7 +265,7 @@ router.get("/current", async (req, res, next) => {
   } catch (err) {
     // all other errors
     console.log(err);
-    res.status(500)
+    res.status(500);
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
@@ -289,7 +291,7 @@ router.get("/:groupId", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     } else {
       const finalGroup = {
@@ -310,7 +312,7 @@ router.get("/:groupId", async (req, res, next) => {
   } catch (err) {
     // all other errors
     console.log(err);
-    res.status(500)
+    res.status(500);
     return res.json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
@@ -322,7 +324,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -334,7 +336,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     }
 
@@ -354,7 +356,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
         const err = {};
         err.message = "Forbidden";
         err.statusCode = 403;
-        res.status(403)
+        res.status(403);
         return res.json(err);
       } else {
         const venues = await Venue.findAll({
@@ -380,7 +382,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -392,7 +394,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     }
 
@@ -448,7 +450,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
           err.errors.lng = "Longitude is not valid";
           err.statusCode = statusCode;
         }
-        res.status(400)
+        res.status(400);
         return res.json(err);
       }
 
@@ -473,7 +475,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
         const err = {};
         err.message = "Forbidden";
         err.statusCode = 403;
-        res.status(403)
+        res.status(403);
         return res.json(err);
       } else {
         const { address, city, state, zip, lat, lng } = req.body;
@@ -515,7 +517,7 @@ router.post("/:groupId/events", async (req, res, next) => {
     err = {};
     err.message = "Authentication required";
     err.statusCode = 401;
-    res.status(401)
+    res.status(401);
     return res.json(err);
   }
   try {
@@ -527,7 +529,7 @@ router.post("/:groupId/events", async (req, res, next) => {
       const err = {};
       err.message = "Group couldn't be found";
       err.statusCode = 404;
-      res.status(404)
+      res.status(404);
       return res.json(err);
     }
 
@@ -593,7 +595,7 @@ router.post("/:groupId/events", async (req, res, next) => {
         if (!venueId || !venue) {
           err.errors.venueId = "Venue does not exist";
           err.statusCode = statusCode;
-        } else if ( name < 5) {
+        } else if (name < 5) {
           err.errors.name = "Name must be at least 5 characters";
           err.statusCode = statusCode;
         } else if (type === "online" || type === "in person") {
@@ -611,7 +613,7 @@ router.post("/:groupId/events", async (req, res, next) => {
         } else if (startDate > today) {
           err.errors.startDate = "Start date must be in the future";
           err.statusCode = statusCode;
-        } else if ( endDate < startDate) {
+        } else if (endDate < startDate) {
           err.errors.endDate = "End date is less than start date";
           err.statusCode = statusCode;
         }
@@ -643,7 +645,7 @@ router.post("/:groupId/events", async (req, res, next) => {
         const err = {};
         err.message = "Forbidden";
         err.statusCode = 403;
-        res.status(403)
+        res.status(403);
         return res.json(err);
       } else {
         let {
@@ -704,7 +706,7 @@ router.post("/:groupId/events", async (req, res, next) => {
           if (!venueId) {
             err.errors.venueId = "Venue does not exist";
             err.statusCode = statusCode;
-          } else if ( name < 5) {
+          } else if (name < 5) {
             err.errors.name = "Name must be at least 5 characters";
             err.statusCode = statusCode;
           } else if (type === "online" || type === "in person") {
@@ -722,7 +724,7 @@ router.post("/:groupId/events", async (req, res, next) => {
           } else if (startDate > today) {
             err.errors.startDate = "Start date must be in the future";
             err.statusCode = statusCode;
-          } else if ( endDate < startDate) {
+          } else if (endDate < startDate) {
             err.errors.endDate = "End date is less than start date";
             err.statusCode = statusCode;
           }
@@ -754,8 +756,100 @@ router.post("/:groupId/events", async (req, res, next) => {
   }
 });
 
+router.get("/:groupId/events", async (req, res) => {
+  const { groupId } = req.params;
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group could not be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+    const events = await Event.findAll({
+      where: {
+        groupId,
+      },
+      include: [
+        {
+          model: Group,
+          attributes: ["id", "name", "city", "state"],
+        },
+        {
+          model: Venue,
+          attributes: ["id", "city", "state"],
+        },
+        {
+          model: EventImage,
+          attributes: ["id", "url"],
+        },
+      ],
+    });
 
+    if (events.length === 0) {
+      const err = {};
+      err.message = "No events found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
 
+    const eventIds = events.map((event) => event.id);
 
+    const numAttending = await Attendance.findAll({
+      where: {
+        eventId: eventIds,
+      },
+      attributes: [
+        "eventId",
+        [sequelize.fn("COUNT", sequelize.col("eventId")), "numAttending"],
+      ],
+      group: ["eventId"],
+    });
+
+    const finalEvents = events.map((event) => {
+      let eventNumAttending = numAttending.find(
+        (num) => num.eventId === event.id
+      );
+
+      if (!eventNumAttending || numAttending.length === 0) {
+        eventNumAttending = { numAttending: 0 };
+      } else {
+        eventNumAttending = {
+          numAttending: numAttending[0].dataValues.numAttending,
+        };
+      }
+
+      let previewImage = event.EventImages.find((image) => image.url);
+      if (!previewImage) {
+        previewImage = { url: null };
+      }
+      return {
+        id: event.id,
+        groupId: event.groupId,
+        venueId: event.venueId,
+        name: event.name,
+        type: event.type,
+        capacity: event.capacity,
+        price: event.price,
+        description: event.description,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        numAttending: eventNumAttending.numAttending,
+        previewImage: previewImage.url,
+        Group: event.Group,
+        Venue: event.Venue,
+      };
+    });
+
+    res.status(200);
+    return res.json({ Events: finalEvents });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
 
 module.exports = router;
