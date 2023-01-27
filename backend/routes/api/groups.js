@@ -852,4 +852,65 @@ router.get("/:groupId/events", async (req, res) => {
   }
 });
 
+router.post("/:groupId/membership", async (req, res) => {
+  const { groupId } = req.params;
+  const {user} = req;
+  const userId = user.id;
+
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      const err = {};
+      err.message = "Group could not be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const membership = await Membership.findOne({
+      where: {
+        groupId,
+        userId,
+      },
+    });
+
+    if (membership) {
+      const err = {};
+      err.message = "Membership has already been requested";
+      err.statusCode = 400;
+      res.status(400);
+      return res.json(err);
+    }
+
+    const newMembership = await Membership.create({
+      groupId,
+      userId,
+      status: "pending",
+    });
+
+    const finalMembership = {
+      id: newMembership.id,
+      groupId: newMembership.groupId,
+      userId: newMembership.userId,
+      status: newMembership.status,
+    };
+
+    res.status(200);
+    return res.json(finalMembership);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
+});
+
+
+
 module.exports = router;
