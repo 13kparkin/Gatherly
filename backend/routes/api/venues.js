@@ -70,16 +70,16 @@ router.put("/:venueId", async (req, res, next) => {
         if (!address) {
           err.errors.address = "Street address is required";
           err.statusCode = statusCode;
-        } else if (!city) {
+        } if (!city) {
           err.errors.city = "City is required";
           err.statusCode = statusCode;
-        } else if (!state) {
+        } if (!state) {
           err.errors.state = "State is required";
           err.statusCode = statusCode;
-        } else if (lat >= 90 || lat <= -90) {
+        } if (lat >= 90 || lat <= -90) {
           err.errors.lat = "Latitude is not valid";
           err.errors.statusCode = statusCode;
-        } else if (lng >= 180 || lng <= -180) {
+        } if (lng >= 180 || lng <= -180) {
           err.errors.lng = "Longitude is not valid";
           err.statusCode = statusCode;
         }

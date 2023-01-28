@@ -58,7 +58,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// needs work on error handling // todo: create object to start building info for err response
+
+// finished route
 router.post("/", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -70,12 +71,47 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
-    const { name, about, type, private, city, state } = req.body;
+    let { name, about, type, private, city, state } = req.body;
     const { id } = req.user;
     const user = await User.findByPk(id);
+    private = private.toString();
+    const lowerCasePrivate = private.toLowerCase()
 
     const lowerCaseType = type.toLowerCase();
 
+    if (
+      name.length >= 60 ||
+      about.length < 50 ||
+      lowerCaseType !== "online" &&
+      lowerCaseType !== "in person" || lowerCasePrivate !== "true" && lowerCasePrivate !== "false" ||
+      !city ||
+      !state
+    ) {
+      const err = {};
+      err.errors = {};
+      err.message = "Validation Error";
+      if (name.length >= 60) {
+        err.errors.name = "Name must be 60 characters or less";
+        err.statusCode = 400;
+      } if (about.length < 50) {
+        err.errors.about = "About must be 50 characters or more";
+        err.statusCode = 400;
+      } if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
+        err.errors.type = "Type must be 'Online' or 'In person'";
+        err.statusCode = 400;
+      } if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
+        err.errors.private = "Private must be a boolean";
+        err.statusCode = 400;
+      } if (!city) {
+        err.errors.city = "City is required";
+        err.statusCode = 400;
+      } if (!state) {
+        err.errors.state = "State is required";
+        err.statusCode = 400;
+      }
+      res.status(400);
+      return res.json(err);
+    }
     if (user) {
       const newGroup = await Group.create({
         name,
@@ -98,8 +134,8 @@ router.post("/", async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(400);
-    return res.json({ message: "Validation Error", statusCode: 400 });
+    res.status(500);
+    return res.json({ message: "Server Error", statusCode: 500 });
   }
 });
 
@@ -158,7 +194,8 @@ router.post("/:groupId/images", async (req, res, next) => {
   }
 });
 
-// finished route // Question about checking errors that come from sequelize db
+
+// finished route 
 router.put("/:groupId", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -171,9 +208,48 @@ router.put("/:groupId", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { id } = req.user;
-    const { name, about, type, private, city, state } = req.body;
+    let { name, about, type, private, city, state } = req.body;
     const group = await Group.findByPk(groupId);
     const lowerCaseType = type.toLowerCase();
+    private = private.toString();
+    const lowerCasePrivate = private.toLowerCase();
+
+    console.log(about.length)
+
+    if (
+      name.length >= 60 || name.length === 0 ||
+      about.length <= 50 ||
+      lowerCaseType !== "online" &&
+      lowerCaseType !== "in person" || lowerCasePrivate !== "true" && lowerCasePrivate !== "false" ||
+      !city ||
+      !state
+    ) {
+      const err = {};
+      err.errors = {};
+      err.message = "Validation Error";
+      if (name.length >= 60 || name.length === 0) {
+        err.errors.name = "Name must be 60 characters or less and not empty";
+        err.statusCode = 400;
+      } if (about.length <= 50) {
+        err.errors.about = "About must be 50 characters or more";
+        err.statusCode = 400;
+      } if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
+        err.errors.type = "Type must be 'Online' or 'In person'";
+        err.statusCode = 400;
+      } if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
+        err.errors.private = "Private must be a boolean";
+        err.statusCode = 400;
+      } if (!city) {
+        err.errors.city = "City is required";
+        err.statusCode = 400;
+      } if (!state) {
+        err.errors.state = "State is required";
+        err.statusCode = 400;
+      }
+      res.status(400);
+      return res.json(err);
+    }
+
 
     if (!group) {
       const err = {};
@@ -203,8 +279,8 @@ router.put("/:groupId", async (req, res, next) => {
   } catch (err) {
     // all other errors
     console.log(err);
-    res.status(400);
-    return res.json({ message: "Validation Error", statusCode: 400 });
+    res.status(500);
+    return res.json({ message: "Server Error", statusCode: 500 });
   }
 });
 
@@ -276,6 +352,15 @@ router.get("/:groupId", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId);
+
+    if (!group) {
+      const err = {};
+      err.message = "Group couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
     const numMembers = await Membership.count({
       where: { groupId },
     });
@@ -287,28 +372,38 @@ router.get("/:groupId", async (req, res, next) => {
       where: { groupId },
     });
 
-    if (!group) {
-      const err = {};
-      err.message = "Group couldn't be found";
-      err.statusCode = 404;
-      res.status(404);
-      return res.json(err);
-    } else {
-      const finalGroup = {
-        ...group.dataValues,
-        numMembers,
-        groupImages,
-        organizer: {
-          id: organizer.id,
-          firstName: organizer.firstName,
-          lastName: organizer.lastName,
-        },
-        venues,
-      };
+    const finalGroup = {
+      ...group.dataValues,
+      numMembers,
+      GroupImages: groupImages.map((groupImage) => {
+        return {
+          id: groupImage.id,
+          groupId: groupImage.groupId,
+          url: groupImage.url,
+          preview: groupImage.preview,
+        };
+      }),
+      organizer: {
+        id: organizer.id,
+        firstName: organizer.firstName,
+        lastName: organizer.lastName,
+      },
+      Venues: venues.map((venue) => {
+        return {
+          id: venue.id,
+          groupId: venue.groupId,
+          name: venue.name,
+          address: venue.address,
+          city: venue.city,
+          state: venue.state,
+          lat: venue.lat,
+          lng: venue.lng,
+        };
+      }),
+    };
 
-      res.status(200);
-      return res.json(finalGroup);
-    }
+    res.status(200);
+    return res.json(finalGroup);
   } catch (err) {
     // all other errors
     console.log(err);
@@ -398,8 +493,6 @@ router.post("/:groupId/venues", async (req, res, next) => {
       return res.json(err);
     }
 
-    // exclude createdAt and updatedAt
-
     if (group.organizerId === id) {
       const { address, city, state, zip, lat, lng } = req.body;
       const venue = await Venue.create({
@@ -437,16 +530,16 @@ router.post("/:groupId/venues", async (req, res, next) => {
         if (!address) {
           err.errors.address = "Street address is required";
           err.statusCode = statusCode;
-        } else if (!city) {
+        } if (!city) {
           err.errors.city = "City is required";
           err.statusCode = statusCode;
-        } else if (!state) {
+        } if (!state) {
           err.errors.state = "State is required";
           err.statusCode = statusCode;
-        } else if (lat >= 90 || lat <= -90) {
+        } if (lat >= 90 || lat <= -90) {
           err.errors.lat = "Latitude is not valid";
           err.errors.statusCode = statusCode;
-        } else if (lng >= 180 || lng <= -180) {
+        } if (lng >= 180 || lng <= -180) {
           err.errors.lng = "Longitude is not valid";
           err.statusCode = statusCode;
         }
@@ -524,6 +617,7 @@ router.post("/:groupId/events", async (req, res, next) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId);
     const { id } = req.user;
+    
 
     if (!group) {
       const err = {};
@@ -532,6 +626,8 @@ router.post("/:groupId/events", async (req, res, next) => {
       res.status(404);
       return res.json(err);
     }
+
+
 
     if (group.organizerId === id) {
       let {
@@ -546,17 +642,11 @@ router.post("/:groupId/events", async (req, res, next) => {
       } = req.body;
 
       const lowerCaseType = type.toLowerCase();
-      const event = await Event.create({
-        groupId: groupId,
-        venueId,
-        name,
-        type: lowerCaseType,
-        capacity,
-        price,
-        description,
-        startDate,
-        endDate,
-      });
+      const venue = await Venue.findByPk(venueId);
+
+      const today = new Date();
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
 
       let statusCode;
       const err = {
@@ -573,53 +663,71 @@ router.post("/:groupId/events", async (req, res, next) => {
           endDate,
         },
       };
-      const today = new Date();
-      startDate = new Date(startDate);
-      endDate = new Date(endDate);
-
-      // query for venueId
-      const venue = await Venue.findByPk(venueId);
 
       if (
-        !venueId ||
         !venue ||
         name < 5 ||
-        type !== "online" &&
-        type !== "in person" &&
+        (type !== "online" && type !== "in person") ||
         !Number.isInteger(capacity) ||
+        !(price % 1 !== 0) ||
         !description ||
-        startDate > today ||
+        today > startDate ||
         endDate < startDate
       ) {
         statusCode = err.statusCode = 400;
-        if (!venueId || !venue) {
+        if (!venue) {
           err.errors.venueId = "Venue does not exist";
           err.statusCode = statusCode;
-        } else if (name < 5) {
+        }
+        if (name < 5) {
           err.errors.name = "Name must be at least 5 characters";
           err.statusCode = statusCode;
-        } else if (type !== "online" && type !== "in person") {
+        }
+        if (type !== "online" && type !== "in person") {
           err.errors.type = "Type must be Online or In person";
           err.statusCode = statusCode;
-        } else if (!Number.isInteger(capacity)) {
+        }
+        if (!Number.isInteger(capacity)) {
           err.errors.capacity = "Capacity must be an integer";
           err.statusCode = statusCode;
-        } else if (!price) {
+        }
+        if (!(price % 1 !== 0)) {
           err.errors.price = "Price is invalid";
           err.statusCode = statusCode;
-        } else if (!description) {
+        }
+        if (!description) {
           err.errors.description = "Description is required";
           err.statusCode = statusCode;
-        } else if (startDate > today) {
+        }
+        if (today > startDate) {
           err.errors.startDate = "Start date must be in the future";
           err.statusCode = statusCode;
-        } else if (endDate < startDate) {
+        }
+        if (endDate <= startDate) {
           err.errors.endDate = "End date is less than start date";
           err.statusCode = statusCode;
         }
         res.status(400);
         return res.json(err);
       }
+
+      const event = await Event.create({
+        groupId: groupId,
+        venueId,
+        name,
+        type: lowerCaseType,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate,
+      });
+
+      
+      
+     
+
+      
 
       const finalEvent = {
         id: event.id,
@@ -693,38 +801,45 @@ router.post("/:groupId/events", async (req, res, next) => {
         startDate = new Date(startDate);
         endDate = new Date(endDate);
         if (
-          !venueId ||
+          !venue ||
           name < 5 ||
-          type !== "online" &&
-          type !== "in person" &&
+          (type !== "online" && type !== "in person") ||
           !Number.isInteger(capacity) ||
+          !(price % 1 !== 0) ||
           !description ||
-          startDate > today ||
+          today > startDate ||
           endDate < startDate
         ) {
           statusCode = err.statusCode = 400;
-          if (!venueId) {
+          if (!venue) {
             err.errors.venueId = "Venue does not exist";
             err.statusCode = statusCode;
-          } else if (name < 5) {
+          }
+          if (name < 5) {
             err.errors.name = "Name must be at least 5 characters";
             err.statusCode = statusCode;
-          } else if (type !== "online" && type !== "in person") {
+          }
+          if (type !== "online" && type !== "in person") {
             err.errors.type = "Type must be Online or In person";
             err.statusCode = statusCode;
-          } else if (!Number.isInteger(capacity)) {
+          }
+          if (!Number.isInteger(capacity)) {
             err.errors.capacity = "Capacity must be an integer";
             err.statusCode = statusCode;
-          } else if (!price) {
+          }
+          if (!(price % 1 !== 0)) {
             err.errors.price = "Price is invalid";
             err.statusCode = statusCode;
-          } else if (!description) {
+          }
+          if (!description) {
             err.errors.description = "Description is required";
             err.statusCode = statusCode;
-          } else if (startDate > today) {
+          }
+          if (today > startDate) {
             err.errors.startDate = "Start date must be in the future";
             err.statusCode = statusCode;
-          } else if (endDate < startDate) {
+          }
+          if (endDate <= startDate) {
             err.errors.endDate = "End date is less than start date";
             err.statusCode = statusCode;
           }
@@ -763,7 +878,7 @@ router.get("/:groupId/events", async (req, res) => {
     const group = await Group.findByPk(groupId);
     if (!group) {
       const err = {};
-      err.message = "Group could not be found";
+      err.message = "Group couldn't be found"
       err.statusCode = 404;
       res.status(404);
       return res.json(err);
@@ -832,9 +947,6 @@ router.get("/:groupId/events", async (req, res) => {
         venueId: event.venueId,
         name: event.name,
         type: event.type,
-        capacity: event.capacity,
-        price: event.price,
-        description: event.description,
         startDate: event.startDate,
         endDate: event.endDate,
         numAttending: eventNumAttending.numAttending,
