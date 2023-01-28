@@ -584,8 +584,8 @@ router.post("/:groupId/events", async (req, res, next) => {
         !venueId ||
         !venue ||
         name < 5 ||
-        type === "online" ||
-        type === "in person" ||
+        type !== "online" &&
+        type !== "in person" &&
         !Number.isInteger(capacity) ||
         !description ||
         startDate > today ||
@@ -598,7 +598,7 @@ router.post("/:groupId/events", async (req, res, next) => {
         } else if (name < 5) {
           err.errors.name = "Name must be at least 5 characters";
           err.statusCode = statusCode;
-        } else if (type === "online" || type === "in person") {
+        } else if (type !== "online" && type !== "in person") {
           err.errors.type = "Type must be Online or In person";
           err.statusCode = statusCode;
         } else if (!Number.isInteger(capacity)) {
@@ -695,8 +695,8 @@ router.post("/:groupId/events", async (req, res, next) => {
         if (
           !venueId ||
           name < 5 ||
-          type === "online" ||
-          type === "in person" ||
+          type !== "online" &&
+          type !== "in person" &&
           !Number.isInteger(capacity) ||
           !description ||
           startDate > today ||
@@ -709,7 +709,7 @@ router.post("/:groupId/events", async (req, res, next) => {
           } else if (name < 5) {
             err.errors.name = "Name must be at least 5 characters";
             err.statusCode = statusCode;
-          } else if (type === "online" || type === "in person") {
+          } else if (type !== "online" && type !== "in person") {
             err.errors.type = "Type must be Online or In person";
             err.statusCode = statusCode;
           } else if (!Number.isInteger(capacity)) {
@@ -1129,7 +1129,7 @@ router.get("/:groupId/members", async (req, res) => {
         (member) => member.Membership.status !== "pending"
       );
       res.status(200);
-    return res.json({ Members: finalMembers });
+      return res.json({ Members: finalMembers });
     }
 
     res.status(200);
@@ -1146,7 +1146,7 @@ router.delete("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
   const userId = user.id;
-  
+
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1174,8 +1174,8 @@ router.delete("/:groupId/membership", async (req, res) => {
 
     if (!membership) {
       const err = {};
-      err.message = "Validation Error"
-      err.errors =  {memberId: "User couldn't be found"};
+      err.message = "Validation Error";
+      err.errors = { memberId: "User couldn't be found" };
       err.statusCode = 404;
       res.status(404);
       return res.json(err);
@@ -1224,14 +1224,12 @@ router.delete("/:groupId/membership", async (req, res) => {
   }
 });
 
-
 // finished route
 router.delete("/:groupId", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
   const userId = user.id;
 
-  
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1250,8 +1248,7 @@ router.delete("/:groupId", async (req, res) => {
       return res.json(err);
     }
 
-    const organizerId = group.organizerId
-
+    const organizerId = group.organizerId;
 
     if (organizerId !== userId) {
       const err = {};
@@ -1261,7 +1258,7 @@ router.delete("/:groupId", async (req, res) => {
       return res.json(err);
     }
 
-    await group.destroy();  
+    await group.destroy();
 
     res.status(200);
     return res.json({ message: "Successfully deleted group" });
@@ -1271,8 +1268,5 @@ router.delete("/:groupId", async (req, res) => {
     return res.json(err);
   }
 });
-
-
-
 
 module.exports = router;

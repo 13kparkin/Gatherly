@@ -12,6 +12,8 @@ const {
   User,
   Venue,
 } = require("../../db/models");
+const { Op } = require("sequelize");
+const moment = require("moment");
 
 // finished route
 router.post("/:eventId/images", async (req, res) => {
@@ -267,8 +269,8 @@ router.put("/:eventId", async (req, res) => {
         if (
           !venueId ||
           name < 5 ||
-          type === "online" ||
-          type === "in person" ||
+          type !== "online" ||
+          type !== "in person" ||
           !Number.isInteger(capacity) ||
           !description ||
           startDate > today ||
@@ -281,7 +283,7 @@ router.put("/:eventId", async (req, res) => {
           } else if (name < 5) {
             err.errors.name = "Name must be at least 5 characters";
             err.statusCode = statusCode;
-          } else if (type === "online" || type === "in person") {
+          } else if (type !== "online" || type !== "in person") {
             err.errors.type = "Type must be Online or In person";
             err.statusCode = statusCode;
           } else if (!Number.isInteger(capacity)) {
@@ -337,8 +339,93 @@ router.put("/:eventId", async (req, res) => {
 
 // finished route
 router.get("/", async (req, res) => {
+  let { page, size, name, type, startDate } = req.query;
+  let pageInt = parseInt(page);
+  let sizeInt = parseInt(size);
+  let today = new Date();
+  if (startDate) {
+    startDate = new Date(startDate);
+  }
+  console.log("startDate", startDate);
+
+  
+
+  if (type) {
+    type = type.toLowerCase();
+  }
+
+  if (startDate) {
+    function isValidDate(startDate) {
+      let date = new Date(startDate);
+      if (isNaN(date.getTime())) {
+        return false;
+      }
+      return true;
+    }
+  }
+
+  let err = {
+    errors: {},
+  };
+
+  if (!page) {
+    pageInt = 1;
+  }
+
+  if (!size) {
+    sizeInt = 20;
+  }
+  let offset = (pageInt - 1) * sizeInt;
+  let where = {};
+
+  
+
+  if (
+    pageInt < 1 ||
+    pageInt > 10 ||
+    sizeInt < 1 ||
+    sizeInt > 20 ||
+    (name && typeof name !== "string") ||
+    (type && type !== "online" && type !== "in person") ||
+    (startDate && !isValidDate(startDate))
+  ) {
+    if (pageInt < 1 || pageInt > 10) {
+      statusCode = err.statusCode = 400;
+      err.errors.page =
+        "Page must be greater than or equal to 1 and less than or equal to 10";
+    } else if (sizeInt < 1 || sizeInt > 20) {
+      statusCode = err.statusCode = 400;
+      err.errors.size =
+        "Size must be greater than or equal to 1 and less than or equal to 20";
+    } else if (name && typeof name !== "string") {
+      statusCode = err.statusCode = 400;
+      err.errors.name = "Name must be a string";
+    } else if (type && type !== "online" && type !== "in person") {
+      statusCode = err.statusCode = 400;
+      err.errors.type = "Type must be 'Online' or 'In Person'";
+    } else if ( startDate && !isValidDate(startDate) ) {
+      statusCode = err.statusCode = 400;
+      err.errors.startDate = "Start date must be a valid datetime and ISO-8601 standard date format. example date  '2021-11-21T01:00:00.000Z'";
+    }
+    return res.status(400).json(err);
+  }
+
+  if (name) {
+    where.name = { [Op.like]: `%${name}%` };
+  }
+
+  if (type) {
+    where.type = type;
+    console.log(where.type);
+  }
+
+  if (startDate) {
+    where.startDate = { [Op.gte]: startDate };
+  }
+
   try {
     const events = await Event.findAll({
+      where: where,
       include: [
         {
           model: Group,
@@ -353,6 +440,8 @@ router.get("/", async (req, res) => {
           attributes: ["id", "url"],
         },
       ],
+      offset,
+      limit: sizeInt,
     });
 
     const eventIds = events.map((event) => event.id);
@@ -368,8 +457,6 @@ router.get("/", async (req, res) => {
       group: ["eventId"],
     });
 
-    // if there is numAttending for an event
-
     const finalEvents = events.map((event) => {
       let eventNumAttending = numAttending.find(
         (num) => num.eventId === event.id
@@ -379,7 +466,7 @@ router.get("/", async (req, res) => {
         eventNumAttending = { numAttending: 0 };
       }
 
-      if (numAttending) {
+      if (numAttending.length !== 0) {
         eventNumAttending = {
           numAttending: numAttending[0].dataValues.numAttending,
         };
@@ -587,314 +674,313 @@ router.get("/:eventId/attendees", async (req, res) => {
 
 // finished route
 router.post("/:eventId/attendance", async (req, res) => {
-    const { eventId } = req.params;
-    const { user } = req;
-    const userId = user.id;
+  const { eventId } = req.params;
+  const { user } = req;
+  const userId = user.id;
 
-    if (!user) {
-        const err = {};
-        err.message = "Authentication required";
-        err.statusCode = 401;
-        res.status(401);
-        return res.json(err);
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const event = await Event.findByPk(eventId);
+
+    if (!event) {
+      const err = {};
+      err.message = "Event couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
-    
-    try {
-        const event = await Event.findByPk(eventId);
 
-        if (!event) {
-            const err = {};
-            err.message = "Event couldn't be found";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
+    const membership = await Membership.findOne({
+      where: {
+        groupId: event.groupId,
+        userId: userId,
+      },
+    });
 
-
-        const membership = await Membership.findOne({
-            where: {
-                groupId: event.groupId,
-                userId: userId,
-            }
-        });
-
-        if (!membership) {
-            const err = {};
-            err.message = "Forbidden";
-            err.statusCode = 403;
-            res.status(403);
-            return res.json(err);
-        }
-
-        const attendance = await Attendance.findOne({
-            where: {
-                eventId: eventId,
-                userId: userId,
-            }
-        });
-
-        if (attendance) {
-            const err = {};
-            err.message = "User is already an attendee of the event";
-            err.statusCode = 400;
-            res.status(400);
-            return res.json(err);
-        }
-
-        const newAttendance = await Attendance.create({
-            eventId: eventId,
-            userId: userId,
-            status: "pending",
-        });
-
-        res.status(200);
-        return res.json({ userId: newAttendance.userId, status: newAttendance.status });
-    } catch (err) {
-        console.log(err);
-        res.status(500);
-        return res.json(err);
+    if (!membership) {
+      const err = {};
+      err.message = "Forbidden";
+      err.statusCode = 403;
+      res.status(403);
+      return res.json(err);
     }
+
+    const attendance = await Attendance.findOne({
+      where: {
+        eventId: eventId,
+        userId: userId,
+      },
+    });
+
+    if (attendance) {
+      const err = {};
+      err.message = "User is already an attendee of the event";
+      err.statusCode = 400;
+      res.status(400);
+      return res.json(err);
+    }
+
+    const newAttendance = await Attendance.create({
+      eventId: eventId,
+      userId: userId,
+      status: "pending",
+    });
+
+    res.status(200);
+    return res.json({
+      userId: newAttendance.userId,
+      status: newAttendance.status,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
 });
 
 // finished route
 router.put("/:eventId/attendance", async (req, res) => {
-    const { eventId } = req.params;
-    const { user } = req;
-    const userId = user.id;
-    let { userId: attendanceUserId, status } = req.body;
-    status = status.toLowerCase();
+  const { eventId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+  let { userId: attendanceUserId, status } = req.body;
+  status = status.toLowerCase();
 
-    if (!user) {
-        const err = {};
-        err.message = "Authentication required";
-        err.statusCode = 401;
-        res.status(401);
-        return res.json(err);
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  if (status === "pending") {
+    const err = {};
+    err.message = "Cannot change an attendance status to pending";
+    err.statusCode = 400;
+    res.status(400);
+    return res.json(err);
+  }
+
+  try {
+    const event = await Event.findByPk(eventId);
+
+    if (!event) {
+      const err = {};
+      err.message = "Event couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
 
-    if (status === "pending") {
-        const err = {};
-        err.message = "Cannot change an attendance status to pending";
-        err.statusCode = 400;
-        res.status(400);
-        return res.json(err);
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
+
+    const coHost = await Membership.findOne({
+      where: {
+        groupId: event.groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
+
+    if (!organizer || !coHost) {
+      const err = {};
+      err.message = "Forbidden";
+      err.statusCode = 403;
+      res.status(403);
+      return res.json(err);
     }
 
-    try {
-        const event = await Event.findByPk(eventId);
+    const attendance = await Attendance.findOne({
+      where: {
+        eventId: eventId,
+        userId: attendanceUserId,
+      },
+    });
 
-        if (!event) {
-            const err = {};
-            err.message = "Event couldn't be found";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
-
-        const organizer = await Group.findOne({
-            where: {
-                organizerId: userId,
-            }
-        });
-
-        const coHost = await Membership.findOne({
-            where: {
-                groupId: event.groupId,
-                userId: userId,
-                status: "co-host",
-            }
-        });
-
-        if (!organizer || !coHost) {
-            const err = {};
-            err.message = "Forbidden";
-            err.statusCode = 403;
-            res.status(403);
-            return res.json(err);
-        }
-
-        const attendance = await Attendance.findOne({
-            where: {
-                eventId: eventId,
-                userId: attendanceUserId,
-            }
-        });
-
-        if (!attendance) {
-            const err = {};
-            err.message = "Attendance between the user and the event does not exist";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
-
-        
-
-        Attendance.update({ status }, {
-            where: {
-                eventId: eventId,
-                userId: attendanceUserId,
-            }
-        });
-
-        const finalAttendance = {
-            id: attendance.id,
-            userId: attendanceUserId,
-            status: status,
-        }
-
-        res.status(200);
-        return res.json(finalAttendance);
-    } catch (err) {
-        console.log(err);
-        res.status(500);
-        return res.json(err);
+    if (!attendance) {
+      const err = {};
+      err.message = "Attendance between the user and the event does not exist";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
+
+    Attendance.update(
+      { status },
+      {
+        where: {
+          eventId: eventId,
+          userId: attendanceUserId,
+        },
+      }
+    );
+
+    const finalAttendance = {
+      id: attendance.id,
+      userId: attendanceUserId,
+      status: status,
+    };
+
+    res.status(200);
+    return res.json(finalAttendance);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
 });
-
 
 // finished route
 router.delete("/:eventId/attendance", async (req, res) => {
-    const { eventId } = req.params;
-    const { user } = req;
-    const userId = user.id;
-    const { userId: attendanceUserId } = req.body;
-    
-    if (!user) {
-        const err = {};
-        err.message = "Authentication required";
-        err.statusCode = 401;
-        res.status(401);
-        return res.json(err);
+  const { eventId } = req.params;
+  const { user } = req;
+  const userId = user.id;
+  const { userId: attendanceUserId } = req.body;
+
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const event = await Event.findByPk(eventId);
+
+    if (!event) {
+      const err = {};
+      err.message = "Event couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
 
-    try {
-        const event = await Event.findByPk(eventId);
-        
-        if (!event) {
-            const err = {};
-            err.message = "Event couldn't be found";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
 
-        const organizer = await Group.findOne({
-            where: {
-                organizerId: userId,
-            }
-        });
+    const coHost = await Membership.findOne({
+      where: {
+        groupId: event.groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
 
-        const coHost = await Membership.findOne({
-            where: {
-                groupId: event.groupId,
-                userId: userId,
-                status: "co-host",
-            }
-        });
-
-        if (!organizer || !coHost) {
-            const err = {};
-            err.message = "Forbidden";
-            err.statusCode = 403;
-            res.status(403);
-            return res.json(err);
-        }
-
-        const attendance = await Attendance.findOne({
-            where: {
-                eventId: eventId,
-                userId: attendanceUserId,
-            }
-        });
-
-        if (!attendance) {
-            const err = {};
-            err.message = "Attendance does not exist for this User";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
-
-        Attendance.destroy({
-            where: {
-                eventId: eventId,
-                userId: attendanceUserId,
-            }
-        });
-
-        res.status(200);
-        return res.json({ message: "Successfully deleted attendance from event" });
-    } catch (err) {
-        console.log(err);
-        res.status(500);
-        return res.json(err);
+    if (!organizer || !coHost) {
+      const err = {};
+      err.message = "Forbidden";
+      err.statusCode = 403;
+      res.status(403);
+      return res.json(err);
     }
+
+    const attendance = await Attendance.findOne({
+      where: {
+        eventId: eventId,
+        userId: attendanceUserId,
+      },
+    });
+
+    if (!attendance) {
+      const err = {};
+      err.message = "Attendance does not exist for this User";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    Attendance.destroy({
+      where: {
+        eventId: eventId,
+        userId: attendanceUserId,
+      },
+    });
+
+    res.status(200);
+    return res.json({ message: "Successfully deleted attendance from event" });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
 });
-
 
 // finished route
 router.delete("/:eventId", async (req, res) => {
-    const { eventId } = req.params;
-    const { user } = req;
-    const userId = user.id;
+  const { eventId } = req.params;
+  const { user } = req;
+  const userId = user.id;
 
-    if (!user) {
-        const err = {};
-        err.message = "Authentication required";
-        err.statusCode = 401;
-        res.status(401);
-        return res.json(err);
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
+
+  try {
+    const event = await Event.findByPk(eventId);
+
+    if (!event) {
+      const err = {};
+      err.message = "Event couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
     }
 
-    try {
-        const event = await Event.findByPk(eventId);
+    const organizer = await Group.findOne({
+      where: {
+        organizerId: userId,
+      },
+    });
 
-        if (!event) {
-            const err = {};
-            err.message = "Event couldn't be found";
-            err.statusCode = 404;
-            res.status(404);
-            return res.json(err);
-        }
+    const coHost = await Membership.findOne({
+      where: {
+        groupId: event.groupId,
+        userId: userId,
+        status: "co-host",
+      },
+    });
 
-        const organizer = await Group.findOne({
-            where: {
-                organizerId: userId,
-            }
-        });
-
-        const coHost = await Membership.findOne({
-            where: {
-                groupId: event.groupId,
-                userId: userId,
-                status: "co-host",
-            }
-        });
-
-        if (!organizer || !coHost) {
-            const err = {};
-            err.message = "Forbidden";
-            err.statusCode = 403;
-            res.status(403);
-            return res.json(err);
-        }
-
-        Event.destroy({
-            where: {
-                id: eventId,
-            }
-        });
-
-        res.status(200);
-        return res.json({ message: "Successfully deleted" });
-    } catch (err) {
-        console.log(err);
-        res.status(500);
-        return res.json(err);
+    if (!organizer || !coHost) {
+      const err = {};
+      err.message = "Forbidden";
+      err.statusCode = 403;
+      res.status(403);
+      return res.json(err);
     }
+
+    Event.destroy({
+      where: {
+        id: eventId,
+      },
+    });
+
+    res.status(200);
+    return res.json({ message: "Successfully deleted" });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    return res.json(err);
+  }
 });
-
-
 
 module.exports = router;
