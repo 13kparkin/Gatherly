@@ -51,7 +51,7 @@ router.delete("/:imageId", async (req, res) => {
       if (organizerId !== userId) {
         if (!coHost) {
           const err = {};
-          err.message = "Authorization required";
+          err.message = "Forbidden";
           err.statusCode = 403;
           res.status(403);
           return res.json(err);
