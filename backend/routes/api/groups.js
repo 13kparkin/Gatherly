@@ -58,7 +58,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
 // finished route
 router.post("/", async (req, res, next) => {
   const { user } = req;
@@ -75,15 +74,15 @@ router.post("/", async (req, res, next) => {
     const { id } = req.user;
     const user = await User.findByPk(id);
     private = private.toString();
-    const lowerCasePrivate = private.toLowerCase()
+    const lowerCasePrivate = private.toLowerCase();
 
     const lowerCaseType = type.toLowerCase();
 
     if (
       name.length >= 60 ||
       about.length < 50 ||
-      lowerCaseType !== "online" &&
-      lowerCaseType !== "in person" || lowerCasePrivate !== "true" && lowerCasePrivate !== "false" ||
+      (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
+      (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") ||
       !city ||
       !state
     ) {
@@ -93,19 +92,24 @@ router.post("/", async (req, res, next) => {
       if (name.length >= 60) {
         err.errors.name = "Name must be 60 characters or less";
         err.statusCode = 400;
-      } if (about.length < 50) {
+      }
+      if (about.length < 50) {
         err.errors.about = "About must be 50 characters or more";
         err.statusCode = 400;
-      } if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
+      }
+      if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
         err.errors.type = "Type must be 'Online' or 'In person'";
         err.statusCode = 400;
-      } if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
+      }
+      if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
         err.errors.private = "Private must be a boolean";
         err.statusCode = 400;
-      } if (!city) {
+      }
+      if (!city) {
         err.errors.city = "City is required";
         err.statusCode = 400;
-      } if (!state) {
+      }
+      if (!state) {
         err.errors.state = "State is required";
         err.statusCode = 400;
       }
@@ -194,8 +198,7 @@ router.post("/:groupId/images", async (req, res, next) => {
   }
 });
 
-
-// finished route 
+// finished route
 router.put("/:groupId", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -214,13 +217,14 @@ router.put("/:groupId", async (req, res, next) => {
     private = private.toString();
     const lowerCasePrivate = private.toLowerCase();
 
-    console.log(about.length)
+    console.log(about.length);
 
     if (
-      name.length >= 60 || name.length === 0 ||
+      name.length >= 60 ||
+      name.length === 0 ||
       about.length <= 50 ||
-      lowerCaseType !== "online" &&
-      lowerCaseType !== "in person" || lowerCasePrivate !== "true" && lowerCasePrivate !== "false" ||
+      (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
+      (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") ||
       !city ||
       !state
     ) {
@@ -230,26 +234,30 @@ router.put("/:groupId", async (req, res, next) => {
       if (name.length >= 60 || name.length === 0) {
         err.errors.name = "Name must be 60 characters or less and not empty";
         err.statusCode = 400;
-      } if (about.length <= 50) {
+      }
+      if (about.length <= 50) {
         err.errors.about = "About must be 50 characters or more";
         err.statusCode = 400;
-      } if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
+      }
+      if (lowerCaseType !== "online" && lowerCaseType !== "in person") {
         err.errors.type = "Type must be 'Online' or 'In person'";
         err.statusCode = 400;
-      } if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
+      }
+      if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
         err.errors.private = "Private must be a boolean";
         err.statusCode = 400;
-      } if (!city) {
+      }
+      if (!city) {
         err.errors.city = "City is required";
         err.statusCode = 400;
-      } if (!state) {
+      }
+      if (!state) {
         err.errors.state = "State is required";
         err.statusCode = 400;
       }
       res.status(400);
       return res.json(err);
     }
-
 
     if (!group) {
       const err = {};
@@ -530,16 +538,20 @@ router.post("/:groupId/venues", async (req, res, next) => {
         if (!address) {
           err.errors.address = "Street address is required";
           err.statusCode = statusCode;
-        } if (!city) {
+        }
+        if (!city) {
           err.errors.city = "City is required";
           err.statusCode = statusCode;
-        } if (!state) {
+        }
+        if (!state) {
           err.errors.state = "State is required";
           err.statusCode = statusCode;
-        } if (lat >= 90 || lat <= -90) {
+        }
+        if (lat >= 90 || lat <= -90) {
           err.errors.lat = "Latitude is not valid";
           err.errors.statusCode = statusCode;
-        } if (lng >= 180 || lng <= -180) {
+        }
+        if (lng >= 180 || lng <= -180) {
           err.errors.lng = "Longitude is not valid";
           err.statusCode = statusCode;
         }
@@ -617,7 +629,6 @@ router.post("/:groupId/events", async (req, res, next) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId);
     const { id } = req.user;
-    
 
     if (!group) {
       const err = {};
@@ -626,8 +637,6 @@ router.post("/:groupId/events", async (req, res, next) => {
       res.status(404);
       return res.json(err);
     }
-
-
 
     if (group.organizerId === id) {
       let {
@@ -722,12 +731,6 @@ router.post("/:groupId/events", async (req, res, next) => {
         startDate,
         endDate,
       });
-
-      
-      
-     
-
-      
 
       const finalEvent = {
         id: event.id,
@@ -878,7 +881,7 @@ router.get("/:groupId/events", async (req, res) => {
     const group = await Group.findByPk(groupId);
     if (!group) {
       const err = {};
-      err.message = "Group couldn't be found"
+      err.message = "Group couldn't be found";
       err.statusCode = 404;
       res.status(404);
       return res.json(err);
@@ -988,9 +991,6 @@ router.post("/:groupId/membership", async (req, res) => {
       return res.json(err);
     }
 
-    const test = await Membership.findAll();
-    console.log(test);
-
     const membership = await Membership.findOne({
       where: {
         groupId,
@@ -1005,6 +1005,7 @@ router.post("/:groupId/membership", async (req, res) => {
       },
     });
 
+
     if (membership) {
       if (membership.status === "co-host") {
         const err = {};
@@ -1012,7 +1013,8 @@ router.post("/:groupId/membership", async (req, res) => {
         err.statusCode = 400;
         res.status(400);
         return res.json(err);
-      } else if (membership.status === "member") {
+      }
+      if (membership.status === "member") {
         if (organizer) {
           const err = {};
           err.message = "User is the organizer";
@@ -1020,13 +1022,15 @@ router.post("/:groupId/membership", async (req, res) => {
           res.status(400);
           return res.json(err);
         }
-
-        const err = {};
-        err.message = "User is already a member";
-        err.statusCode = 400;
-        res.status(400);
-        return res.json(err);
-      } else if (membership) {
+        if (membership.status === "member") {
+          const err = {};
+          err.message = "User is already a member of the group"
+          err.statusCode = 400;
+          res.status(400);
+          return res.json(err);
+        }
+      }
+      if (membership.status === "pending") {
         const err = {};
         err.message = "Membership has already been requested";
         err.statusCode = 400;
@@ -1065,7 +1069,14 @@ router.put("/:groupId/membership", async (req, res) => {
   let { memberId, status } = req.body;
   status = status.toLowerCase();
 
-  if (!memberId) {
+  const users = await User.findAll({
+    where: {
+      id: memberId,
+    },
+  });
+
+
+  if (users.length === 0) {
     const err = {};
     err.message = "Validation Error";
     err.statusCode = 400;
@@ -1117,6 +1128,7 @@ router.put("/:groupId/membership", async (req, res) => {
 
     const organizer = await Group.findOne({
       where: {
+        id: groupId,
         organizerId: userId,
       },
     });
@@ -1258,6 +1270,16 @@ router.delete("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
   const userId = user.id;
+  const memberId = req.body.memberId;
+
+  if (!memberId) {
+    const err = {};
+    err.message = "MemberId is required";
+    err.statusCode = 400;
+    res.status(400);
+    return res.json(err);
+  }
+
 
   if (!user) {
     const err = {};
@@ -1266,6 +1288,15 @@ router.delete("/:groupId/membership", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+
+
+  const organizer = await Group.findOne({
+    where: {
+      id: groupId,
+      organizerId: userId,
+    },
+  });
+  
 
   try {
     const group = await Group.findByPk(groupId);
@@ -1280,11 +1311,29 @@ router.delete("/:groupId/membership", async (req, res) => {
     const membership = await Membership.findOne({
       where: {
         groupId,
-        userId: userId,
+        userId: memberId,
       },
     });
 
+    
+
+
     if (!membership) {
+      const err = {};
+      err.message = "Membership does not exist for this User";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    const users = await User.findAll({
+      where: {
+        id: memberId,
+      },
+    });
+  
+  
+    if (users.length === 0) {
       const err = {};
       err.message = "Validation Error";
       err.errors = { memberId: "User couldn't be found" };
@@ -1293,11 +1342,7 @@ router.delete("/:groupId/membership", async (req, res) => {
       return res.json(err);
     }
 
-    const organizer = await Group.findOne({
-      where: {
-        organizerId: userId,
-      },
-    });
+    
 
     const coHost = await Membership.findOne({
       where: {
@@ -1307,7 +1352,8 @@ router.delete("/:groupId/membership", async (req, res) => {
       },
     });
 
-    if (!organizer) {
+
+    if (organizer !== userId) {
       if (coHost) {
         if (coHost.userId === memberId) {
           const err = {};
@@ -1316,7 +1362,13 @@ router.delete("/:groupId/membership", async (req, res) => {
           res.status(403);
           return res.json(err);
         }
-      } else {
+      } else if (memberId === userId) {
+        await membership.destroy();
+
+        res.status(200);
+        return res.json({ message: "Successfully deleted membership from group" });
+      }
+      else {
         const err = {};
         err.message = "Authorization required";
         err.statusCode = 403;
@@ -1325,10 +1377,13 @@ router.delete("/:groupId/membership", async (req, res) => {
       }
     }
 
-    await membership.destroy();
+    if (organizer === userId || memberId === userId || coHost.userId === userId) { 
+      await membership.destroy();
 
-    res.status(200);
-    return res.json({ message: "Successfully deleted membership from group" });
+      res.status(200);
+      return res.json({ message: "Successfully deleted membership from group" });
+    }
+    
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -1364,7 +1419,7 @@ router.delete("/:groupId", async (req, res) => {
 
     if (organizerId !== userId) {
       const err = {};
-      err.message = "Authorization required";
+      err.message = "Forbidden";
       err.statusCode = 403;
       res.status(403);
       return res.json(err);

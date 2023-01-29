@@ -146,7 +146,6 @@ router.put("/:eventId", async (req, res) => {
 
       startDate = new Date(startDate);
       endDate = new Date(endDate);
-    
 
       if (
         !venue ||
@@ -885,6 +884,7 @@ router.delete("/:eventId/attendance", async (req, res) => {
 
     const organizer = await Group.findOne({
       where: {
+        id: event.groupId,
         organizerId: userId,
       },
     });
@@ -897,7 +897,31 @@ router.delete("/:eventId/attendance", async (req, res) => {
       },
     });
 
-    if (!organizer || !coHost) {
+    if (!organizer) {
+      if (coHost) {
+        Attendance.destroy({
+          where: {
+            eventId: eventId,
+            userId: attendanceUserId,
+          },
+        });
+        res.status(200);
+        return res.json({
+          message: "Successfully deleted attendance from event",
+        });
+      }
+      else if (userId === attendanceUserId) {
+        Attendance.destroy({
+          where: {
+            eventId: eventId,
+            userId: attendanceUserId,
+          },
+        });
+        res.status(200);
+        return res.json({
+          message: "Successfully deleted attendance from event",
+        });
+      }
       const err = {};
       err.message = "Forbidden";
       err.statusCode = 403;
@@ -967,9 +991,6 @@ router.delete("/:eventId", async (req, res) => {
 
     const organizer = group.organizerId;
 
-  
-
-
     const coHost = await Membership.findOne({
       where: {
         groupId: event.groupId,
@@ -1003,9 +1024,7 @@ router.delete("/:eventId", async (req, res) => {
       });
       res.status(200);
       return res.json({ message: "Successfully deleted" });
-
     }
-
   } catch (err) {
     console.log(err);
     res.status(500);
