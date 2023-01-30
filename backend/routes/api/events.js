@@ -669,7 +669,6 @@ router.get("/:eventId", async (req, res) => {
 router.get("/:eventId/attendees", async (req, res) => {
   const { eventId } = req.params;
   const { user } = req;
-  const userId = user.id;
 
   if (!user) {
     const err = {};
@@ -678,6 +677,9 @@ router.get("/:eventId/attendees", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+
+  
 
   try {
     const event = await Event.findByPk(eventId);
@@ -755,7 +757,6 @@ router.get("/:eventId/attendees", async (req, res) => {
 router.post("/:eventId/attendance", async (req, res) => {
   const { eventId } = req.params;
   const { user } = req;
-  const userId = user.id;
 
   if (!user) {
     const err = {};
@@ -764,6 +765,10 @@ router.post("/:eventId/attendance", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+
+  const userId = user.id;
+
+  
 
   try {
     const event = await Event.findByPk(eventId);
@@ -830,10 +835,6 @@ router.post("/:eventId/attendance", async (req, res) => {
 router.put("/:eventId/attendance", async (req, res) => {
   const { eventId } = req.params;
   const { user } = req;
-  const userId = user.id;
-  let { userId: attendanceUserId, status } = req.body;
-  status = status.toLowerCase();
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -841,6 +842,11 @@ router.put("/:eventId/attendance", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+  let { userId: attendanceUserId, status } = req.body;
+  status = status.toLowerCase();
+
+  
 
   if (status === "pending") {
     const err = {};
@@ -927,9 +933,6 @@ router.put("/:eventId/attendance", async (req, res) => {
 router.delete("/:eventId/attendance", async (req, res) => {
   const { eventId } = req.params;
   const { user } = req;
-  const userId = user.id;
-  const { userId: attendanceUserId } = req.body;
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -937,6 +940,10 @@ router.delete("/:eventId/attendance", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+  const { userId: attendanceUserId } = req.body;
+
+  
 
   try {
     const event = await Event.findByPk(eventId);
@@ -1031,8 +1038,6 @@ router.delete("/:eventId/attendance", async (req, res) => {
 router.delete("/:eventId", async (req, res) => {
   const { eventId } = req.params;
   const { user } = req;
-  const userId = user.id;
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1040,6 +1045,9 @@ router.delete("/:eventId", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+
+ 
 
   try {
     const event = await Event.findByPk(eventId);

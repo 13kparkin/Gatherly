@@ -16,9 +16,6 @@ const {
 router.delete("/:imageId", async (req, res) => {
     const { imageId } = req.params;
     const { user } = req;
-    const userId = user.id;
-  
-  
     if (!user) {
       const err = {};
       err.message = "Authentication required";
@@ -26,6 +23,10 @@ router.delete("/:imageId", async (req, res) => {
       res.status(401);
       return res.json(err);
     }
+    const userId = user.id;
+  
+  
+    
     
     try {
       const image = await GroupImage.findByPk(imageId);

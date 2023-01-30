@@ -1013,8 +1013,6 @@ router.get("/:groupId/events", async (req, res) => {
 router.post("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
-  const userId = user.id;
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1022,6 +1020,9 @@ router.post("/:groupId/membership", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+
+  
   try {
     const group = await Group.findByPk(groupId);
     if (!group) {
@@ -1105,6 +1106,13 @@ router.post("/:groupId/membership", async (req, res) => {
 router.put("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
   const userId = user.id;
   let { memberId, status } = req.body;
   status = status.toLowerCase();
@@ -1124,13 +1132,7 @@ router.put("/:groupId/membership", async (req, res) => {
     return res.json(err);
   }
 
-  if (!user) {
-    const err = {};
-    err.message = "Authentication required";
-    err.statusCode = 401;
-    res.status(401);
-    return res.json(err);
-  }
+  
 
   try {
     const group = await Group.findByPk(groupId);
@@ -1230,8 +1232,6 @@ router.put("/:groupId/membership", async (req, res) => {
 router.get("/:groupId/members", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
-  const userId = user.id;
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1240,6 +1240,9 @@ router.get("/:groupId/members", async (req, res) => {
     return res.json(err);
   }
 
+  const userId = user.id;
+
+  
   try {
     const group = await Group.findByPk(groupId);
     if (!group) {
@@ -1308,6 +1311,13 @@ router.get("/:groupId/members", async (req, res) => {
 router.delete("/:groupId/membership", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
+  if (!user) {
+    const err = {};
+    err.message = "Authentication required";
+    err.statusCode = 401;
+    res.status(401);
+    return res.json(err);
+  }
   const userId = user.id;
   const memberId = req.body.memberId;
 
@@ -1319,13 +1329,7 @@ router.delete("/:groupId/membership", async (req, res) => {
     return res.json(err);
   }
 
-  if (!user) {
-    const err = {};
-    err.message = "Authentication required";
-    err.statusCode = 401;
-    res.status(401);
-    return res.json(err);
-  }
+  
 
   const organizer = await Group.findOne({
     where: {
@@ -1430,7 +1434,6 @@ router.delete("/:groupId/membership", async (req, res) => {
 router.delete("/:groupId", async (req, res) => {
   const { groupId } = req.params;
   const { user } = req;
-  const userId = user.id;
 
   if (!user) {
     const err = {};
@@ -1439,6 +1442,9 @@ router.delete("/:groupId", async (req, res) => {
     res.status(401);
     return res.json(err);
   }
+  const userId = user.id;
+
+  
 
   try {
     const group = await Group.findByPk(groupId);
