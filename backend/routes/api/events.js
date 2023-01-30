@@ -780,6 +780,7 @@ router.post("/:eventId/attendance", async (req, res) => {
       where: {
         groupId: event.groupId,
         userId: userId,
+        status: "member",
       },
     });
 
