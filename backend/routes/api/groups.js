@@ -1,4 +1,5 @@
 const express = require("express");
+const { FLOAT } = require("sequelize");
 const router = express.Router();
 const {
   Attendance,
@@ -80,6 +81,7 @@ router.post("/", async (req, res, next) => {
 
     if (
       name.length >= 60 ||
+      name.length === 0 ||
       about.length < 50 ||
       (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
       (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") ||
@@ -89,8 +91,8 @@ router.post("/", async (req, res, next) => {
       const err = {};
       err.errors = {};
       err.message = "Validation Error";
-      if (name.length >= 60) {
-        err.errors.name = "Name must be 60 characters or less";
+      if (name.length >= 60 || name.length === 0) {
+        err.errors.name = "Name must be 60 characters or less and not empty";
         err.statusCode = 400;
       }
       if (about.length < 50) {
@@ -292,7 +294,7 @@ router.put("/:groupId", async (req, res, next) => {
   }
 });
 
-// finished route // needs more testing when membership stuff is flushed out // also could do with some clean up. Research how to create a helper function for getAllGroups.
+// finished route
 router.get("/current", async (req, res, next) => {
   const { user } = req;
   if (!user) {
@@ -391,7 +393,7 @@ router.get("/:groupId", async (req, res, next) => {
           preview: groupImage.preview,
         };
       }),
-      organizer: {
+      Organizer: {
         id: organizer.id,
         firstName: organizer.firstName,
         lastName: organizer.lastName,
@@ -446,6 +448,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
     if (group.organizerId === id) {
       const venues = await Venue.findAll({
         where: { groupId },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
       });
 
       res.status(200);
@@ -464,6 +467,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
       } else {
         const venues = await Venue.findAll({
           where: { groupId },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         });
 
         res.status(200);
@@ -492,6 +496,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId);
     const { id } = req.user;
+    const { address, city, state, lat, lng } = req.body;
 
     if (!group) {
       const err = {};
@@ -502,16 +507,6 @@ router.post("/:groupId/venues", async (req, res, next) => {
     }
 
     if (group.organizerId === id) {
-      const { address, city, state, zip, lat, lng } = req.body;
-      const venue = await Venue.create({
-        groupId,
-        address,
-        city,
-        state,
-        lat,
-        lng,
-      });
-
       // error handling object
       let statusCode;
       const err = {
@@ -559,6 +554,15 @@ router.post("/:groupId/venues", async (req, res, next) => {
         return res.json(err);
       }
 
+      const venue = await Venue.create({
+        groupId,
+        address,
+        city,
+        state,
+        lat,
+        lng,
+      });
+
       const finalVenue = {
         id: venue.id,
         groupId: venue.groupId,
@@ -583,7 +587,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
         res.status(403);
         return res.json(err);
       } else {
-        const { address, city, state, zip, lat, lng } = req.body;
+        const { address, city, state, lat, lng } = req.body;
         const venue = await Venue.create({
           groupId,
           address,
@@ -629,7 +633,39 @@ router.post("/:groupId/events", async (req, res, next) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId);
     const { id } = req.user;
+    let { price } = req.body;
 
+    const priceFormatter = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      rounding: "floor",
+    });
+
+
+    function priceChecker(num) {
+      const numArr = num.toString().split("");
+
+      const decimalIndex = numArr.indexOf(".");
+
+      if (decimalIndex === -1) {
+
+        price = priceFormatter.format(price);
+        price = Number(price)
+        return true;
+      }
+
+      const numAfterDecimal = numArr.length - decimalIndex - 1;
+
+      if (numAfterDecimal > 2) {
+        return false;
+      } else {
+        price = priceFormatter.format(price);
+        price = Number(price)
+        return true;
+      }
+    }
+    console.log(priceChecker(price));
+    
     if (!group) {
       const err = {};
       err.message = "Group couldn't be found";
@@ -677,8 +713,8 @@ router.post("/:groupId/events", async (req, res, next) => {
         !venue ||
         name < 5 ||
         (type !== "online" && type !== "in person") ||
-        !Number.isInteger(capacity) ||
-        !(price % 1 !== 0) ||
+        !Number.isInteger(capacity) || !Number.isFinite(price) ||
+        priceChecker(price) === false ||
         !description ||
         today > startDate ||
         endDate < startDate
@@ -700,8 +736,9 @@ router.post("/:groupId/events", async (req, res, next) => {
           err.errors.capacity = "Capacity must be an integer";
           err.statusCode = statusCode;
         }
-        if (!(price % 1 !== 0)) {
-          err.errors.price = "Price is invalid";
+        if (priceChecker(price) === false || !Number.isFinite(price)) {
+          err.errors.price =
+            "Price is invalid";
           err.statusCode = statusCode;
         }
         if (!description) {
@@ -803,12 +840,15 @@ router.post("/:groupId/events", async (req, res, next) => {
         const today = new Date();
         startDate = new Date(startDate);
         endDate = new Date(endDate);
+
+        
+
         if (
           !venue ||
           name < 5 ||
           (type !== "online" && type !== "in person") ||
-          !Number.isInteger(capacity) ||
-          !(price % 1 !== 0) ||
+          !Number.isInteger(capacity) || !Number.isFinite(price) ||
+          priceChecker(price) === false ||
           !description ||
           today > startDate ||
           endDate < startDate
@@ -830,8 +870,9 @@ router.post("/:groupId/events", async (req, res, next) => {
             err.errors.capacity = "Capacity must be an integer";
             err.statusCode = statusCode;
           }
-          if (!(price % 1 !== 0)) {
-            err.errors.price = "Price is invalid";
+          if (priceChecker(price) === false || !Number.isFinite(price)) {
+            err.errors.price =
+              "Price is invalid";
             err.statusCode = statusCode;
           }
           if (!description) {
@@ -1005,7 +1046,6 @@ router.post("/:groupId/membership", async (req, res) => {
       },
     });
 
-
     if (membership) {
       if (membership.status === "co-host") {
         const err = {};
@@ -1024,7 +1064,7 @@ router.post("/:groupId/membership", async (req, res) => {
         }
         if (membership.status === "member") {
           const err = {};
-          err.message = "User is already a member of the group"
+          err.message = "User is already a member of the group";
           err.statusCode = 400;
           res.status(400);
           return res.json(err);
@@ -1074,7 +1114,6 @@ router.put("/:groupId/membership", async (req, res) => {
       id: memberId,
     },
   });
-
 
   if (users.length === 0) {
     const err = {};
@@ -1280,7 +1319,6 @@ router.delete("/:groupId/membership", async (req, res) => {
     return res.json(err);
   }
 
-
   if (!user) {
     const err = {};
     err.message = "Authentication required";
@@ -1289,14 +1327,12 @@ router.delete("/:groupId/membership", async (req, res) => {
     return res.json(err);
   }
 
-
   const organizer = await Group.findOne({
     where: {
       id: groupId,
       organizerId: userId,
     },
   });
-  
 
   try {
     const group = await Group.findByPk(groupId);
@@ -1315,9 +1351,6 @@ router.delete("/:groupId/membership", async (req, res) => {
       },
     });
 
-    
-
-
     if (!membership) {
       const err = {};
       err.message = "Membership does not exist for this User";
@@ -1331,8 +1364,7 @@ router.delete("/:groupId/membership", async (req, res) => {
         id: memberId,
       },
     });
-  
-  
+
     if (users.length === 0) {
       const err = {};
       err.message = "Validation Error";
@@ -1342,8 +1374,6 @@ router.delete("/:groupId/membership", async (req, res) => {
       return res.json(err);
     }
 
-    
-
     const coHost = await Membership.findOne({
       where: {
         groupId,
@@ -1351,7 +1381,6 @@ router.delete("/:groupId/membership", async (req, res) => {
         status: "co-host",
       },
     });
-
 
     if (organizer !== userId) {
       if (coHost) {
@@ -1366,9 +1395,10 @@ router.delete("/:groupId/membership", async (req, res) => {
         await membership.destroy();
 
         res.status(200);
-        return res.json({ message: "Successfully deleted membership from group" });
-      }
-      else {
+        return res.json({
+          message: "Successfully deleted membership from group",
+        });
+      } else {
         const err = {};
         err.message = "Authorization required";
         err.statusCode = 403;
@@ -1377,13 +1407,18 @@ router.delete("/:groupId/membership", async (req, res) => {
       }
     }
 
-    if (organizer === userId || memberId === userId || coHost.userId === userId) { 
+    if (
+      organizer === userId ||
+      memberId === userId ||
+      coHost.userId === userId
+    ) {
       await membership.destroy();
 
       res.status(200);
-      return res.json({ message: "Successfully deleted membership from group" });
+      return res.json({
+        message: "Successfully deleted membership from group",
+      });
     }
-    
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -1428,7 +1463,7 @@ router.delete("/:groupId", async (req, res) => {
     await group.destroy();
 
     res.status(200);
-    return res.json({ message: "Successfully deleted group" });
+    return res.json({ message: "Successfully deleted group", statusCode: 200 });
   } catch (err) {
     console.log(err);
     res.status(500);

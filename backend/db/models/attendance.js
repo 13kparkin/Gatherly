@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      userId: {
+      UserId: {
         type: DataTypes.INTEGER,
         references: {
           model: "User",

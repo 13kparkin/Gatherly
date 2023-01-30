@@ -100,10 +100,59 @@ router.put("/:eventId", async (req, res) => {
     const { eventId } = req.params;
     const event = await Event.findByPk(eventId);
     const { id } = req.user;
+    let { price } = req.body;
+    let { venueId } = req.body;
+
+   
+
+    const priceFormatter = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      rounding: "floor",
+    });
+
+
+    function priceChecker(num) {
+      const numArr = num.toString().split("");
+
+      const decimalIndex = numArr.indexOf(".");
+
+      if (decimalIndex === -1) {
+
+        price = priceFormatter.format(price);
+        return true;
+      }
+
+      const numAfterDecimal = numArr.length - decimalIndex - 1;
+
+      if (numAfterDecimal > 2) {
+        return false;
+      } else {
+        price = priceFormatter.format(price);
+        return true;
+      }
+    }
 
     if (!event) {
       const err = {};
       err.message = "Event couldn't be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    if (typeof venueId === "undefined") {
+      err = {};
+      err.message = "Venue cannot be found";
+      err.statusCode = 404;
+      res.status(404);
+      return res.json(err);
+    }
+
+    console.log(typeof venueId)
+    if (venueId === "" || typeof venueId !== "number") {
+      err = {};
+      err.message = "Venue has to be a number";
       err.statusCode = 404;
       res.status(404);
       return res.json(err);
@@ -125,7 +174,11 @@ router.put("/:eventId", async (req, res) => {
       } = req.body;
 
       const lowerCaseType = type.toLowerCase();
+
+      
+
       const venue = await Venue.findByPk(venueId);
+ 
 
       let statusCode;
       const err = {
@@ -147,12 +200,15 @@ router.put("/:eventId", async (req, res) => {
       startDate = new Date(startDate);
       endDate = new Date(endDate);
 
+
+
+      
       if (
         !venue ||
         name < 5 ||
         (type !== "online" && type !== "in person") ||
-        !Number.isInteger(capacity) ||
-        !(price % 1 !== 0) ||
+        !Number.isInteger(capacity) || !Number.isFinite(price) ||
+        priceChecker(price) === false ||
         !description ||
         today > startDate ||
         endDate < startDate
@@ -174,8 +230,9 @@ router.put("/:eventId", async (req, res) => {
           err.errors.capacity = "Capacity must be an integer";
           err.statusCode = statusCode;
         }
-        if (!(price % 1 !== 0)) {
-          err.errors.price = "Price is invalid";
+        if (priceChecker(price) === false || !Number.isFinite(price)) {
+          err.errors.price =
+            "Price is invalid";
           err.statusCode = statusCode;
         }
         if (!description) {
@@ -193,6 +250,7 @@ router.put("/:eventId", async (req, res) => {
         res.status(400);
         return res.json(err);
       }
+
 
       const updatedEvent = await event.update({
         groupId: groupId,
@@ -267,52 +325,58 @@ router.put("/:eventId", async (req, res) => {
         const today = new Date();
         startDate = new Date(startDate);
         endDate = new Date(endDate);
-        if (
-          !venue ||
-          name < 5 ||
-          (type !== "online" && type !== "in person") ||
-          !Number.isInteger(capacity) ||
-          !(price % 1 !== 0) ||
-          !description ||
-          today > startDate ||
-          endDate < startDate
-        ) {
-          statusCode = err.statusCode = 400;
-          if (!venue) {
-            err.errors.venueId = "Venue does not exist";
-            err.statusCode = statusCode;
-          }
-          if (name < 5) {
-            err.errors.name = "Name must be at least 5 characters";
-            err.statusCode = statusCode;
-          }
-          if (type !== "online" && type !== "in person") {
-            err.errors.type = "Type must be Online or In person";
-            err.statusCode = statusCode;
-          }
-          if (!Number.isInteger(capacity)) {
-            err.errors.capacity = "Capacity must be an integer";
-            err.statusCode = statusCode;
-          }
-          if (!(price % 1 !== 0)) {
-            err.errors.price = "Price is invalid";
-            err.statusCode = statusCode;
-          }
-          if (!description) {
-            err.errors.description = "Description is required";
-            err.statusCode = statusCode;
-          }
-          if (today > startDate) {
-            err.errors.startDate = "Start date must be in the future";
-            err.statusCode = statusCode;
-          }
-          if (endDate <= startDate) {
-            err.errors.endDate = "End date is less than start date";
-            err.statusCode = statusCode;
-          }
-          res.status(400);
-          return res.json(err);
+       
+      if (priceChecker(price) === false) {
+        price = priceFormatter.format(price);
+      }
+
+      if (
+        !venue ||
+        name < 5 ||
+        (type !== "online" && type !== "in person") ||
+        !Number.isInteger(capacity) || !Number.isFinite(price) ||
+        priceChecker(price) === false ||
+        !description ||
+        today > startDate ||
+        endDate < startDate
+      ) {
+        statusCode = err.statusCode = 400;
+        if (!venue) {
+          err.errors.venueId = "Venue does not exist";
+          err.statusCode = statusCode;
         }
+        if (name < 5) {
+          err.errors.name = "Name must be at least 5 characters";
+          err.statusCode = statusCode;
+        }
+        if (type !== "online" && type !== "in person") {
+          err.errors.type = "Type must be Online or In person";
+          err.statusCode = statusCode;
+        }
+        if (!Number.isInteger(capacity)) {
+          err.errors.capacity = "Capacity must be an integer";
+          err.statusCode = statusCode;
+        }
+        if (priceChecker(price) === false || !Number.isFinite(price)) {
+          err.errors.price =
+            "Price is invalid";
+          err.statusCode = statusCode;
+        }
+        if (!description) {
+          err.errors.description = "Description is required";
+          err.statusCode = statusCode;
+        }
+        if (today > startDate) {
+          err.errors.startDate = "Start date must be in the future";
+          err.statusCode = statusCode;
+        }
+        if (endDate <= startDate) {
+          err.errors.endDate = "End date is less than start date";
+          err.statusCode = statusCode;
+        }
+        res.status(400);
+        return res.json(err);
+      }
 
         const updatedEvent = await event.update({
           groupId: groupId,
@@ -525,11 +589,11 @@ router.get("/:eventId", async (req, res) => {
       include: [
         {
           model: Group,
-          attributes: ["id", "name", "city", "state"],
+          attributes: ["id", "name", "private", "city", "state"],
         },
         {
           model: Venue,
-          attributes: ["id", "city", "state"],
+          attributes: ["id", "city", "state", "lat", "lng"],
         },
         {
           model: EventImage,
@@ -574,15 +638,16 @@ router.get("/:eventId", async (req, res) => {
       event.EventImages = null;
     }
 
+
     const finalEvent = {
       id: event.id,
       groupId: event.groupId,
       venueId: event.venueId,
       name: event.name,
+      description: event.description,
       type: event.type,
       capacity: event.capacity,
       price: event.price,
-      description: event.description,
       startDate: event.startDate,
       endDate: event.endDate,
       numAttending: eventNumAttending.numAttending,

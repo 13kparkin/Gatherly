@@ -21,6 +21,13 @@ const validateLogin = [
 
 router.get("/", restoreUser, (req, res) => {
   const { user } = req;
+  if (!user){
+    const err = {}
+    err.message = "Authentication required"
+    err.status = 401;
+    res.status(401)
+    return res.json( err )
+  }
   if (user) {
     return res.json({
       user: user.toSafeObject(),
