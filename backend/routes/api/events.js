@@ -792,12 +792,10 @@ router.post("/:eventId/attendance", async (req, res) => {
     }
 
     const attendance = await Attendance.findOne({
-      attributes: ["eventId", "userId" ],
       where: {
         eventId: eventId,
         userId,
       },
-      exclude: ["createdAt", "updatedAt", "UserId"],
     });
 
     if (attendance) {
