@@ -782,6 +782,12 @@ router.post("/:groupId/events", async (req, res, next) => {
         endDate: event.endDate,
       };
 
+      await Attendance.create({
+        userId: id,
+        eventId: event.id,
+        status: "member",
+      });
+
       res.status(200);
       return res.json(finalEvent);
     } else {
@@ -903,6 +909,14 @@ router.post("/:groupId/events", async (req, res, next) => {
           startDate: event.startDate,
           endDate: event.endDate,
         };
+
+        const attendance = await Attendance.create({
+          userId: id,
+          eventId: event.id,
+          status: "member",
+        });
+
+
 
         res.status(200);
         return res.json(finalEvent);
