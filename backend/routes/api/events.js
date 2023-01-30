@@ -791,10 +791,11 @@ router.post("/:eventId/attendance", async (req, res) => {
       return res.json(err);
     }
 
-    const attendance = await Attendance.findOne({
+    const attendance = await Attendance.findAll({
+      attributes: ["eventId", "userId"],
       where: {
         eventId: eventId,
-        userId: userId,
+        userId,
       },
     });
 
