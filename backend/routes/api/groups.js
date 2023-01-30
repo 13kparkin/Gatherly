@@ -133,7 +133,7 @@ router.post("/", async (req, res, next) => {
       const membership = await Membership.create({
         userId: id,
         groupId: newGroup.id,
-        status: "member",
+        status: "co-host",
       });
       res.status(201);
       return res.json(newGroup);
