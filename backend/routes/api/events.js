@@ -797,6 +797,7 @@ router.post("/:eventId/attendance", async (req, res) => {
         eventId: eventId,
         userId,
       },
+      exclude: ["createdAt", "updatedAt", "UserId"],
     });
 
     if (attendance) {
