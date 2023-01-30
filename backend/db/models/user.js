@@ -1,6 +1,7 @@
 "use strict";
 const { Model, Validator } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const attendance = require("./attendance");
 
 
 
@@ -55,10 +56,12 @@ module.exports = (sequelize, DataTypes) => {
      models.User.hasMany(models.Group, {
       foreignKey: 'organizerId',
     });
-    models.Attendance.belongsTo(models.User, {
-      foreignKey: 'userId',
+    models.User.belongsToMany(models.Event, {
+      through: "attendances",
+      as: "events",
+      foreignKey: "userId",
     });
-    
+
     }
   }
 

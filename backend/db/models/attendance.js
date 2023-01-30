@@ -10,19 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Event.belongsToMany(models.User, {
-        through: "attendances",
-        as: "attendees",
-        foreignKey: "eventId",
-      });
-      models.User.belongsToMany(models.Event, {
-        through: "attendances",
-        as: "events",
-        foreignKey: "userId",
-      });
-      models.User.hasMany(models.Attendance, {
-        foreignKey: "userId",
-      });
+      models.Attendance.belongsTo(models.Event, { foreignKey: "eventId" });
+      models.Attendance.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
   Attendance.init(
@@ -37,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: "Event",
+          forienKey: "eventId",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -46,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: "User",
+          forienKey: "userId",
           key: "id",
         },
         onUpdate: "CASCADE",
