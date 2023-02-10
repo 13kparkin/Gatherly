@@ -41,6 +41,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
+      <div className="login-button">
       <button onClick={openMenu}>
         <i className="fas fa-user-circle" />
       </button>
@@ -69,8 +70,10 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
+      </div>
     </>
   );
 }
+
 
 export default ProfileButton;
