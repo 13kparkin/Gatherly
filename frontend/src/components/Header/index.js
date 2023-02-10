@@ -8,9 +8,8 @@ function Header() {
   return (
     <header>
       <NavLink exact to="/">
-        <img src={logo} alt="Logo" />
+        Gatherly
       </NavLink>
-      <h1>Gatherly</h1>
       <Navigation />
     </header>
   );
