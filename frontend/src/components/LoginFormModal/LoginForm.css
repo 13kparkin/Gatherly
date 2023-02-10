@@ -1,0 +1,26 @@
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+
+.login-form button {
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}

@@ -31,6 +31,7 @@ function SignupFormModal() {
 
   return (
     <>
+    <div className="signup-form-container">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <ul>
@@ -84,14 +85,19 @@ function SignupFormModal() {
         <label>
           Confirm Password
           <input
+            style={{marginBottom: "10px"}}
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button
+        type="submit"
+        disabled={!email || !username || username.length < 4 || !firstName || !lastName || !password || password.length < 6 || !confirmPassword || password !== confirmPassword}
+        >Sign Up</button>
       </form>
+    </div>
     </>
   );
 }
