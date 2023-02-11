@@ -101,6 +101,7 @@
     justify-content: center;
     width: 33.33%;
     height: 100%;
+    margin-right: 10px;
     background-color: #f7f7f7;
 }
 
@@ -173,10 +174,11 @@
 .landing-page_section-4_button {
     font-size: 1.2rem;
     font-weight: 400;
-    color: #000;
+    color: white;
+    background-color: #02525d;
     margin: 0;
-    padding: 0;
-    box-shadow: 0 0 0 1px #f7f7f7, 0 0 0 4px #000;
+    padding: 10px;
+    box-shadow: 0 0px 1px 1px #969494, 0 0 0 4px #000;
     border: none;
     outline: none;
     cursor: pointer;

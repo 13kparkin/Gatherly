@@ -1,3 +1,10 @@
+import groupImage1 from '../../images/groupImages/group1.jpg';
+import groupImage2 from '../../images/groupImages/group2.jpg';
+import groupImage3 from '../../images/groupImages/group3.jpg';
+import groupImage4 from '../../images/groupImages/group4.jpg';
+import groupImage5 from '../../images/groupImages/group5.jpg';
+import groupImage6 from '../../images/groupImages/group6.jpg';
+
 'use strict';
 
 
@@ -14,17 +21,32 @@ module.exports = {
     return queryInterface.bulkInsert(options,[
       {
         groupId: 1,
-        url: 'https://example.com/event1/image1.jpg',
+        url: groupImage1,
         preview: true
       },
       {
-        groupId: 1,
-        url: 'https://example.com/event1/image2.jpg',
+        groupId: 2,
+        url: groupImage2,
         preview: false
       },
       {
-        groupId: 2,
-        url: 'https://example.com/event2/image1.jpg',
+        groupId: 3,
+        url: groupImage3,
+        preview: true
+      },
+      {
+        groupId: 4,
+        url: groupImage4,
+        preview: true
+      },
+      {
+        groupId: 5,
+        url: groupImage5,
+        preview: false
+      },
+      {
+        groupId: 6,
+        url: groupImage6,
         preview: true
       }
     ])

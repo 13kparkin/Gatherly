@@ -1,5 +1,9 @@
 import { useSelector } from "react-redux";
 import "./LandingPage.css";
+import landingPage1 from "../../images/landingPage/landingPage1.jpg";
+import landingPage2 from "../../images/landingPage/landingPage2.jpg";
+import landingPage3 from "../../images/landingPage/landingPage3.jpg";
+import landingPage4 from "../../images/landingPage/landingPage4.jpg";
 
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
@@ -27,7 +31,7 @@ function LandingPage() {
           </p>
         </div>
         <div className="landing-page_section-1_image">
-          <img src="" alt="group of people" />
+          <img src={landingPage1} alt="group of people" />
         </div>
       </div>
       <div className="landing-page_section-2">
@@ -37,11 +41,11 @@ function LandingPage() {
       <div className="landing-page_section-3">
         <div className="landing-page_section-3_column">
           <div className="landing-page_section-3_column_icon">
-            <img src="" alt="icon" />
+            <img src={landingPage2} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="#">See all Groups</a> // TODO: Click "See all groups" to go
-            to Groups List Page
+            <a href="/">See all Groups</a> {// TODO: Click "See all groups" to go to Groups List Page
+            }
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -49,11 +53,11 @@ function LandingPage() {
         </div>
         <div className="landing-page_section-3_column">
           <div className="landing-page_section-3_column_icon">
-            <img src="" alt="icon" />
+            <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="#">Find an event</a> // TODO: Click "Find an event" to go
-            to Events List Page
+            <a href="/">Find an event</a>  {// TODO: Click "Find an event" to go to Events List Page
+            }
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Explore upcoming events and activities</p>
@@ -61,15 +65,15 @@ function LandingPage() {
         </div>
         <div className="landing-page_section-3_column">
           <div className="landing-page_section-3_column_icon">
-            <img src="" alt="icon" />
+            <img src={landingPage4} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
             {!sessionUser ? (
-              <a href="#" className="disabled">
+              <a href="/" className="disabled">
                 Start a group
               </a>
             ) : (
-              <a href="#" onClick={handleStartGroupClick}>
+              <a href="/" onClick={handleStartGroupClick}>
                 Start a group
               </a>
             )}
@@ -80,12 +84,7 @@ function LandingPage() {
         </div>
       </div>
       <div className="landing-page_section-4">
-        <button
-          onClick={handleButtonJoinClick}
-          className="landing-page_section-4_button"
-        >
-          Join Gatherly
-        </button>
+        <button onClick={handleButtonJoinClick} className="landing-page_section-4_button">Join Gatherly</button>
       </div>
     </div>
   );
