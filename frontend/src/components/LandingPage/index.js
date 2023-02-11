@@ -4,6 +4,8 @@ import landingPage1 from "../../images/landingPage/landingPage1.jpg";
 import landingPage2 from "../../images/landingPage/landingPage2.jpg";
 import landingPage3 from "../../images/landingPage/landingPage3.jpg";
 import landingPage4 from "../../images/landingPage/landingPage4.jpg";
+import GroupList from "../Groups/GroupList";
+import { Link, Route } from "react-router-dom";
 
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
@@ -44,8 +46,7 @@ function LandingPage() {
             <img src={landingPage2} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="/">See all Groups</a> {// TODO: Click "See all groups" to go to Groups List Page
-            }
+            <Link to='../Groups/GroupList'>See all Groups</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -56,7 +57,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="/">Find an event</a>  {// TODO: Click "Find an event" to go to Events List Page
+            <Link href="/">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
             }
           </div>
           <div className="landing-page_section-3_column_caption">
@@ -69,9 +70,9 @@ function LandingPage() {
           </div>
           <div className="landing-page_section-3_column_link">
             {!sessionUser ? (
-              <a href="/" className="disabled">
+              <Link href="/" className="disabled">
                 Start a group
-              </a>
+              </Link>
             ) : (
               <a href="/" onClick={handleStartGroupClick}>
                 Start a group
