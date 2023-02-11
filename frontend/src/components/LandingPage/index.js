@@ -40,7 +40,8 @@ function LandingPage() {
             <img src="" alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="#">See all Groups</a>
+            <a href="#">See all Groups</a> // TODO: Click "See all groups" to go
+            to Groups List Page
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -51,7 +52,8 @@ function LandingPage() {
             <img src="" alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <a href="#">Find an event</a>
+            <a href="#">Find an event</a> // TODO: Click "Find an event" to go
+            to Events List Page
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Explore upcoming events and activities</p>
@@ -78,7 +80,12 @@ function LandingPage() {
         </div>
       </div>
       <div className="landing-page_section-4">
-        <button onClick={handleButtonJoinClick} className="landing-page_section-4_button">Join Gatherly</button>
+        <button
+          onClick={handleButtonJoinClick}
+          className="landing-page_section-4_button"
+        >
+          Join Gatherly
+        </button>
       </div>
     </div>
   );
