@@ -18,13 +18,7 @@ router.get("/", async (req, res, next) => {
   try {
     // get current user
     const { user } = req;
-    if (!user) {
-      err = {};
-      err.message = "Authentication required";
-      err.statusCode = 401;
-      res.status(401);
-      return res.json(err);
-    }
+   
 
     const groups = await Group.findAll();
 

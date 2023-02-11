@@ -1,9 +1,9 @@
-import eventImage1 from '../../images/eventImages/event1.jpg';
-import eventImage2 from '../../images/eventImages/event2.jpg';
-import eventImage3 from '../../images/eventImages/event3.jpg';
-import eventImage4 from '../../images/eventImages/event4.jpg';
-import eventImage5 from '../../images/eventImages/event5.jpg';
-import eventImage6 from '../../images/eventImages/event6.jpg';
+const eventImage1 = 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg';
+const eventImage2 = 'https://images.pexels.com/photos/382297/pexels-photo-382297.jpeg';
+const eventImage3 = 'https://images.pexels.com/photos/2263436/pexels-photo-2263436.jpeg';
+const eventImage4 = 'https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg';
+const eventImage5 = 'https://images.pexels.com/photos/787961/pexels-photo-787961.jpeg';
+const eventImage6 = 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg';
 
 'use strict';
 
@@ -25,7 +25,7 @@ module.exports = {
       {
         eventId: 2,
         url: eventImage2,
-        preview: false
+        preview: true
       },
       {
         eventId: 3,
@@ -40,7 +40,7 @@ module.exports = {
       {
         eventId: 5,
         url: eventImage5,
-        preview: false
+        preview: true
       },
       {
         eventId: 6,

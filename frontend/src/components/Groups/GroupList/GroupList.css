@@ -1,0 +1,25 @@
+.group-list {
+    display: flex;
+    margin-left: 10rem;
+    margin-top: 2rem;
+}
+
+.event-list_header {
+    margin-right: 1rem;
+    color: grey;   
+}
+
+.group-list_header {
+    margin-right: 1rem;
+    text-decoration: underline;
+    color: teal;
+
+}
+
+.group-list_caption {
+    margin-left: 10rem;
+    color: rgb(174, 171, 171);
+    margin-top: -0.7rem;
+    font-size: 1rem;
+}
+

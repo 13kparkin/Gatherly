@@ -1,9 +1,9 @@
-import groupImage1 from '../../images/groupImages/group1.jpg';
-import groupImage2 from '../../images/groupImages/group2.jpg';
-import groupImage3 from '../../images/groupImages/group3.jpg';
-import groupImage4 from '../../images/groupImages/group4.jpg';
-import groupImage5 from '../../images/groupImages/group5.jpg';
-import groupImage6 from '../../images/groupImages/group6.jpg';
+const groupImage1 = 'https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg';
+const groupImage2 = 'https://images.pexels.com/photos/1267697/pexels-photo-1267697.jpeg';
+const groupImage3 = 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg';
+const groupImage4 = 'https://images.pexels.com/photos/1963622/pexels-photo-1963622.jpeg';
+const groupImage5 = 'https://images.pexels.com/photos/2014775/pexels-photo-2014775.jpeg';
+const groupImage6 = 'https://images.pexels.com/photos/3046299/pexels-photo-3046299.jpeg';
 
 'use strict';
 
@@ -27,7 +27,7 @@ module.exports = {
       {
         groupId: 2,
         url: groupImage2,
-        preview: false
+        preview: true
       },
       {
         groupId: 3,
@@ -42,7 +42,7 @@ module.exports = {
       {
         groupId: 5,
         url: groupImage5,
-        preview: false
+        preview: true
       },
       {
         groupId: 6,
