@@ -5,6 +5,8 @@ import * as sessionActions from "./store/session";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import GroupList from "./components/Groups/GroupList";
+import GroupDetail from "./components/Groups/GroupDetail";
+import "./index.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,8 +18,9 @@ function App() {
   return (
     <>
 
-      <Header isLoaded={isLoaded} />
+      <Header className="header" isLoaded={isLoaded} />
       {isLoaded && (
+        <div className="body">
         <Switch>
           <Route exact path="/">
             <LandingPage />
@@ -25,7 +28,11 @@ function App() {
           <Route path="/groups/grouplist">
             <GroupList />
           </Route>
+          {/* <Route path="/groups/grouplist">
+            <GroupDetail />
+          </Route> */}
         </Switch>
+        </div>
       )}
 
     </>

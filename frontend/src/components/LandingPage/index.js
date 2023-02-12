@@ -57,7 +57,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link href="/">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
+            <Link to="/">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
             }
           </div>
           <div className="landing-page_section-3_column_caption">
@@ -70,7 +70,7 @@ function LandingPage() {
           </div>
           <div className="landing-page_section-3_column_link">
             {!sessionUser ? (
-              <Link href="/" className="disabled">
+              <Link to="/" className="disabled">
                 Start a group
               </Link>
             ) : (

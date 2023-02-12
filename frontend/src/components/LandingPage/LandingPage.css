@@ -1,186 +1,178 @@
 .landing-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px;
+  margin-top: 50px;
 }
 
 .landing-page_section-1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: row;
+  margin: 50px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-1_text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 50%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
 }
 
 .landing-page_section-1_text_title {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  padding: 0;
 }
 
 .landing-page_section-1_text_intro {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #000;
+  margin: 0;
+  padding: 0;
 }
 
 .landing-page_section-1_image {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
 }
 
 .landing-page_section-1_image img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-2_title {
-    font-weight: 700;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-weight: 700;
+  color: #000;
+  margin: 10px;
+  padding: 0;
 }
 
 .landing-page_section-2_caption {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
 }
 
 .landing-page_section-3 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-3_column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 33.33%;
-    height: 100%;
-    margin-right: 10px;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 33.33%;
+  height: 100%;
+  margin-right: 10px;
 }
 
 .landing-page_section-3_column_icon {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .landing-page_section-3_column_icon img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-3_column_link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-3_column_link .disabled {
-    color: lightgray;
-    text-decoration: none;
-    pointer-events: none;
-    cursor: default;
-  }
+  color: lightgray;
+  text-decoration: none;
+  pointer-events: none;
+  cursor: default;
+}
 
 .landing-page_section-3_column_link a {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  padding: 0;
 }
 
 .landing-page_section-3_column_caption {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-3_column_caption p {
-    font-size: 1.5rem;
-    font-weight: 400;
-    text-align: center;
-    color: #000;
-    margin: 0;
-    padding: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-align: center;
+  color: #000;
+  margin: 0;
+  padding: 0;
 }
 
 .landing-page_section-4 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .landing-page_section-4_button {
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: white;
-    background-color: #02525d;
-    margin: 0;
-    padding: 10px;
-    box-shadow: 0 0px 1px 1px #969494, 0 0 0 4px #000;
-    border: none;
-    outline: none;
-    cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: white;
+  background-color: #02525d;
+  margin: 40px;
+  padding: 10px;
+  box-shadow: 0 0px 1px 1px #969494, 0 0 0 4px #000;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
+/* make the wrapping better with the header. when size of screen is resizing its causing content to be covered at the top */

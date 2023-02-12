@@ -24,12 +24,14 @@ export const getGroups = () => async (dispatch) => {
 const initialState = {Groups: null};
 
 
+
 const groupsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case SET_GROUPS:
       newState = Object.assign({}, state);
       newState = action.payload;
+      console.log(newState);
       return newState;
     default:
       return state;
