@@ -30,13 +30,18 @@
     flex-direction: row;
     margin: 0 0 0 1rem;
     padding: 0 0 2rem 1rem;
+    
   }
   
   .group-list_item {   
     display: flex;
     flex-direction: column;
+    width: 70vw ;
     margin-left: 4rem;
     margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid lightgray;
+    cursor: pointer;
   }
   
   .group-info {
