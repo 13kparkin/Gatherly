@@ -1,5 +1,7 @@
 .profile-dropdown {
-  position: relative;
+  position: absolute;
+  left: -160px;
+  top: 5px;
   display: inline-block;
   background-color: white;
   min-width: 160px;

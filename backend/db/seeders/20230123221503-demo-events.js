@@ -78,6 +78,17 @@ module.exports = {
           startDate: "2021-11-19 20:00:00",
           endDate: "2021-11-20 22:00:00"
         },
+        {
+          venueId: 6,
+          groupId: 1,
+          name: "Demo-Event-6",
+          description: "This is the sixth demo event",
+          type: "online",
+          capacity: 200,
+          price: 20.00,
+          startDate: "2021-11-19 20:00:00",
+          endDate: "2021-11-20 22:00:00"
+        },
       ],
       {}
     );

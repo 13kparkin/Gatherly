@@ -13,7 +13,6 @@ function GroupList() {
     dispatch(getGroups());
   }, [dispatch]);
 
-  //   if (groups) return null;
   return (
     <>
       <div className="group-list">
@@ -32,12 +31,19 @@ function GroupList() {
           {groups !== null &&
             groups.map((group) => (
               <div className="group-list_item" key={group.id}>
-                {group.name}
-                {group.about}
-                {group.city}
-                {group.numMembers}
-                {`${group.private}`}
                 <img src={group.previewImage} />
+                <div className="group-info">
+                  <h3 className="group-name">{group.name}</h3>
+                  <p className="group-city">{group.city}</p>
+                  <p className="about">{group.about}</p>
+                  <p className="group-events">
+                    {group.numEvents <= 1 ? `${group.numEvents} Event` : `${group.numEvents} Events`} 
+                  </p>
+                  <p className="dot">&#903;</p> 
+                  <p className="group-private" >
+                  {group.private ? "Private" : "Public"}
+                  </p>
+                </div>
               </div>
             ))}
         </div>
@@ -47,3 +53,5 @@ function GroupList() {
 }
 
 export default GroupList;
+
+

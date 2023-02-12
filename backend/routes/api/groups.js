@@ -16,7 +16,6 @@ const {
 //finished route
 router.get("/", async (req, res, next) => {
   try {
-    // get current user
     const { user } = req;
    
 
@@ -44,8 +43,21 @@ router.get("/", async (req, res, next) => {
         return { ...group, previewImage: previewImage.dataValues.url };
       })
     );
+
+
+    const finalGroupObject = await Promise.all(
+      NumMembersPreviewImage.map(async (group) => {
+        const numEvents = await Event.count({
+          where: { groupId: group.id },
+        });
+        return { ...group, numEvents };
+      })
+    );
+
+
+
     res.status(200);
-    return res.json({ Groups: NumMembersPreviewImage });
+    return res.json({ Groups: finalGroupObject });
   } catch (err) {
     console.log(err);
     res.status(500);
