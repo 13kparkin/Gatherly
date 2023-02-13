@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function GroupList() {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.groups);
-  const groups = data.Groups;
+  const groups = data.allGroups.Groups;
   const [group, setGroup] = useState("");
 
   useEffect(() => {

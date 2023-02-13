@@ -8,17 +8,20 @@ import { getGroups, getGroupsDetails } from "../../../store/groups";
 function GroupDetail() {
   const dispatch = useDispatch();
   const { groupId } = useParams();
-  const group = useSelector((state) => state.groups.GroupDetail);
+  const group = useSelector((state) => state.groups.singleGroup);
   const getLoggedInUser = useSelector((state) => state.session.user);
   let buttonVisibilityOrganizer;
 
   useEffect(() => {
-    dispatch(getGroupsDetails(groupId));
+    if(!group.Organizer) dispatch(getGroupsDetails(groupId));
   }, [dispatch]);
 
-  if (!group || !group.GroupImages) {
+  console.log('group detail render')
+
+  if (!group.GroupImages || !group.Organizer) {
     return null;
   }
+
  
   const buttonVisibility =
     getLoggedInUser === null || group.Organizer.id === getLoggedInUser.id;
