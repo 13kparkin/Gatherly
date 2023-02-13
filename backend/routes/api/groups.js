@@ -388,9 +388,14 @@ router.get("/:groupId", async (req, res, next) => {
       where: { groupId },
     });
 
+    const numEvents = await Event.count({
+      where: { groupId },
+    });
+
     const finalGroup = {
       ...group.dataValues,
       numMembers,
+      numEvents,
       GroupImages: groupImages.map((groupImage) => {
         return {
           id: groupImage.id,

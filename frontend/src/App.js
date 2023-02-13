@@ -22,15 +22,15 @@ function App() {
       {isLoaded && (
         <div className="body">
         <Switch>
-          <Route exact path="/">
+          <Route path={"/"} exact={true}>
             <LandingPage />
           </Route>
-          <Route path="/groups/grouplist">
+          <Route path={"/groups/grouplist"}>
             <GroupList />
           </Route>
-          {/* <Route path="/groups/grouplist">
+          <Route path={"/groups/:groupId"}>
             <GroupDetail />
-          </Route> */}
+          </Route>
         </Switch>
         </div>
       )}

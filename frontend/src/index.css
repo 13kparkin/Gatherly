@@ -2,9 +2,6 @@
 
 
 .body {
-    background-color: #f7f7f7;
-}
-
-.header{
-    background-color: aliceblue;
+    background-color: white;
+    margin-top: 100px;
 }
