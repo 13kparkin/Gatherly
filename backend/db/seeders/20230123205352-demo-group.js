@@ -22,7 +22,7 @@ module.exports = {
           state: "NY",
         },
         {
-          organizerId: 1,
+          organizerId: 2,
           name: "demo-group-2",
           about: "This is the second demo group",
           type: "online",
@@ -31,7 +31,7 @@ module.exports = {
           state: "CA",
         },
         {
-          organizerId: 1,
+          organizerId: 3,
           name: "demo-group-3",
           about: "This is the first demo group",
           type: "online",

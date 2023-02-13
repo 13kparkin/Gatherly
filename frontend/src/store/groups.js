@@ -1,9 +1,7 @@
-import { csrfFetch } from './csrf';
-
+import { csrfFetch } from "./csrf";
 
 const SET_GROUPS = "groups/setGroups";
 const SET_GROUPS_DETAIL = "groups/setGroupsDetails";
-
 
 const setGroups = (group) => {
   return {
@@ -27,19 +25,17 @@ export const getGroups = () => async (dispatch) => {
 
 export const getGroupsDetails = (groupId) => async (dispatch) => {
   const response = await csrfFetch(`/api/groups/${groupId}`);
-  const data = await response.json();
-  dispatch(setGroupsDetails(data));
-  return response;
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setGroupsDetails(data));
+    return response;
+  }
 };
-
-
 
 const initialState = {
-  Groups: null,
-  GroupDetail: null
+  Groups: {},
+  GroupDetail: {},
 };
-
-
 
 const groupsReducer = (state = initialState, action) => {
   let newState;
@@ -49,9 +45,7 @@ const groupsReducer = (state = initialState, action) => {
       newState = action.payload;
       return newState;
     case SET_GROUPS_DETAIL:
-      newState = Object.assign({}, state);
-      newState = action.payload;
-      return newState;
+      return { ...state, GroupDetail: action.payload };
     default:
       return state;
   }

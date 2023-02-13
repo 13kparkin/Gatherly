@@ -8,15 +8,24 @@ import { getGroups, getGroupsDetails } from "../../../store/groups";
 function GroupDetail() {
   const dispatch = useDispatch();
   const { groupId } = useParams();
-  const group = useSelector((state) => state.groups);
-
+  const group = useSelector((state) => state.groups.GroupDetail);
+  const getLoggedInUser = useSelector((state) => state.session.user);
+  let buttonVisibilityOrganizer;
 
   useEffect(() => {
     dispatch(getGroupsDetails(groupId));
   }, [dispatch]);
 
-  if (group.GroupDetail === null) {
+  if (!group || !group.GroupImages) {
     return null;
+  }
+ 
+  const buttonVisibility =
+    getLoggedInUser === null || group.Organizer.id === getLoggedInUser.id;
+
+
+  if (getLoggedInUser !== null) {
+    buttonVisibilityOrganizer = getLoggedInUser !== null && group?.Organizer.id === getLoggedInUser.id;
   }
 
   return (
@@ -46,14 +55,38 @@ function GroupDetail() {
               : `${group.numEvents} Events`}
           </p>
         </div>
-        <p className="dot">&#903;</p> 
+        <p className="dot">&#903;</p>
         <div className="group-detail_group-status">
           <p>{group.private ? "Private" : "Public"}</p>
         </div>
         <div className="group-detail_group-members">
-          <p>{group.numMembers <= 1
+          <p>
+            {group.numMembers <= 1
               ? `${group.numMembers} Member`
-              : `${group.numMembers} Members`}</p>
+              : `${group.numMembers} Members`}
+          </p>
+        </div>
+        <div className="group-detail_group-join">
+          <button style={{ display: buttonVisibility ? "none" : "block" }}>
+            Join the Group
+          </button>
+          <div className="organizer-only">
+            <button
+              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+            >
+              Create event
+            </button>
+            <button
+              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+            >
+              Update
+            </button>
+            <button
+              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+            >
+              Delete
+            </button>
+          </div>
         </div>
         <div className="group-detail_organizer">
           <p>Organized by</p>
