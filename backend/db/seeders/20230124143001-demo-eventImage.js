@@ -1,3 +1,10 @@
+const eventImage1 = 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg';
+const eventImage2 = 'https://images.pexels.com/photos/382297/pexels-photo-382297.jpeg';
+const eventImage3 = 'https://images.pexels.com/photos/2263436/pexels-photo-2263436.jpeg';
+const eventImage4 = 'https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg';
+const eventImage5 = 'https://images.pexels.com/photos/787961/pexels-photo-787961.jpeg';
+const eventImage6 = 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg';
+
 'use strict';
 
 let options = {};
@@ -12,17 +19,32 @@ module.exports = {
     return queryInterface.bulkInsert(options,[
       {
         eventId: 1,
-        url: 'https://example.com/event1/image1.jpg',
+        url: eventImage1,
         preview: true
       },
       {
-        eventId: 1,
-        url: 'https://example.com/event1/image2.jpg',
-        preview: false
+        eventId: 2,
+        url: eventImage2,
+        preview: true
       },
       {
-        eventId: 2,
-        url: 'https://example.com/event2/image1.jpg',
+        eventId: 3,
+        url: eventImage3,
+        preview: true
+      },
+      {
+        eventId: 4,
+        url: eventImage4,
+        preview: true
+      },
+      {
+        eventId: 5,
+        url: eventImage5,
+        preview: true
+      },
+      {
+        eventId: 6,
+        url: eventImage6,
         preview: true
       }
     ])

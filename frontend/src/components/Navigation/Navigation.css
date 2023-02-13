@@ -1,5 +1,6 @@
 .profile-dropdown {
-  position: relative;
+  position: absolute;
+  left: -165px;
   display: inline-block;
   background-color: white;
   min-width: 160px;
@@ -19,4 +20,11 @@
 .signup {
   display: flex;
   flex-direction: column;
+}
+
+header .viewGroups {
+  text-decoration: none;
+  color: #ff6560;
+  font-weight: bold;
+  font-size: .8rem;
 }

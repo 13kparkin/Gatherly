@@ -16,15 +16,8 @@ const {
 //finished route
 router.get("/", async (req, res, next) => {
   try {
-    // get current user
     const { user } = req;
-    if (!user) {
-      err = {};
-      err.message = "Authentication required";
-      err.statusCode = 401;
-      res.status(401);
-      return res.json(err);
-    }
+   
 
     const groups = await Group.findAll();
 
@@ -50,8 +43,21 @@ router.get("/", async (req, res, next) => {
         return { ...group, previewImage: previewImage.dataValues.url };
       })
     );
+
+
+    const finalGroupObject = await Promise.all(
+      NumMembersPreviewImage.map(async (group) => {
+        const numEvents = await Event.count({
+          where: { groupId: group.id },
+        });
+        return { ...group, numEvents };
+      })
+    );
+
+
+
     res.status(200);
-    return res.json({ Groups: NumMembersPreviewImage });
+    return res.json({ Groups: finalGroupObject });
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -382,9 +388,14 @@ router.get("/:groupId", async (req, res, next) => {
       where: { groupId },
     });
 
+    const numEvents = await Event.count({
+      where: { groupId },
+    });
+
     const finalGroup = {
       ...group.dataValues,
       numMembers,
+      numEvents,
       GroupImages: groupImages.map((groupImage) => {
         return {
           id: groupImage.id,

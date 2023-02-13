@@ -22,7 +22,7 @@ module.exports = {
           state: "NY",
         },
         {
-          organizerId: 1,
+          organizerId: 2,
           name: "demo-group-2",
           about: "This is the second demo group",
           type: "online",
@@ -30,6 +30,42 @@ module.exports = {
           city: "Los Angeles",
           state: "CA",
         },
+        {
+          organizerId: 3,
+          name: "demo-group-3",
+          about: "This is the first demo group",
+          type: "online",
+          private: false,
+          city: "New York",
+          state: "NY",
+        },
+        {
+          organizerId: 1,
+          name: "demo-group-4",
+          about: "This is the second demo group",
+          type: "online",
+          private: true,
+          city: "Los Angeles",
+          state: "CA",
+        },
+        {
+          organizerId: 1,
+          name: "demo-group-5",
+          about: "This is the first demo group",
+          type: "online",
+          private: false,
+          city: "New York",
+          state: "NY",
+        },
+        {
+          organizerId: 1,
+          name: "demo-group-6",
+          about: "This is the second demo group",
+          type: "online",
+          private: true,
+          city: "Los Angeles",
+          state: "CA",
+        }
       ],
       {}
     );

@@ -4,7 +4,7 @@ import Navigation from "../Navigation";
 import "./Header.css";
 
 function Header() {
-  const logo = "";
+
   return (
     <header>
       <NavLink exact to="/">

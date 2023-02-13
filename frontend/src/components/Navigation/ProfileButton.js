@@ -4,13 +4,15 @@ import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
+
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const history = useHistory();
+
 
   const openMenu = () => {
     if (showMenu) return;
@@ -40,6 +42,12 @@ function ProfileButton({ user }) {
     history.push("/");
   };
 
+  const handleViewGroupsClick = (e) => {
+    e.preventDefault();
+    closeMenu();
+    history.push("/groups/grouplist");
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -54,6 +62,7 @@ function ProfileButton({ user }) {
               {`Hello, ${user.firstName}`}
               <li>{user.email}</li>
               <button onClick={logout}>Log Out</button>
+              <Link className="viewGroups" to='../Groups/GroupList'>View Groups</Link>
             </>
           ) : (
             <>
@@ -67,7 +76,9 @@ function ProfileButton({ user }) {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-
+              <button className="viewGroups" onClick={handleViewGroupsClick}>
+              View Groups
+              </button>
             </>
           )}
         </ul>

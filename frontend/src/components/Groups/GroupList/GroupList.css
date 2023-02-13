@@ -1,0 +1,110 @@
+.group-list {
+    display: flex;
+    margin-left: 10rem;
+    margin-top: 4rem;
+}
+
+.event-list_header {
+    margin-right: 1rem;
+    color: grey;   
+}
+
+.group-list_header {
+    margin-right: 1rem;
+    text-decoration: underline;
+    color: teal;
+
+}
+
+.group-list_caption {
+    margin-left: 10rem;
+    color: rgb(174, 171, 171);
+    margin-top: -0.7rem;
+    font-size: 1rem;
+}
+
+
+.group-list_items {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    margin: 0 0 0 1rem;
+    padding: 0 0 2rem 1rem;
+    
+  }
+  
+  .group-list_item {   
+    display: flex;
+    flex-direction: column;
+    width: 70vw ;
+    margin-left: 8rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid lightgray;
+    cursor: pointer;
+  }
+  
+  .group-info {
+    flex-direction: row;
+    position: absolute;
+    margin: 0 0 0 5rem;
+    padding: 0 0 0 1rem;
+  }
+  
+  .group-name {
+    flex-direction: row;
+    position: relative;
+    font-size: 25px;
+    margin: -0.3rem 0 0 5rem;
+    padding: 0 0 0 1rem;
+
+  }
+  
+  .group-city {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    margin: .4rem 0 0 5rem;
+    padding: 0 0 0 1rem;
+
+  }
+  
+  .about {
+    display: flex;
+    flex-direction: row;
+    font-size: 13px;
+    margin: 1rem 0 0 5rem;
+    padding: 0 0 0 1rem;
+
+  }
+  
+  .group-events {
+    display: inline-block;
+    flex-direction: row;
+    font-size: 14px;
+    margin: 1rem 0 0 5rem;
+    padding: 0 0 0 1rem;
+
+  }
+  
+  .group-private {
+    display: inline-block;
+    flex-direction: row;
+    font-size: 14px;
+    margin: .7rem 0 0 .2rem;
+    padding: 0 0 0 1rem;
+
+  }
+  
+  .group-list_item img {
+    width: 178px;
+    height: 124px;
+  }
+
+  .dot {
+    display: inline;
+    margin: 0 0 0 1rem;
+  }
+  
+
+/* todo: need to make this wrap better and adjust as the screen shrinks */

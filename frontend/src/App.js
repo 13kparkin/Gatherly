@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Header from "./components/Header";
+import LandingPage from "./components/LandingPage";
+import GroupList from "./components/Groups/GroupList";
+import GroupDetail from "./components/Groups/GroupDetail";
+import "./index.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -13,11 +17,24 @@ function App() {
 
   return (
     <>
-      <Header isLoaded={isLoaded} />
+
+      <Header className="header" isLoaded={isLoaded} />
       {isLoaded && (
+        <div className="body">
         <Switch>
+          <Route path={"/"} exact={true}>
+            <LandingPage />
+          </Route>
+          <Route path={"/groups/grouplist"}>
+            <GroupList />
+          </Route>
+          <Route path={"/groups/:groupId"}>
+            <GroupDetail />
+          </Route>
         </Switch>
+        </div>
       )}
+
     </>
   );
 }
