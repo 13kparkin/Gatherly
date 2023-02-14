@@ -18,16 +18,19 @@ function GroupDetail() {
   let buttonVisibilityOrganizer;
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
-
+  const history = useHistory();
 
     
   const handleShowModal = () => {
     setShowModal(true);
   };
+  const handleUpdateGroup = () => {
+    history.push(`/groups/${group.id}/edit`);
+  };
   
 
   useEffect(() => {
-    if (!group.Organizer) dispatch(getGroupsDetails(groupId));
+    dispatch(getGroupsDetails(groupId));
     
 
     function handleCloseModal(event) {
@@ -43,9 +46,10 @@ function GroupDetail() {
 
   }, [dispatch, divRef]);
 
+
   
 
-  if (!group.GroupImages || !group.Organizer) {
+  if (!group.GroupImages || !group.Organizer || group.id !== Number(groupId)) {
     return null;
   }
 
@@ -111,6 +115,7 @@ function GroupDetail() {
             </button>
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+              onClick={handleUpdateGroup}
             >
               Update
             </button>

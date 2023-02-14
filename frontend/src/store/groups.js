@@ -26,7 +26,7 @@ export const getGroups = () => async (dispatch) => {
   const response = await csrfFetch("/api/groups");
   const data = await response.json();
   dispatch(setAllGroups(data));
-  return response;
+  return data;
 };
 
 export const getGroupsDetails = (groupId) => async (dispatch) => {
@@ -34,7 +34,7 @@ export const getGroupsDetails = (groupId) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(setSingleGroup(data));
-    return response;
+    return data;
   }
 };
 
@@ -62,10 +62,31 @@ export const createGroup = (group, currentUser) => async (dispatch) => {
     }),
   });
   const images = await imageResponse.json();
-  console.log("images in thunk", images);
   data.GroupImages = [images];
   data.Orgainzer = currentUser;
 
+  dispatch(setSingleGroup(data));
+  return data;
+};
+
+export const updateGroup = (group) => async (dispatch) => {
+  const { id, name, about, type, isPrivate, city, state } = group;
+  console.log('group', group)
+  const groupResponse = await csrfFetch(`/api/groups/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      id,
+      name,
+      about,
+      type,
+      isPrivate,
+      city,
+      state,
+    }),
+  });
+
+  const data = await groupResponse.json();
+  console.log(data)
   dispatch(setSingleGroup(data));
   return data;
 };
@@ -94,6 +115,7 @@ const groupsReducer = (state = initialState, action) => {
       return { ...state, singleGroup: action.payload };
     case REMOVE_GROUP:
       return { ...state, singleGroup: {} };
+
     default:
       return state;
   }
