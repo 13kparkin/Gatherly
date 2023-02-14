@@ -22,7 +22,6 @@ const removeGroup = () => {
   };
 };
 
-
 export const getGroups = () => async (dispatch) => {
   const response = await csrfFetch("/api/groups");
   const data = await response.json();
@@ -53,43 +52,33 @@ export const createGroup = (group, currentUser) => async (dispatch) => {
     }),
   });
 
-
-  
-  
-  export const deleteGroup = (groupId) => async (dispatch) => {
-    const response = await csrfFetch(`/api/groups/${groupId}`, {
-      method: "DELETE"
-    })
-    dispatch(removeGroup());
-    return response;
-  }
-  
-
-
-  
-
   const data = await groupResponse.json();
-
 
   const imageResponse = await csrfFetch(`/api/groups/${data.id}/images`, {
     method: "POST",
     body: JSON.stringify({
-      "url": imageUrl,
-      "preview": true
+      url: imageUrl,
+      preview: true,
     }),
   });
-  const images = await imageResponse.json()
-  console.log("images in thunk", images)
-  data.GroupImages = [
-    images
-  ]
-  data.Orgainzer = currentUser
-
-
+  const images = await imageResponse.json();
+  console.log("images in thunk", images);
+  data.GroupImages = [images];
+  data.Orgainzer = currentUser;
 
   dispatch(setSingleGroup(data));
   return data;
 };
+
+
+export const deleteGroup = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "DELETE"
+  })
+  
+  dispatch(removeGroup());
+  return response;
+}
 
 const initialState = {
   allGroups: {},
@@ -97,12 +86,14 @@ const initialState = {
 };
 
 const groupsReducer = (state = initialState, action) => {
-  let newState;
+
   switch (action.type) {
     case SET_ALL_GROUPS:
-      return  { ...state, allGroups: action.payload }
+      return { ...state, allGroups: action.payload };
     case SET_SINGLE_GROUP:
       return { ...state, singleGroup: action.payload };
+    case REMOVE_GROUP:
+      return { ...state, singleGroup: {} };
     default:
       return state;
   }
