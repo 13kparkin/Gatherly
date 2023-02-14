@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const SET_ALL_GROUPS = "groups/setAllGroups";
 const SET_SINGLE_GROUP = "groups/setSingleGroup";
+const REMOVE_GROUP = "groups/removeGroup";
 
 const setAllGroups = (group) => {
   return {
@@ -13,6 +14,11 @@ const setSingleGroup = (group) => {
   return {
     type: SET_SINGLE_GROUP,
     payload: group,
+  };
+};
+const removeGroup = () => {
+  return {
+    type: REMOVE_GROUP,
   };
 };
 
@@ -46,6 +52,19 @@ export const createGroup = (group, currentUser) => async (dispatch) => {
       state,
     }),
   });
+
+
+  
+  
+  export const deleteGroup = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+      method: "DELETE"
+    })
+    dispatch(removeGroup());
+    return response;
+  }
+  
+
 
   
 

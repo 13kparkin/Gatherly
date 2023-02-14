@@ -3,7 +3,7 @@ import "./GroupDetail.css";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getGroups, getGroupsDetails } from "../../../store/groups";
+import { getGroups, getGroupsDetails, deleteGroup } from "../../../store/groups";
 
 function GroupDetail() {
   const dispatch = useDispatch();
@@ -16,7 +16,10 @@ function GroupDetail() {
     if(!group.Organizer) dispatch(getGroupsDetails(groupId));
   }, [dispatch]);
 
-  console.log('group detail render')
+  const handleOnDelete = (e) => {
+    e.preventDefault();
+    dispatch(deleteGroup(groupId));
+  };
 
   if (!group.GroupImages || !group.Organizer) {
     return null;
