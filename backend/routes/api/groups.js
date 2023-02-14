@@ -77,11 +77,11 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
-    let { name, about, type, private, city, state } = req.body;
+    let { name, about, type, isPrivate, city, state } = req.body;
     const { id } = req.user;
     const user = await User.findByPk(id);
-    private = private.toString();
-    const lowerCasePrivate = private.toLowerCase();
+    isPrivate = isPrivate.toString();
+    const lowerCaseIsPrivate = isPrivate.toLowerCase();
 
     const lowerCaseType = type.toLowerCase();
 
@@ -90,7 +90,7 @@ router.post("/", async (req, res, next) => {
       name.length === 0 ||
       about.length < 50 ||
       (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
-      (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") ||
+      (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") ||
       !city ||
       !state
     ) {
@@ -109,8 +109,8 @@ router.post("/", async (req, res, next) => {
         err.errors.type = "Type must be 'Online' or 'In person'";
         err.statusCode = 400;
       }
-      if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
-        err.errors.private = "Private must be a boolean";
+      if (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") {
+        err.errors.isPrivate = "Private must be a boolean";
         err.statusCode = 400;
       }
       if (!city) {
@@ -129,7 +129,7 @@ router.post("/", async (req, res, next) => {
         name,
         about,
         type: lowerCaseType,
-        private,
+        isPrivate,
         city,
         state,
         organizerId: id,
@@ -219,11 +219,11 @@ router.put("/:groupId", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { id } = req.user;
-    let { name, about, type, private, city, state } = req.body;
+    let { name, about, type, isPrivate, city, state } = req.body;
     const group = await Group.findByPk(groupId);
     const lowerCaseType = type.toLowerCase();
-    private = private.toString();
-    const lowerCasePrivate = private.toLowerCase();
+    isPrivate = isPrivate.toString();
+    const lowerCaseIsPrivate = isPrivate.toLowerCase();
 
     console.log(about.length);
 
@@ -232,7 +232,7 @@ router.put("/:groupId", async (req, res, next) => {
       name.length === 0 ||
       about.length <= 50 ||
       (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
-      (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") ||
+      (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") ||
       !city ||
       !state
     ) {
@@ -251,8 +251,8 @@ router.put("/:groupId", async (req, res, next) => {
         err.errors.type = "Type must be 'Online' or 'In person'";
         err.statusCode = 400;
       }
-      if (lowerCasePrivate !== "true" && lowerCasePrivate !== "false") {
-        err.errors.private = "Private must be a boolean";
+      if (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") {
+        err.errors.isPrivate = "Private must be a boolean";
         err.statusCode = 400;
       }
       if (!city) {
@@ -278,7 +278,7 @@ router.put("/:groupId", async (req, res, next) => {
         name,
         about,
         type: lowerCaseType,
-        private,
+        isPrivate,
         city,
         state,
       });

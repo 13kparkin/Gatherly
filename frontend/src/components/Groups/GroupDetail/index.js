@@ -1,35 +1,72 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./GroupDetail.css";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getGroups, getGroupsDetails } from "../../../store/groups";
+import { useEffect, useRef, useState } from "react";
+import {
+  getGroups,
+  getGroupsDetails,
+  deleteGroup,
+} from "../../../store/groups";
+import DeleteGroupModal from "../DeleteGroupModal";
 
 function GroupDetail() {
   const dispatch = useDispatch();
   const { groupId } = useParams();
-  const group = useSelector((state) => state.groups.GroupDetail);
+  const group = useSelector((state) => state.groups.singleGroup);
   const getLoggedInUser = useSelector((state) => state.session.user);
   let buttonVisibilityOrganizer;
+  const [showModal, setShowModal] = useState(false);
+  const divRef = useRef(null);
+  const history = useHistory();
+
+    
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+  const handleUpdateGroup = () => {
+    history.push(`/groups/${group.id}/edit`);
+  };
+  
 
   useEffect(() => {
     dispatch(getGroupsDetails(groupId));
-  }, [dispatch]);
+    
 
-  if (!group || !group.GroupImages) {
+    function handleCloseModal(event) {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        setShowModal(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleCloseModal);
+    return () => {
+      document.removeEventListener("mousedown", handleCloseModal);
+    };
+
+  }, [dispatch, divRef]);
+
+
+  
+
+  if (!group.GroupImages || !group.Organizer || group.id !== Number(groupId)) {
     return null;
   }
- 
+
   const buttonVisibility =
     getLoggedInUser === null || group.Organizer.id === getLoggedInUser.id;
 
-
   if (getLoggedInUser !== null) {
-    buttonVisibilityOrganizer = getLoggedInUser !== null && group?.Organizer.id === getLoggedInUser.id;
+    buttonVisibilityOrganizer =
+      getLoggedInUser !== null && group?.Organizer.id === getLoggedInUser.id;
   }
 
   return (
     <>
+      {showModal &&
+      <div ref={divRef} className="delete-group-modal"> 
+      <DeleteGroupModal setShowModal={setShowModal} /> 
+      </div>}
       <div className="group-detail_banner-details">
         <div className="group-detail_bread-crumb">
           <p> &#62; </p>
@@ -78,11 +115,13 @@ function GroupDetail() {
             </button>
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+              onClick={handleUpdateGroup}
             >
               Update
             </button>
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+              onClick={handleShowModal}
             >
               Delete
             </button>

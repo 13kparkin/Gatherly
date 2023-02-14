@@ -24,6 +24,7 @@ function LoginFormModal() {
         }
       );
   };
+  
   const handleDemoLogin = (e) => {
     e.preventDefault();
     return dispatch(sessionActions.login({ credential: "Demo-lition", password: "password" }))

@@ -5,14 +5,15 @@ import landingPage2 from "../../images/landingPage/landingPage2.jpg";
 import landingPage3 from "../../images/landingPage/landingPage3.jpg";
 import landingPage4 from "../../images/landingPage/landingPage4.jpg";
 import GroupList from "../Groups/GroupList";
-import { Link, Route } from "react-router-dom";
+import { Link, Route, useHistory } from "react-router-dom";
 
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
+  const history = useHistory()
 
   const handleStartGroupClick = (e) => {
     e.preventDefault();
-    console.log("start group clicked");
+    history.push("/groups/new")
   };
 
   const handleButtonJoinClick = (e) => {
