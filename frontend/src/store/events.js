@@ -38,21 +38,28 @@ export const getEventsDetails = (eventId) => async (dispatch) => {
   }
 };
 
-export const createEvent = (event, currentUser) => async (dispatch) => {
-  const { name, about, type, isPrivate, city, state, imageUrl } = event;
-  const eventResponse = await csrfFetch("/api/events", {
+export const createEvent = (event,groupId) => async (dispatch) => {
+  const { venueId, name, type, capacity, price, description, startDate, endDate, imageUrl } = event;
+  console.log(event)
+  const eventResponse = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({
+      venueId,
       name,
-      about,
+      description,
       type,
-      isPrivate,
-      city,
-      state,
+      capacity,
+      price,
+      startDate,
+      endDate
     }),
   });
 
+  console.log("eventResponse", eventResponse)
+
+
   const data = await eventResponse.json();
+  console.log("data", data)
 
   const imageResponse = await csrfFetch(`/api/events/${data.id}/images`, {
     method: "POST",
@@ -62,8 +69,12 @@ export const createEvent = (event, currentUser) => async (dispatch) => {
     }),
   });
   const images = await imageResponse.json();
-  data.eventImages = [images];
-  data.Orgainzer = currentUser;
+  data.EventImages = [images];
+
+  
+  const groupResponse = await csrfFetch(`/api/groups/${groupId}`);
+  const group = await groupResponse.json();
+  data.GroupOrganizer = group.Organizer;
 
   dispatch(setSingleEvent(data));
   return data;

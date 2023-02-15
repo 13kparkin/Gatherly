@@ -11,6 +11,7 @@ import UpdateGroup from "./components/Groups/UpdateGroup"
 import EventList from "./components/Events/EventList";
 import EventDetail from "./components/Events/EventDetail";
 import "./index.css";
+import CreateEvent from "./components/Events/CreateEvent";
 
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route path={"/events"} exact>
             <EventList />
+          </Route>
+          <Route path={"/groups/:groupId/events/new"}>
+            <CreateEvent />
           </Route>
           <Route path={"/groups/:groupId"}>
             <GroupDetail />

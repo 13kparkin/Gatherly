@@ -25,8 +25,14 @@ function GroupDetail() {
     setShowModal(true);
   };
   const handleUpdateGroup = () => {
+
     history.push(`/groups/${group.id}/edit`);
   };
+  const handleCreateEvent = () => {
+
+    history.push(`/groups/${group.id}/events/new`);
+  };
+
   
 
   useEffect(() => {
@@ -110,6 +116,7 @@ function GroupDetail() {
           <div className="organizer-only">
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+              onClick={handleCreateEvent}
             >
               Create event
             </button>

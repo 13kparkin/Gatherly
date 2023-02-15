@@ -8,6 +8,7 @@ import {
   getEventsDetails,
   deleteEvent,
 } from "../../../store/events";
+import { getGroupsDetails } from "../../../store/groups";
 // import DeleteEventModal from "../DeleteEventModal";
 
 function EventDetail() {
@@ -19,8 +20,7 @@ function EventDetail() {
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
   const history = useHistory();
-
-  console.log(event);
+  let groupId = event.groupId;
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -41,18 +41,21 @@ function EventDetail() {
     };
   }, [dispatch, divRef]);
 
-  if (event.EventImages?.length === 0 || event.id !== Number(eventId)) {
+  if (!event || event.EventImages?.length === 0 || event?.id !== Number(eventId)) {
     return null;
   }
+  console.log("event", event)
 
   const buttonVisibility =
-    getLoggedInUser === null || event?.GroupOrganizer.id === getLoggedInUser.id;
+    getLoggedInUser === null || event?.GroupOrganizer?.id === getLoggedInUser?.id;
 
   if (getLoggedInUser !== null) {
     buttonVisibilityOrganizer =
       getLoggedInUser !== null &&
-      event?.GroupOrganizer.id === getLoggedInUser.id;
+      event?.GroupOrganizer?.id === getLoggedInUser?.id;
   }
+
+  // time and date formatting
 
   const [startDateString, startTimeString] = event.startDate.split("T");
   const [endDateString, endTimeString] = event.endDate.split("T");
@@ -82,6 +85,12 @@ function EventDetail() {
   const endTimeFormatted = endTimeObj.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "numeric",
+  });
+
+  // fromating the price to be in USD.
+  const price = event.price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
   });
 
   return (
@@ -127,6 +136,7 @@ function EventDetail() {
           <div className="organizer-only">
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
+              onClick={() => history.push(`/groups/${groupId}/events/new`)}
             >
               Create Event
             </button>
@@ -162,7 +172,7 @@ function EventDetail() {
             <i className="fas fa-money-bill-wave"></i>
             <div className="event-info-box_column">
               <p>Price</p>
-              <p>{event.price === 0 ? "FREE" : `$${event.price}`}</p>
+              <p>{event.price === 0 ? "FREE" : `${price}`}</p>
             </div>
           </div>
           <div className="event-info-box_row">
