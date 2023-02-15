@@ -1,20 +1,25 @@
-.group-list {
+/* todo Style event cards// clean up the cards */
+
+.event-list {
     display: flex;
     margin-left: 10rem;
     margin-top: 4rem;
 }
 
+
 .event-list_header {
     margin-right: 1rem;
-    text-decoration: none;
+    text-decoration: underline;
+    color: teal; 
 }
 
 .group-list_header {
     margin-right: 1rem;
-
+    color: grey;
+    text-decoration: none;
 }
 
-.group-list_caption {
+.event-list_caption {
     margin-left: 10rem;
     color: rgb(174, 171, 171);
     margin-top: -0.7rem;
@@ -22,7 +27,7 @@
 }
 
 
-.group-list_items {
+.event-list_items {
     display: flex;
     position: relative;
     flex-direction: row;
@@ -31,7 +36,7 @@
     
   }
   
-  .group-list_item {   
+  .event-list_item {   
     display: flex;
     flex-direction: column;
     width: 70vw ;
@@ -42,14 +47,14 @@
     cursor: pointer;
   }
   
-  .group-info {
+  .event-info {
     flex-direction: row;
     position: absolute;
     margin: 0 0 0 5rem;
     padding: 0 0 0 1rem;
   }
   
-  .group-name {
+  .event-name {
     flex-direction: row;
     position: relative;
     font-size: 25px;
@@ -58,7 +63,16 @@
 
   }
   
-  .group-city {
+  .event-city {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    margin: .4rem 0 0 5rem;
+    padding: 0 0 0 1rem;
+
+  }
+
+  .event-state {
     display: flex;
     flex-direction: row;
     font-size: 16px;
@@ -76,7 +90,7 @@
 
   }
   
-  .group-events {
+  .event-events {
     display: inline-block;
     flex-direction: row;
     font-size: 14px;
@@ -85,7 +99,7 @@
 
   }
   
-  .group-private {
+  .event-private {
     display: inline-block;
     flex-direction: row;
     font-size: 14px;
@@ -94,7 +108,7 @@
 
   }
   
-  .group-list_item img {
+  .event-list_item img {
     width: 178px;
     height: 124px;
   }

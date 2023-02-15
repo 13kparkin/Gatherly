@@ -1,16 +1,31 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navigation from "../Navigation";
 import "./Header.css";
+import { useSelector } from "react-redux";
 
 function Header() {
-  // todo need to add create a group button to the right side next to profile button
+  const sessionUser = useSelector((state) => state.session.user);
+
+
   return (
     <header>
-      <NavLink exact to="/">
+       {sessionUser ? (
+      <>
+      <Link className="create-group" to={'/groups/new'} exact >Create a Group </Link>
+      <Link exact to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
         Gatherly
-      </NavLink>
-      <Navigation />
+      </Link>
+      <Navigation user={sessionUser} />
+      </>
+    ) : (
+      <>
+      <Link exact to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
+      Gatherly
+    </Link>
+    <Navigation user={sessionUser} />
+    </>
+    )}
     </header>
   );
 }

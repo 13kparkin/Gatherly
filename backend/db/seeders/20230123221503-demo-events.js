@@ -19,9 +19,9 @@ module.exports = {
           description: "This is the first demo event",
           type: "in person",
           capacity: 100,
-          price: 50.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 50.0,
+          startDate: "2023-03-22 20:00:00",
+          endDate: "2023-03-23 22:00:00",
         },
         {
           venueId: 2,
@@ -30,9 +30,9 @@ module.exports = {
           description: "This is the second demo event",
           type: "in person",
           capacity: 50,
-          price: 25.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 25.0,
+          startDate: "2023-03-22 20:00:00",
+          endDate: "2023-03-23 22:00:00",
         },
         {
           venueId: 3,
@@ -41,9 +41,9 @@ module.exports = {
           description: "This is the third demo event",
           type: "online",
           capacity: 200,
-          price: 20.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 20.0,
+          startDate: "2023-03-20 20:00:00",
+          endDate: "2023-03-21 22:00:00",
         },
         {
           venueId: 4,
@@ -52,9 +52,9 @@ module.exports = {
           description: "This is the forth demo event",
           type: "in person",
           capacity: 100,
-          price: 50.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 50.0,
+          startDate: "2023-03-20 20:00:00",
+          endDate: "2023-03-21 22:00:00",
         },
         {
           venueId: 5,
@@ -63,9 +63,9 @@ module.exports = {
           description: "This is the fith demo event",
           type: "in person",
           capacity: 50,
-          price: 25.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 25.0,
+          startDate: "2023-03-28 20:00:00",
+          endDate: "2023-03-29 22:00:00",
         },
         {
           venueId: 6,
@@ -74,20 +74,20 @@ module.exports = {
           description: "This is the sixth demo event",
           type: "online",
           capacity: 200,
-          price: 20.00,
-          startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          price: 20.0,
+          startDate: "2023-03-30 20:00:00",
+          endDate: "2023-03-31 22:00:00",
         },
         {
           venueId: 6,
           groupId: 1,
-          name: "Demo-Event-6",
-          description: "This is the sixth demo event",
+          name: "Demo-Event-7",
+          description: "This is the seventh demo event",
           type: "online",
           capacity: 200,
-          price: 20.00,
+          price: 20.0,
           startDate: "2021-11-19 20:00:00",
-          endDate: "2021-11-20 22:00:00"
+          endDate: "2021-11-20 22:00:00",
         },
       ],
       {}

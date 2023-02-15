@@ -70,7 +70,7 @@ function GroupDetail() {
       <div className="group-detail_banner-details">
         <div className="group-detail_bread-crumb">
           <p> &#62; </p>
-          <Link to="/groups/grouplist">Groups</Link>
+          <Link to="/groups">Groups</Link>
         </div>
         <div className="group-detail_group-image">
           <img src={group.GroupImages[0].url} />

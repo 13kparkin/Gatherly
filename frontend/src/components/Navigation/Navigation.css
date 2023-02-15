@@ -6,6 +6,7 @@
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  top: 10px;
 }
 
 .hidden {
@@ -22,7 +23,17 @@
   flex-direction: column;
 }
 
-header .viewGroups {
+
+header .view-groups {
+  display: flex;
+  text-decoration: none;
+  color: #ff6560;
+  font-weight: bold;
+  font-size: .8rem;
+}
+
+header .view-events {
+  display: flex;
   text-decoration: none;
   color: #ff6560;
   font-weight: bold;

@@ -17,7 +17,7 @@ function DeleteGroup({ setShowModal }) {
   const handleDeleteGroup = () => {
     dispatch(deleteGroup(groupId)).then(() => {
       dispatch(getGroups());
-    history.push("/groups/grouplist");
+    history.push("/groups");
     })
   };
 

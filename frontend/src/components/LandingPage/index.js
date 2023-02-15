@@ -47,7 +47,7 @@ function LandingPage() {
             <img src={landingPage2} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to='../Groups/GroupList'>See all Groups</Link>
+            <Link to='/groups'>See all Groups</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -58,8 +58,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to="/">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
-            }
+            <Link to="/events">Find an event</Link> 
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Explore upcoming events and activities</p>
@@ -75,9 +74,9 @@ function LandingPage() {
                 Start a group
               </Link>
             ) : (
-              <a href="/" onClick={handleStartGroupClick}>
+              <Link to="/" onClick={handleStartGroupClick}>
                 Start a group
-              </a>
+              </Link>
             )}
           </div>
           <div className="landing-page_section-3_column_caption">
