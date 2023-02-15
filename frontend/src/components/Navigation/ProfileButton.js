@@ -45,7 +45,13 @@ function ProfileButton({ user }) {
   const handleViewGroupsClick = (e) => {
     e.preventDefault();
     closeMenu();
-    history.push("/groups/grouplist");
+    history.push("/groups");
+  }
+
+  const handleViewEventsClick = (e) => {
+    e.preventDefault();
+    closeMenu();
+    history.push("/events");
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -62,7 +68,8 @@ function ProfileButton({ user }) {
               {`Hello, ${user.firstName}`}
               <li>{user.email}</li>
               <button onClick={logout}>Log Out</button>
-              <Link className="viewGroups" to='../Groups/GroupList'>View Groups</Link>
+              <Link className="view-groups" to='/groups'>View Groups</Link>
+              <Link className="view-events" to='/events'>View Events</Link>
             </>
           ) : (
             <>
@@ -76,8 +83,11 @@ function ProfileButton({ user }) {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-              <button className="viewGroups" onClick={handleViewGroupsClick}>
+              <button className="view-groups" onClick={handleViewGroupsClick}>
               View Groups
+              </button>
+              <button className="view-events" onClick={handleViewEventsClick}>
+              View Events
               </button>
             </>
           )}

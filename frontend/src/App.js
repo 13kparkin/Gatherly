@@ -28,7 +28,7 @@ function App() {
           <Route path={"/"} exact={true}>
             <LandingPage />
           </Route>
-          <Route path={"/groups/grouplist"}>
+          <Route path={"/groups"} exact={true}>
             <GroupList />
           </Route>
           <Route path={"/groups/new"} exact={true}>

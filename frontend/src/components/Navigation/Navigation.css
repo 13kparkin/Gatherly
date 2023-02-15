@@ -22,7 +22,17 @@
   flex-direction: column;
 }
 
-header .viewGroups {
+
+header .view-groups {
+  display: flex;
+  text-decoration: none;
+  color: #ff6560;
+  font-weight: bold;
+  font-size: .8rem;
+}
+
+header .view-events {
+  display: flex;
   text-decoration: none;
   color: #ff6560;
   font-weight: bold;
