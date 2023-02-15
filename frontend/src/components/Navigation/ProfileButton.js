@@ -83,12 +83,12 @@ function ProfileButton({ user }) {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-              <button className="view-groups" onClick={handleViewGroupsClick}>
+              <Link className="view-groups" onClick={handleViewGroupsClick}>
               View Groups
-              </button>
-              <button className="view-events" onClick={handleViewEventsClick}>
+              </Link>
+              <Link className="view-events" onClick={handleViewEventsClick}>
               View Events
-              </button>
+              </Link>
             </>
           )}
         </ul>

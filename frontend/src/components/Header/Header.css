@@ -1,3 +1,5 @@
+/* todo style the header */
+
 header {
   position: fixed;
   top: 0;
@@ -15,5 +17,16 @@ header {
   position: absolute;
   padding-bottom: 10px;
   right: 10px;
+}
+
+
+.create-group {
+  position: absolute;
+  right: 50px;
+  padding-bottom: 10px;
+  text-decoration: none;
+  color: #ff6560;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
