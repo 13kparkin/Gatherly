@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const SET_ALL_EVENTS = "events/setAllEvents";
 const SET_SINGLE_EVENT = "events/setSingleEvent";
 const REMOVE_EVENT = "events/removeEvent";
+const SET_ALL_EVENTS_BY_GROUP = "events/setAllEventsByGroup";
 
 const setAllEvents = (event) => {
   return {
@@ -22,6 +23,13 @@ const removeEvent = () => {
   };
 };
 
+const setAllEventsByGroup = (event) => {
+  return {
+    type: SET_ALL_EVENTS_BY_GROUP,
+    payload: event,
+  };
+};
+
 export const getEvents = () => async (dispatch) => {
   const response = await csrfFetch("/api/events");
   const data = await response.json();
@@ -38,21 +46,37 @@ export const getEventsDetails = (eventId) => async (dispatch) => {
   }
 };
 
-export const createEvent = (event, currentUser) => async (dispatch) => {
-  const { name, about, type, isPrivate, city, state, imageUrl } = event;
-  const eventResponse = await csrfFetch("/api/events", {
+export const getEventsDetailsByGroupId = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/events`);
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setAllEventsByGroup(data));
+    return data;
+  }
+};
+
+export const createEvent = (event,groupId) => async (dispatch) => {
+  const { venueId, name, type, capacity, price, description, startDate, endDate, imageUrl } = event;
+  console.log(event)
+  const eventResponse = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({
+      venueId,
       name,
-      about,
+      description,
       type,
-      isPrivate,
-      city,
-      state,
+      capacity,
+      price,
+      startDate,
+      endDate
     }),
   });
 
+  console.log("eventResponse", eventResponse)
+
+
   const data = await eventResponse.json();
+  console.log("data", data)
 
   const imageResponse = await csrfFetch(`/api/events/${data.id}/images`, {
     method: "POST",
@@ -62,8 +86,12 @@ export const createEvent = (event, currentUser) => async (dispatch) => {
     }),
   });
   const images = await imageResponse.json();
-  data.eventImages = [images];
-  data.Orgainzer = currentUser;
+  data.EventImages = [images];
+
+  
+  const groupResponse = await csrfFetch(`/api/groups/${groupId}`);
+  const group = await groupResponse.json();
+  data.GroupOrganizer = group.Organizer;
 
   dispatch(setSingleEvent(data));
   return data;
@@ -72,9 +100,11 @@ export const createEvent = (event, currentUser) => async (dispatch) => {
 
 
 export const deleteEvent = (eventId) => async (dispatch) => {
+  console.log(eventId)
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: "DELETE"
   })
+  
   
   dispatch(removeEvent());
   return response;
@@ -83,6 +113,7 @@ export const deleteEvent = (eventId) => async (dispatch) => {
 const initialState = {
   allEvents: {},
   singleEvent: {},
+  allEventsByGroup: {},
 };
 
 const eventsReducer = (state = initialState, action) => {
@@ -94,7 +125,8 @@ const eventsReducer = (state = initialState, action) => {
       return { ...state, singleEvent: action.payload };
     case REMOVE_EVENT:
       return { ...state, singleEvent: {} };
-
+    case SET_ALL_EVENTS_BY_GROUP:
+      return { ...state, allEventsByGroup: action.payload };
     default:
       return state;
   }

@@ -780,6 +780,8 @@ router.post("/:groupId/events", async (req, res, next) => {
         endDate,
       });
 
+   
+
       const finalEvent = {
         id: event.id,
         groupId: event.groupId,
