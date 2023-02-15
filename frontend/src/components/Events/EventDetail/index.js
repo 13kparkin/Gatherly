@@ -8,8 +8,7 @@ import {
   getEventsDetails,
   deleteEvent,
 } from "../../../store/events";
-import { getGroupsDetails } from "../../../store/groups";
-// import DeleteEventModal from "../DeleteEventModal";
+import DeleteEventModal from "../DeleteEventModal";
 
 function EventDetail() {
   const dispatch = useDispatch();
@@ -97,7 +96,7 @@ function EventDetail() {
     <>
       {showModal && (
         <div ref={divRef} className="delete-event-modal">
-          {/* <DeleteEventModal setShowModal={setShowModal} />  */}
+          <DeleteEventModal setShowModal={setShowModal} /> 
         </div>
       )}
       <div className="event-detail_banner-details">

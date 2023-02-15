@@ -4,5 +4,9 @@
     height: 320px;
 }
 
+.events-list_item img {
+    width: 178px;
+    height: 124px;
+}
 
-/* todo do styling for single group */
+/* todo do styling for single group and event by group*/
