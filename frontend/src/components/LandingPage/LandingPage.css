@@ -1,3 +1,6 @@
+/* todo fix alignment with images on the bottom when screen is bigger. */
+
+
 .landing-page {
   display: flex;
   flex-direction: column;

@@ -8,6 +8,7 @@ import GroupList from "./components/Groups/GroupList";
 import GroupDetail from "./components/Groups/GroupDetail";
 import CreateGroup from "./components/Groups/CreateGroup"
 import UpdateGroup from "./components/Groups/UpdateGroup"
+import EventList from "./components/Events/EventList";
 import "./index.css";
 
 function App() {
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path={"/groups/:groupId/edit"}>
             <UpdateGroup />
+          </Route>
+          <Route path={"/events"} exact={true}>
+            <EventList />
           </Route>
           <Route path={"/groups/:groupId"}>
             <GroupDetail />

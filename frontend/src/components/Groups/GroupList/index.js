@@ -21,10 +21,12 @@ function GroupList() {
   return (
     <>
       <div className="group-list">
-        <div className="event-list_header">
-          <h1>Events</h1>
+         <Link to="/events" style={{ textDecoration: 'none' }} >
+        <div className="event-list_header" style={{color: 'grey', textDecoration: 'none'}}>
+          <h1>Events</h1>   
         </div>
-        <div className="group-list_header">
+         </Link>
+        <div className="group-list_header" style={{color: 'teal', textDecoration: 'underline'}}>
           <h1>Groups</h1>
         </div>
       </div>

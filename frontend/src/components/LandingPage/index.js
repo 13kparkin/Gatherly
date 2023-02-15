@@ -58,7 +58,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to="/">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
+            <Link to="/events">Find an event</Link>  {// TODO: Click "Find an event" to go to Events List Page
             }
           </div>
           <div className="landing-page_section-3_column_caption">
