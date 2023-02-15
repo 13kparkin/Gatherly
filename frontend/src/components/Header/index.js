@@ -12,15 +12,15 @@ function Header() {
     <header>
        {sessionUser ? (
       <>
-      <Link className="create-group" to={'/groups/new'} exact={true} >Create a Group </Link>
-      <Link exact={true} to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
+      <Link className="create-group" to={'/groups/new'} exact >Create a Group </Link>
+      <Link exact to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
         Gatherly
       </Link>
       <Navigation user={sessionUser} />
       </>
     ) : (
       <>
-      <Link exact={true} to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
+      <Link exact to={"/"} style={{color:'#ff6560', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.7rem'}}>
       Gatherly
     </Link>
     <Navigation user={sessionUser} />

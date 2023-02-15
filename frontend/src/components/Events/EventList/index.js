@@ -77,7 +77,7 @@ function EventList() {
           {upcomingEvents.length &&
             upcomingEvents.map((event) => (
               <Link
-                to={`/event/${event.id}`}
+                to={`/events/${event.id}`}
                 key={event.id}
                 style={{ color: "black" }}
               >

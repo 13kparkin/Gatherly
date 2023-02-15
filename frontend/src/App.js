@@ -9,7 +9,9 @@ import GroupDetail from "./components/Groups/GroupDetail";
 import CreateGroup from "./components/Groups/CreateGroup"
 import UpdateGroup from "./components/Groups/UpdateGroup"
 import EventList from "./components/Events/EventList";
+import EventDetail from "./components/Events/EventDetail";
 import "./index.css";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -25,23 +27,26 @@ function App() {
       {isLoaded && (
         <div className="body">
         <Switch>
-          <Route path={"/"} exact={true}>
+          <Route path={"/"} exact>
             <LandingPage />
           </Route>
-          <Route path={"/groups"} exact={true}>
+          <Route path={"/groups"} exact>
             <GroupList />
           </Route>
-          <Route path={"/groups/new"} exact={true}>
+          <Route path={"/groups/new"} exact>
             <CreateGroup />
           </Route>
           <Route path={"/groups/:groupId/edit"}>
             <UpdateGroup />
           </Route>
-          <Route path={"/events"} exact={true}>
+          <Route path={"/events"} exact>
             <EventList />
           </Route>
           <Route path={"/groups/:groupId"}>
             <GroupDetail />
+          </Route>
+          <Route path={"/events/:eventId"}>
+            <EventDetail />
           </Route>
         </Switch>
         </div>

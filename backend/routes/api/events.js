@@ -590,7 +590,7 @@ router.get("/:eventId", async (req, res) => {
       include: [
         {
           model: Group,
-          attributes: ["id", "name", "private", "city", "state"],
+          attributes: ["id", "organizerId", "name", "private", "city", "state"],
         },
         {
           model: Venue,
@@ -602,6 +602,15 @@ router.get("/:eventId", async (req, res) => {
         },
       ],
     });
+
+     const groupOrganizerId = event.Group.organizerId;
+     
+      const groupOrganizer = await User.findByPk(groupOrganizerId, {
+        attributes: ["id", "firstName", "lastName"],
+      });
+   
+
+
 
     if (!event) {
       const err = {};
@@ -653,6 +662,7 @@ router.get("/:eventId", async (req, res) => {
       endDate: event.endDate,
       numAttending: eventNumAttending.numAttending,
       Group: event.Group,
+      GroupOrganizer: groupOrganizer,
       Venue: event.Venue,
       EventImages: event.EventImages,
     };
