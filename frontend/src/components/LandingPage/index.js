@@ -10,16 +10,15 @@ import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import React, { useState, useEffect, useRef } from "react";
 
-
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
-  const history = useHistory()
+  const history = useHistory();
   const ulRef = useRef();
   const [showMenu, setShowMenu] = useState(false);
 
   const handleStartGroupClick = (e) => {
     e.preventDefault();
-    history.push("/groups/new")
+    history.push("/groups/new");
   };
 
   const handleButtonJoinClick = (e) => {
@@ -42,7 +41,6 @@ function LandingPage() {
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
-
 
   return (
     <div className="landing-page">
@@ -70,7 +68,7 @@ function LandingPage() {
             <img src={landingPage2} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to='/groups'>See all Groups</Link>
+            <Link to="/groups">See all Groups</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -81,7 +79,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to="/events">Find an event</Link> 
+            <Link to="/events">Find an event</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Explore upcoming events and activities</p>
@@ -108,11 +106,11 @@ function LandingPage() {
         </div>
       </div>
       <div className="landing-page_section-4">
-                <OpenModalMenuItem
-                itemText="Join Gatherly"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
+        <OpenModalMenuItem
+          itemText="Join Gatherly"
+          onItemClick={closeMenu}
+          modalComponent={<SignupFormModal />}
+        />
       </div>
     </div>
   );

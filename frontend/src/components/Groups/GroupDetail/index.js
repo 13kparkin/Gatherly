@@ -103,35 +103,43 @@ function GroupDetail() {
           <DeleteGroupModal setShowModal={setShowModal} />
         </div>
       )}
-      <div className="group-detail_banner-details">
+      <section>
         <div className="group-detail_bread-crumb">
-          <p> &#62; </p>
-          <Link to="/groups">Groups</Link>
+          <p> &#60; <Link to="/groups">Groups</Link> </p>
         </div>
-        <div className="group-detail_group-image">
-          <img src={group.GroupImages[0].url} />
-        </div>
-        <div className="group-detail_group-name">
+        
+        <div className="flex">
+          <img className="group-detail_group-image" src={group.GroupImages[0].url} />
+          <div className="group-detail_group-banner-right">
           <h1>{group.name}</h1>
-        </div>
-        <div className="group-detail_group-location">
           <p>{group.city}</p>
-        </div>
-        <div className="group-detail_group-about">
-          <p>What we are about</p>
-          <p>{group.about}</p>
-        </div>
-        <div className="group-detail_group-event-number">
           <p>
+            <span> 
             {group.numEvents <= 1
               ? `${group.numEvents} Event`
-              : `${group.numEvents} Events`}
+              : `${group.numEvents} Events`}  </span>  <span> &#903; </span>  <span> {group.private ? "Private" : "Public"} </span>
           </p>
+
+          <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
+          <button style={{ display: buttonVisibility ? "none" : "block" }}>
+            Join the Group
+          </button>
+          </div>
+          </div>
+          </section>
+
+        <section className="grey">
+
+          <h2> Organizer </h2>
+          <p className="small">{group.Organizer.firstName} {group.Organizer.lastName}</p>
+
+        <div className="group-detail_group-about">
+          <h2>What we are about</h2>
+          <p>{group.about}</p>
         </div>
-        <p className="dot">&#903;</p>
-        <div className="group-detail_group-status">
-          <p>{group.private ? "Private" : "Public"}</p>
-        </div>
+
+      
+
         <div className="group-detail_group-members">
           <p>
             {group.numMembers <= 1
@@ -140,9 +148,7 @@ function GroupDetail() {
           </p>
         </div>
         <div className="group-detail_group-join">
-          <button style={{ display: buttonVisibility ? "none" : "block" }}>
-            Join the Group
-          </button>
+          
           <div className="organizer-only">
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
@@ -164,12 +170,8 @@ function GroupDetail() {
             </button>
           </div>
         </div>
-        <div className="group-detail_organizer">
-          <p>Organized by</p>
-          <p>{group.Organizer.firstName}</p>
-          <p>{group.Organizer.lastName}</p>
-        </div>
-      </div>
+        
+
 
       <div className="event-list_details">
         <h2>Events</h2>
@@ -203,6 +205,7 @@ function GroupDetail() {
             ))}
         </div>
       </div>
+      </section>
     </>
   );
 }

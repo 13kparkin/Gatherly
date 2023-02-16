@@ -1,5 +1,9 @@
 
-.group-detail_group-image img {
+h1,h2 {
+    margin: .5rem 0;
+}
+
+.group-detail_group-image {
     width: 544px;
     height: 320px;
 }
@@ -7,6 +11,55 @@
 .events-list_item img {
     width: 178px;
     height: 124px;
+}
+
+.group-detail_group-banner-right h1{
+    display: flex;
+    word-wrap: break-word;
+    margin: 0;
+}
+.group-detail_group-banner-right {
+    position: relative;
+    padding: 0 1rem;
+    height: 320px;
+    width: 544px;
+    overflow-y: hidden;
+}
+
+.group-detail_group-banner-right button {
+    position: absolute;
+    bottom: 0;
+    background-color: red;
+    padding: .5rem 2rem;
+    color: white;
+    border: 3px solid black;
+    cursor: pointer;
+}
+.group-detail_group-banner-right p {
+    color: gray;
+    font-size: .8rem;
+}
+
+.group-detail_group-banner-right p span {
+    word-spacing: 5px;
+}
+
+section {
+    padding: 2rem;
+    margin: 0;
+}
+
+.small {
+    margin-bottom: 40px;
+}
+
+
+.grey {
+    background-color: #eeeeee
+}
+
+.flex {
+    display: flex;
 }
 
 /* todo do styling for single group and event by group*/
