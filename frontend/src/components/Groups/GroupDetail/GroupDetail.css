@@ -1,65 +1,177 @@
-
-h1,h2 {
-    margin: .5rem 0;
+h1,
+h2 {
+  margin: 0.5rem 0;
 }
 
 .group-detail_group-image {
-    width: 544px;
-    height: 320px;
+  width: 544px;
+  height: 320px;
 }
 
-.events-list_item img {
-    width: 178px;
-    height: 124px;
+.top-section {
+  margin-bottom: 2rem;
+  margin-left: 12rem;
 }
 
-.group-detail_group-banner-right h1{
-    display: flex;
-    word-wrap: break-word;
-    margin: 0;
+
+.group-detail_group-banner-right h1 {
+  display: flex;
+  word-wrap: break-word;
+  margin: 0;
 }
 .group-detail_group-banner-right {
-    position: relative;
-    padding: 0 1rem;
-    height: 320px;
-    width: 544px;
-    overflow-y: hidden;
+  position: relative;
+  padding: 0 1rem;
+  height: 320px;
+  width: 544px;
+  overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-.group-detail_group-banner-right button {
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: -5rem;
+
+}
+
+.buttons button {
     position: absolute;
     bottom: 0;
     background-color: red;
-    padding: .5rem 2rem;
+    padding: .5rem 1rem;
+    margin-left: -8rem;
     color: white;
     border: 3px solid black;
     cursor: pointer;
 }
+
+.buttons .update-button {
+    margin-left: -8rem;  
+}
+
+.buttons .delete-button {
+
+    margin-left: -10rem;
+
+    
+}
+.buttons .join-group-button {
+    margin-left: 0;
+}
+
+
 .group-detail_group-banner-right p {
-    color: gray;
-    font-size: .8rem;
+  color: gray;
+  font-size: 0.8rem;
 }
 
 .group-detail_group-banner-right p span {
-    word-spacing: 5px;
+  word-spacing: 5px;
 }
 
+
 section {
-    padding: 2rem;
-    margin: 0;
+  padding: 2rem;
+  margin: 0;
+}
+
+.bottom-section {
+  margin-left: 10rem;
+  margin-top: -2rem;
 }
 
 .small {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
-
 .grey {
-    background-color: #eeeeee
+  background-color: #eeeeee;
+}
+
+.group-detail_group-about p {
+    display: flex;
+  word-wrap: break-word;
+  margin: 0 0 3rem 0;
 }
 
 .flex {
-    display: flex;
+  display: flex;
 }
+
+/* events list */
+
+
+.upcoming-events-list_details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .upcoming-event-list_details .events-list_item {
+    background-color: white;
+  }
+  
+  .events-list_item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 3rem;
+    padding-bottom: 6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .events-list_item img {
+    width: 178px;
+    height: 124px;
+    object-fit: cover;
+    margin-right: 1rem;
+    margin-top: -1rem;
+  }
+  
+  .events-details {
+    flex: 1;
+  }
+
+  .events-date {
+    margin-top: 1.4rem;
+    font-size: .8rem;
+    color: #666;
+    word-spacing: 5px;
+
+  }
+  
+  .events-name {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .events-location {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .events-about {
+    margin-left: -12rem;
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    max-height: 3.6rem; /* 4 lines at 0.9rem line-height */
+  }
+  
+  .events-attendance,
+  .events-private {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
 
 /* todo do styling for single group and event by group*/
