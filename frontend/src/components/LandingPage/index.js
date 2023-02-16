@@ -6,10 +6,16 @@ import landingPage3 from "../../images/landingPage/landingPage3.jpg";
 import landingPage4 from "../../images/landingPage/landingPage4.jpg";
 import GroupList from "../Groups/GroupList";
 import { Link, Route, useHistory } from "react-router-dom";
+import SignupFormModal from "../SignupFormModal";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import React, { useState, useEffect, useRef } from "react";
+
 
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
   const history = useHistory()
+  const ulRef = useRef();
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleStartGroupClick = (e) => {
     e.preventDefault();
@@ -20,6 +26,23 @@ function LandingPage() {
     e.preventDefault();
     console.log("join button clicked");
   };
+
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
+
 
   return (
     <div className="landing-page">
@@ -85,7 +108,11 @@ function LandingPage() {
         </div>
       </div>
       <div className="landing-page_section-4">
-        <button onClick={handleButtonJoinClick} className="landing-page_section-4_button">Join Gatherly</button>
+                <OpenModalMenuItem
+                itemText="Join Gatherly"
+                onItemClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+              />
       </div>
     </div>
   );
