@@ -16,14 +16,15 @@ function GroupDetail() {
   const { groupId } = useParams();
   const group = useSelector((state) => state.groups.singleGroup);
   const getLoggedInUser = useSelector((state) => state.session.user);
-  const allEventsByGroup = useSelector((state) => state.events.allEventsByGroup);
+  const allEventsByGroup = useSelector(
+    (state) => state.events.allEventsByGroup
+  );
   const events = allEventsByGroup.Events;
   let buttonVisibilityOrganizer;
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
   const history = useHistory();
   const [event, setEvent] = useState("");
-
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -84,17 +85,54 @@ function GroupDetail() {
     }
   });
 
+   // time and date formatting
+
+    let startDateFormatted;
+    let startTimeFormatted;
+
+   for (let i = 0; i < events.length; i++) {
+    const [startDateString, startTimeString] = events[i].startDate.split("T");
+
+ 
+   const startDateObj = new Date(startDateString);
+   const startTimeObj = new Date(`1970-01-01T${startTimeString}`);
+
+ 
+    startDateFormatted = startDateObj.toLocaleDateString("en-US", {
+     month: "long",
+     day: "numeric",
+     year: "numeric",
+   });
+
+ 
+    startTimeFormatted = startTimeObj.toLocaleTimeString("en-US", {
+     hour: "numeric",
+     minute: "numeric",
+   });
+
+  }
+
+
+
+
+
+  const handleJoinGroup = () => {
+    alert("Function coming soon!");
+  };
+
   // Split the sorted events array into upcoming and past events
   const upcomingEvents = sortedEvents.filter((event) => {
     return new Date(event.endDate) >= new Date();
   });
+
+  const totalUpcomingEvents = upcomingEvents.length;
 
   // sort the past events
   const pastEvents = sortedEvents.filter((event) => {
     return new Date(event.endDate) < new Date();
   });
 
-  upcomingEvents.push(...pastEvents);
+  const totalPastEvents = pastEvents.length;
 
   return (
     <>
@@ -103,106 +141,146 @@ function GroupDetail() {
           <DeleteGroupModal setShowModal={setShowModal} />
         </div>
       )}
-      <div className="group-detail_banner-details">
+      <section className="top-section">
         <div className="group-detail_bread-crumb">
-          <p> &#62; </p>
-          <Link to="/groups">Groups</Link>
-        </div>
-        <div className="group-detail_group-image">
-          <img src={group.GroupImages[0].url} />
-        </div>
-        <div className="group-detail_group-name">
-          <h1>{group.name}</h1>
-        </div>
-        <div className="group-detail_group-location">
-          <p>{group.city}</p>
-        </div>
-        <div className="group-detail_group-about">
-          <p>What we are about</p>
-          <p>{group.about}</p>
-        </div>
-        <div className="group-detail_group-event-number">
           <p>
-            {group.numEvents <= 1
-              ? `${group.numEvents} Event`
-              : `${group.numEvents} Events`}
+            {" "}
+            &#60; <Link to="/groups">Groups</Link>{" "}
           </p>
         </div>
-        <p className="dot">&#903;</p>
-        <div className="group-detail_group-status">
-          <p>{group.private ? "Private" : "Public"}</p>
-        </div>
-        <div className="group-detail_group-members">
-          <p>
-            {group.numMembers <= 1
-              ? `${group.numMembers} Member`
-              : `${group.numMembers} Members`}
-          </p>
-        </div>
-        <div className="group-detail_group-join">
-          <button style={{ display: buttonVisibility ? "none" : "block" }}>
-            Join the Group
-          </button>
-          <div className="organizer-only">
+
+        <div className="flex">
+          <img
+            className="group-detail_group-image"
+            src={group.GroupImages[0].url}
+          />
+          <div className="group-detail_group-banner-right">
+            <h1>{group.name}</h1>
+            <p>{group.city}</p>
+            <p>
+              <span>
+                {group.numEvents <= 1
+                  ? `${group.numEvents} Event`
+                  : `${group.numEvents} Events`}{" "}
+              </span>{" "}
+              <span> &#903; </span>{" "}
+              <span> {group.private ? "Private" : "Public"} </span>
+            </p>
+
+            <p>
+              Organized by {group.Organizer.firstName}{" "}
+              {group.Organizer.lastName}
+            </p>
+            <section className="buttons">
+              <span>
+            <button className="join-group-button" onClick={handleJoinGroup} style={{ display: buttonVisibility ? "none" : "block" }}>
+              Join the Group
+            </button>
+            </span>
+            <span>
             <button
+              className="create-button"
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={handleCreateEvent}
             >
               Create event
             </button>
+            </span>
+            <span>
             <button
+              className="update-button"
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={handleUpdateGroup}
             >
               Update
             </button>
+            </span>
+            <span>
             <button
+              className="delete-button"
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={handleShowModal}
             >
               Delete
             </button>
+            </span>
+            </section>
           </div>
         </div>
-        <div className="group-detail_organizer">
-          <p>Organized by</p>
-          <p>{group.Organizer.firstName}</p>
-          <p>{group.Organizer.lastName}</p>
-        </div>
-      </div>
+      </section>
 
-      <div className="event-list_details">
-        <h2>Events</h2>
-        <div key={event.id}>
-          {upcomingEvents.length &&
-            upcomingEvents.map((event) => (
-              <Link
-                to={`/events/${event.id}`}
-                key={event.id}
-                style={{ color: "black" }}
-              >
-                <div className="events-list_item" key={event.id}>
-                  <img src={event.previewImage} />
-                  <div className="events-info">
-                    <h3 className="events-name">{event.name}</h3>
-                    <p className="events-city">{event.Venue.city}</p>
-                    <p className="events-state">{event.Venue.state}</p>
-                    <p className="events-about">{event.description}</p>
-                    <p className="events-events">
-                      {event.numAttending <= 1
-                        ? `${event.numAttending} Attending`
-                        : `${event.numAttending} Attending`}
-                    </p>
-                    <p className="dot">&#903;</p>
-                    <p className="events-private">
-                      {event.private ? "Private" : "Public"}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+      <section className="grey">
+        <section className="bottom-section"> 
+        <h2> Organizer </h2>
+        <p className="small">
+          {group.Organizer.firstName} {group.Organizer.lastName}
+        </p>
+
+        <div className="group-detail_group-about">
+          <h2>What we are about</h2>
+          <p>{group.about}</p>
         </div>
-      </div>
+
+        {/* <div className="group-detail_group-members">
+          <p>
+            {group.numMembers <= 1
+              ? `${group.numMembers} Member`
+              : `${group.numMembers} Members`}
+          </p>
+        </div> */}
+
+        <div className="upcoming-event-list_details">
+          <h2>Upcoming Events {`(${totalUpcomingEvents})`}</h2>
+          <div key={event.id}>
+            {upcomingEvents.length &&
+              upcomingEvents.map((event) => (
+                <Link
+                  to={`/events/${event.id}`}
+                  key={event.id}
+                  style={{ color: "black", textDecoration: "none"}}
+                >
+                  <div className="events-list_item" key={event.id}>
+                    <img src={event.previewImage} />
+                    <div className="events-info">
+                      
+                      <p className="events-date"> {` ${startDateFormatted} • ${startTimeFormatted}`} </p>
+                      <h3 className="events-name">{event.name}</h3>
+                      <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
+                      <p className="events-about">{event.description}</p>
+                     
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+          <div>
+            <h2>Past Events {`(${totalPastEvents})`} </h2>
+            <div key={event.id}>
+            {pastEvents.length &&
+              pastEvents.map((event) => (
+                <Link
+                  to={`/events/${event.id}`}
+                  key={event.id}
+                  style={{ color: "black", textDecoration: "none"}}
+                >
+                  <div className="events-list_item" key={event.id}>
+                    <img src={event.previewImage} />
+                    <div className="events-info">
+                    <p className="events-date"> {` ${startDateFormatted} • ${startTimeFormatted}`} </p>
+                      <h3 className="events-name">{event.name}</h3>
+                      <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
+                      <p className="events-about">{event.description}</p>
+                      {console.log(event)}
+                      
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+          </div>
+        </div>
+        </section>
+      </section>
     </>
   );
 }

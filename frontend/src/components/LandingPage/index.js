@@ -6,20 +6,41 @@ import landingPage3 from "../../images/landingPage/landingPage3.jpg";
 import landingPage4 from "../../images/landingPage/landingPage4.jpg";
 import GroupList from "../Groups/GroupList";
 import { Link, Route, useHistory } from "react-router-dom";
+import SignupFormModal from "../SignupFormModal";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import React, { useState, useEffect, useRef } from "react";
 
 function LandingPage() {
   const sessionUser = useSelector((state) => state.session.user);
-  const history = useHistory()
+  const history = useHistory();
+  const ulRef = useRef();
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleStartGroupClick = (e) => {
     e.preventDefault();
-    history.push("/groups/new")
+    history.push("/groups/new");
   };
 
   const handleButtonJoinClick = (e) => {
     e.preventDefault();
     console.log("join button clicked");
   };
+
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
 
   return (
     <div className="landing-page">
@@ -47,7 +68,7 @@ function LandingPage() {
             <img src={landingPage2} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to='/groups'>See all Groups</Link>
+            <Link to="/groups">See all Groups</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Find Gatherings you're interested in</p>
@@ -58,7 +79,7 @@ function LandingPage() {
             <img src={landingPage3} alt="icon" />
           </div>
           <div className="landing-page_section-3_column_link">
-            <Link to="/events">Find an event</Link> 
+            <Link to="/events">Find an event</Link>
           </div>
           <div className="landing-page_section-3_column_caption">
             <p>Explore upcoming events and activities</p>
@@ -85,7 +106,11 @@ function LandingPage() {
         </div>
       </div>
       <div className="landing-page_section-4">
-        <button onClick={handleButtonJoinClick} className="landing-page_section-4_button">Join Gatherly</button>
+        <OpenModalMenuItem
+          itemText="Join Gatherly"
+          onItemClick={closeMenu}
+          modalComponent={<SignupFormModal />}
+        />
       </div>
     </div>
   );

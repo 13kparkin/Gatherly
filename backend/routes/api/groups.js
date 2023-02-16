@@ -1017,6 +1017,7 @@ router.get("/:groupId/events", async (req, res) => {
         groupId: event.groupId,
         venueId: event.venueId,
         name: event.name,
+        description: event.description,
         type: event.type,
         startDate: event.startDate,
         endDate: event.endDate,
