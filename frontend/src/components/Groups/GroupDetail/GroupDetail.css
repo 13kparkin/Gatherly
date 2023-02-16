@@ -48,12 +48,15 @@ h2 {
 }
 
 .buttons .update-button {
-    margin-left: -8rem;  
+    margin-left: -11rem;  
+}
+.buttons .create-button {
+    margin-left: -10rem;  
 }
 
 .buttons .delete-button {
 
-    margin-left: -10rem;
+    margin-left: -14rem;
 
     
 }
