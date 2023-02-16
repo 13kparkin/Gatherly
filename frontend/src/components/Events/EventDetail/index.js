@@ -9,24 +9,31 @@ import {
   deleteEvent,
 } from "../../../store/events";
 import DeleteEventModal from "../DeleteEventModal";
+import { getGroupsDetails } from "../../../store/groups";
 
 function EventDetail() {
   const dispatch = useDispatch();
   const { eventId } = useParams();
-  const event = useSelector((state) => state.events.singleEvent);
+  let event = useSelector((state) => state.events.singleEvent);
   const getLoggedInUser = useSelector((state) => state.session.user);
   let buttonVisibilityOrganizer;
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
   const history = useHistory();
   let groupId = event.groupId;
-
+  
   const handleShowModal = () => {
     setShowModal(true);
   };
 
   useEffect(() => {
-    dispatch(getEventsDetails(eventId));
+
+    async function getData() {
+    event = await dispatch(getEventsDetails(eventId));
+
+    }
+
+    getData();
 
     function handleCloseModal(event) {
       if (divRef.current && !divRef.current.contains(event.target)) {
@@ -40,10 +47,10 @@ function EventDetail() {
     };
   }, [dispatch, divRef]);
 
-  if (!event || event.EventImages?.length === 0 || event?.id !== Number(eventId)) {
+  if (!event || event.EventImages?.length === 0 || event?.id !== Number(eventId) || event.GroupImages?.length === 0) {
     return null;
   }
-  console.log("event", event)
+
 
   const buttonVisibility =
     getLoggedInUser === null || event?.GroupOrganizer?.id === getLoggedInUser?.id;
@@ -86,7 +93,7 @@ function EventDetail() {
     minute: "numeric",
   });
 
-  // fromating the price to be in USD.
+
   const price = event.price.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -99,22 +106,28 @@ function EventDetail() {
           <DeleteEventModal setShowModal={setShowModal} /> 
         </div>
       )}
+      <section className="event-detail-container">
       <div className="event-detail_banner-details">
         <div className="event-detail_bread-crumb">
-          <p> &#62; </p>
-          <Link to="/events">events</Link>
-        </div>
-        <div className="event-detail_event-image">
-          <img src={event.EventImages[0].url} />
-        </div>
-        <div className="event-detail_event-name">
+          <Link to="/events"> &#60; events</Link>
           <h1>{event.name}</h1>
+          <p>Hosted by: {event.GroupOrganizer.firstName} {event.GroupOrganizer.lastName}</p>
         </div>
+          <img className="event-detail_event-image" src={event.EventImages[0].url} />
+
+        <div className="group-card_details">
+          <img className="group-card-img" src={event.GroupImages[0]?.url}/>
+          <h3 className="group-name"> {event.Group.name}</h3>
+          <span> {event.Group.private ? "Private" : "Public"}</span>
+        </div>
+        
+
+        <section className="bottom">
         <div className="event-detail_event-location">
           <p>{event.city}</p>
         </div>
         <div className="event-detail_event-about">
-          <p>What we are about</p>
+          <p>Details</p>
           <p>{event.about}</p>
         </div>
         <p className="dot">&#903;</p>
@@ -146,11 +159,6 @@ function EventDetail() {
               Delete
             </button>
           </div>
-        </div>
-        <div className="event-detail_organizer">
-          <p>Hosted by:</p>
-          <p>{event.GroupOrganizer.firstName}</p>
-          <p>{event.GroupOrganizer.lastName}</p>
         </div>
         <div className="event-info-box">
           <div className="event-info-box_row">
@@ -184,7 +192,9 @@ function EventDetail() {
           <h2>Description</h2>
           <p>{event.description}</p>
         </div>
+        </section>
       </div>
+      </section>
     </>
   );
 }

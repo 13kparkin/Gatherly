@@ -599,9 +599,18 @@ router.get("/:eventId", async (req, res) => {
         {
           model: EventImage,
           attributes: ["id", "url"],
-        },
+        }
       ],
     });
+
+
+    const groupImages = await GroupImage.findAll({
+      where: {
+        groupId: event.Group.id,
+      },
+      attributes: ["id", "url"],
+    });
+
 
      const groupOrganizerId = event.Group.organizerId;
      
@@ -662,6 +671,7 @@ router.get("/:eventId", async (req, res) => {
       endDate: event.endDate,
       numAttending: eventNumAttending.numAttending,
       Group: event.Group,
+      GroupImages: groupImages,
       GroupOrganizer: groupOrganizer,
       Venue: event.Venue,
       EventImages: event.EventImages,

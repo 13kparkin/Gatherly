@@ -1,8 +1,22 @@
 
-.event-detail_event-image img {
+
+
+.event-detail_event-image {
     width: 544px;
     height: 320px;
 }
+
+.group-card-img {
+    width: 90px;
+    height: 62px;
+}
+
+.grey {
+    margin-right: -2rem;
+    margin-left: -2rem;
+    margin-bottom: -2rem;
+}
+
 
 
 /* todo do styling for single group */
