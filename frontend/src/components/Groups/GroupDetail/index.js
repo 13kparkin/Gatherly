@@ -253,7 +253,10 @@ function GroupDetail() {
                 </Link>
               ))}
           </div>
-          <div>
+          <div> 
+            
+
+            <div className="past-event-list_details" style={pastEvents.length < 1 ? {display:'none'}: {display: 'block'}}>
             <h2>Past Events {`(${totalPastEvents})`} </h2>
             <div key={event.id}>
             {pastEvents.length &&
@@ -270,12 +273,12 @@ function GroupDetail() {
                       <h3 className="events-name">{event.name}</h3>
                       <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
                       <p className="events-about">{event.description}</p>
-                      {console.log(event)}
                       
                     </div>
                   </div>
                 </Link>
               ))}
+            </div>
           </div>
           </div>
         </div>
