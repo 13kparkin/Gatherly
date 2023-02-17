@@ -3,8 +3,9 @@
 
 .event-banner {
     display: flex;
-    margin-left: 5rem;
+    margin-left: 10rem;
     padding-top: 2rem;
+
 }
 
 .event-detail_event-image {
@@ -46,7 +47,7 @@
 }
 
 .event-detail_bread-crumb {
-    margin-left: 5rem;
+    margin-left: 10rem;
     padding-bottom: 1.5rem;
 }
 
@@ -60,6 +61,7 @@
     padding-left: 3rem;
     padding-top: 2rem;
     padding-bottom: 1rem;
+    
 }
 
 
@@ -83,7 +85,7 @@
     margin-left: 1.7rem;
 }
 
-.location {
+.locations {
     margin-left: 2.5rem;
 }
 
@@ -97,18 +99,21 @@
 .join {
     margin-top: 1.5rem;
     margin-left: -0.6rem;
+
 }
 
 .event-detail_event-description {
-    margin-left: 5rem;
+    margin-left: 10rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
     padding-bottom: 2rem;
+    margin-right: 10rem;
 }
 
 .main-container {
     background-color: #eeeeee;
     padding-bottom: 10rem;
+    
 }
 
 

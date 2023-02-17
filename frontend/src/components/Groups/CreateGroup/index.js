@@ -21,9 +21,12 @@ function CreateGroup() {
     e.preventDefault();
     setErrors({});
     let errors = {};
+    const groupLocation1 = groupLocation.split(",");
+    const [city, state] = groupLocation1;
+    console.log(city, state)
 
-    if (!groupLocation) {
-      errors["groupLocation"] = "Location is required";
+    if (!groupLocation || !groupLocation.includes(",") || city.length === 0 || state.length === 0) {
+      errors["groupLocation"] = "Location is required with proper format (City, State)";
     }
 
     if (!groupName) {
@@ -92,7 +95,7 @@ function CreateGroup() {
         <div className='title-container'> 
         <h1>Start a New Group</h1>
         </div>
-        <div className="location">
+        <div className="location-create-group">
         <h2>Set your group's location</h2>
         <p>
           Gatherly groups meet locally, in person, and online. We'll connect you

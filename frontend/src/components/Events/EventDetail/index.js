@@ -47,9 +47,18 @@ function EventDetail() {
     };
   }, [dispatch, divRef]);
 
-  if (!event || event.EventImages?.length === 0 || event?.id !== Number(eventId) || event.GroupImages?.length === 0) {
+
+  if (!event || event?.id !== Number(eventId) || !event.GroupImages) {
     return null;
   }
+
+  let image;
+
+  if (event.GroupImages.length === 1) {
+     image = event.GroupImages[0];
+  }
+
+  console.log(event.EventImages)
 
 
   const buttonVisibility =
@@ -114,7 +123,7 @@ function EventDetail() {
         </div>
         <section className='main-container'>
         <div className="event-banner">
-          <img className="event-detail_event-image" src={event.EventImages[0].url} />
+          <img className="event-detail_event-image" src={image.url} />
         
         <div>
         <Link className="group-card_details" style={{color: 'black', textDecoration: 'none'}} to={`/groups/${event.groupId}`}>
@@ -143,7 +152,7 @@ function EventDetail() {
           </div>
           <div className="event-info-box_row">
             <i className="fas fa-map-marker-alt">
-            <span className="location">{event.location === "online" ? "Online" : "In person"}</span>
+            <span className="locations">{event.location === "online" ? "Online" : "In person"}</span>
             </i>
           </div>
 

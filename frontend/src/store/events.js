@@ -47,17 +47,19 @@ export const getEventsDetails = (eventId) => async (dispatch) => {
 };
 
 export const getEventsDetailsByGroupId = (groupId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/groups/${groupId}/events`);
-  if (response.ok) {
+  try {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`);
     const data = await response.json();
     dispatch(setAllEventsByGroup(data));
     return data;
+  }
+  catch (e) {
+    return ''
   }
 };
 
 export const createEvent = (event,groupId) => async (dispatch) => {
   const { venueId, name, type, capacity, price, description, startDate, endDate, imageUrl } = event;
-  console.log(event)
   const eventResponse = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({

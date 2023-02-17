@@ -18,6 +18,7 @@ form {
 .events-title input {
   background-color: #e8f0fe;
   width: 20rem;
+  margin-left: 1rem;
 }
 
 .event-create-name {

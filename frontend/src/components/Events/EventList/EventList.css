@@ -33,13 +33,16 @@
     flex-direction: row;
     margin: 0 0 0 1rem;
     padding: 0 0 2rem 1rem;
+    max-width: 50rem;
+    overflow: hidden;
+    word-wrap: break-word;
     
   }
   
   .event-list_item {   
     display: flex;
     flex-direction: column;
-    width: 70vw ;
+    width: 100rem ;
     margin-left: 8rem;
     margin-bottom: 2rem;
     padding-bottom: 2rem;
@@ -87,6 +90,12 @@
     font-size: 13px;
     margin: 1rem 0 0 5rem;
     padding: 0 0 0 1rem;
+    word-wrap: break-word;
+    overflow-y: hidden;
+    max-width: 50rem;
+    max-height: 2rem;
+    text-overflow: hidden;
+    white-space: wrap;
 
   }
   
