@@ -94,7 +94,7 @@ function CreateEvent(){
         <h1>Create a new event for {group.name}</h1>
         {errors.eventName && <div className='errors'>{errors.eventName}</div>}
           <label htmlFor="eventName">What is the name of your event?</label>
-          <div className='event-name'>
+          <div className='event-create-name'>
           <input
             type="text"
             id="eventName"
