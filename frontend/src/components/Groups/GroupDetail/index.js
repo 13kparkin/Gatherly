@@ -19,7 +19,7 @@ function GroupDetail() {
   const allEventsByGroup = useSelector(
     (state) => state.events.allEventsByGroup
   );
-  let events = allEventsByGroup.Events;
+  const events = allEventsByGroup.Events;
   let buttonVisibilityOrganizer;
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
@@ -36,28 +36,9 @@ function GroupDetail() {
     history.push(`/groups/${group.id}/events/new`);
   };
 
-  
-
   useEffect(() => {
     dispatch(getGroupsDetails(groupId));
-
-    const eventData = async () => {
-
-
-      const newEvent = await dispatch(getEventsDetailsByGroupId(groupId));
-  
-    
-  
-        if (newEvent) {
-          setEvent('')
-        } else{
-          setEvent('')
-        }
-  
-  
-      }
-      
-      eventData();
+    dispatch(getEventsDetailsByGroupId(groupId));
 
     function handleCloseModal(event) {
       if (divRef.current && !divRef.current.contains(event.target)) {
@@ -93,6 +74,7 @@ function GroupDetail() {
   let totalUpcomingEvents;
   let pastEvents;
   let totalPastEvents;
+
 
   if (events !== undefined) {
     sortedEvents = events.slice().sort((a, b) => {
@@ -264,7 +246,7 @@ function GroupDetail() {
                         ? { display: "none" }
                         : { display: "block" }
                     }  
-              className="upcoming-event-list_details">
+                    className="upcoming-event-list_details">
             {totalUpcomingEvents && (
               <>
                 <h2>Upcoming Events ({totalUpcomingEvents})</h2>
