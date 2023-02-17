@@ -54,7 +54,8 @@ export const getEventsDetailsByGroupId = (groupId) => async (dispatch) => {
     return data;
   }
   catch (e) {
-    return ''
+    dispatch(setAllEventsByGroup({}));
+    return e
   }
 };
 
@@ -100,7 +101,6 @@ export const createEvent = (event,groupId) => async (dispatch) => {
 
 
 export const deleteEvent = (eventId) => async (dispatch) => {
-  console.log(eventId)
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: "DELETE"
   })
@@ -126,6 +126,7 @@ const eventsReducer = (state = initialState, action) => {
     case REMOVE_EVENT:
       return { ...state, singleEvent: {} };
     case SET_ALL_EVENTS_BY_GROUP:
+      console.log(action.payload)
       return { ...state, allEventsByGroup: action.payload };
     default:
       return state;
