@@ -1,5 +1,112 @@
-/* todo need to style create a group page */
+
+form {
+  margin-left: 15rem;
+  padding-right: 10rem;
+}
 
 .errors {
     color: red;
   }
+
+.events-title {
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  
+}
+
+.events-title input {
+  background-color: #e8f0fe;
+  width: 20rem;
+}
+
+.event-name {
+  margin-left: -1rem;
+  margin-top: .5rem;
+}
+
+.section-one {
+  display: block;
+  border-bottom: 1px solid #ccc;
+}
+
+.event-type {
+  margin-top: 1rem;
+}
+
+.event-type-selction {
+  padding-top: .5rem;
+  padding-bottom: 2rem;
+}
+
+.event-type-selction select {
+  background-color: #e8f0fe;
+}
+
+
+.event-price {
+  display: block;
+}
+
+.event-price input {
+  background-color: #e8f0fe;
+  width: 20rem;
+  margin-top: .5rem;
+  margin-bottom: 2rem;
+}
+
+.start-date {
+  margin-top: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.start-date input {
+  background-color: #e8f0fe;
+  width: 12rem;
+  margin-bottom: 2rem;
+}
+
+.event-image {
+  margin-top: 1rem;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.event-image input {
+  background-color: #e8f0fe;
+  width: 20rem;
+  margin-bottom: 2rem;
+}
+
+.description {
+  margin-top: 1rem;
+}
+
+.description textarea {
+  background-color: #e8f0fe;
+  width: 40rem;
+  height: 10rem;
+}
+
+.submit-buttons {
+  background-color: red;
+  color: white;
+  width: 8rem;
+  height: 2rem;
+  margin-top: 2rem;
+  -webkit-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+}
+
+.disableds {
+  background-color: grey;
+  color: white;
+  width: 8rem;
+  height: 2rem;
+  margin-top: 2rem;
+  -webkit-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+}

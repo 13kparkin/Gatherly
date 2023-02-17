@@ -76,6 +76,8 @@ function CreateGroup() {
 
   const isButtonDisabled = !groupName || !groupDescription;
 
+  const buttonClass = isButtonDisabled ? "disabled" : "submit-button";
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -87,10 +89,13 @@ function CreateGroup() {
           </div>
         )}
         {submitted && <div className="alert alert-success">Group created!</div>}
+        <div className='title-container'> 
         <h1>Start a New Group</h1>
+        </div>
+        <div className="location">
         <h2>Set your group's location</h2>
         <p>
-          Meetup groups meet locally, in person, and online. We'll connect you
+          Gatherly groups meet locally, in person, and online. We'll connect you
           with people in your area.
         </p>
         {errors["groupLocation"] && (
@@ -102,11 +107,13 @@ function CreateGroup() {
           value={groupLocation}
           onChange={(e) => setGroupLocation(e.target.value)}
         />
+        </div>
+        <div className="groups-name">
 
         <h2>What will your group's name be?</h2>
         <p>
           Choose a name that will give people a clear idea of what the group is
-          about. Feel free to get creative! You can edit this later if you
+          about. <br/> Feel free to get creative! You can edit this later if you
           change your mind.
         </p>
         {errors["groupName"] && (
@@ -118,13 +125,14 @@ function CreateGroup() {
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
         />
-        <div className="section">
+        </div>
+        <div className="abouts">
           <h2>Describe the purpose of your group.</h2>
           <p>
             People will see this when we promote your group, but you'll be able
             to add to it later, too.
           </p>
-          <ol>
+          <ol className="list">
             <li>What's the purpose of the group?</li>
             <li>Who should join?</li>
             <li>What will you do at your events?</li>
@@ -141,9 +149,8 @@ function CreateGroup() {
         </div>
 
         <div className="final-section">
-          <p>Final steps..</p>
-        </div>
-        <div className="section">
+          <h2>Final steps..</h2>
+
           <label>Is this an in-person or online group?</label>
           {errors["inPersonOrOnline"] && (
             <div className="error">{errors["inPersonOrOnline"]}</div>
@@ -185,7 +192,7 @@ function CreateGroup() {
           />
         </div>
 
-        <button type="submit" disabled={isButtonDisabled}>
+        <button className={buttonClass} type="submit" disabled={isButtonDisabled}>
           Create Group
         </button>
       </form>

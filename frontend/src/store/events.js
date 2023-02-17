@@ -72,11 +72,9 @@ export const createEvent = (event,groupId) => async (dispatch) => {
     }),
   });
 
-  console.log("eventResponse", eventResponse)
 
 
   const data = await eventResponse.json();
-  console.log("data", data)
 
   const imageResponse = await csrfFetch(`/api/events/${data.id}/images`, {
     method: "POST",
