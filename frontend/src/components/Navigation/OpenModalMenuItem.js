@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import './Navigation.css';
 
@@ -17,7 +18,7 @@ function OpenModalMenuItem({
   };
 
   return (
-    <button className='login signup' onClick={onClick}>{itemText}</button>
+    <Link className='login signup' onClick={onClick}>{itemText}</Link>
   );
 }
 
