@@ -19,6 +19,7 @@ h2 {
   word-wrap: break-word;
   margin: 0;
 }
+
 .group-detail_group-banner-right {
   position: relative;
   padding: 0 1rem;
@@ -75,14 +76,11 @@ h2 {
 }
 
 
-section {
-  padding: 2rem;
-  margin: 0;
-}
-
 .bottom-section {
   margin-left: 10rem;
-  margin-top: -2rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .small {

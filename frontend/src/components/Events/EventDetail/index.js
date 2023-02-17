@@ -107,51 +107,61 @@ function EventDetail() {
         </div>
       )}
       <section className="event-detail-container">
-      <div className="event-detail_banner-details">
         <div className="event-detail_bread-crumb">
           <Link to="/events"> &#60; events</Link>
           <h1>{event.name}</h1>
           <p>Hosted by: {event.GroupOrganizer.firstName} {event.GroupOrganizer.lastName}</p>
         </div>
+        <section className='main-container'>
+        <div className="event-banner">
           <img className="event-detail_event-image" src={event.EventImages[0].url} />
-
-        <div className="group-card_details">
+        
+        <div>
+        <Link className="group-card_details" style={{color: 'black', textDecoration: 'none'}} to={`/groups/${event.groupId}`}>
           <img className="group-card-img" src={event.GroupImages[0]?.url}/>
           <h3 className="group-name"> {event.Group.name}</h3>
-          <span> {event.Group.private ? "Private" : "Public"}</span>
+          <span className="private"> {event.Group.private ? "Private" : "Public"}</span>
+          </Link>
         </div>
+
+        <div className="event-detail_event-info">
+
+        <div className="event-info-box_row">
+            <i className="far fa-clock"> 
+            <span className="start"> Start {`${startDateFormatted}`} &#183; {` ${startTimeFormatted}`} </span> <br/>
+              <span className="end">End {`${endDateFromatted}`} &#183; {` ${endTimeFormatted}`} </span>
+
+              </i>
+          
+
+          </div>
+
+          <div className="event-info-box_row">
+            <i className="fas fa-money-bill-wave">
+            <span className="price">{event.price === 0 ? "FREE" : `${price}`}</span>
+            </i>
+          </div>
+          <div className="event-info-box_row">
+            <i className="fas fa-map-marker-alt">
+            <span className="location">{event.location === "online" ? "Online" : "In person"}</span>
+            </i>
+          </div>
+
+        </div>
+
         
 
-        <section className="bottom">
-        <div className="event-detail_event-location">
-          <p>{event.city}</p>
-        </div>
-        <div className="event-detail_event-about">
-          <p>Details</p>
-          <p>{event.about}</p>
-        </div>
-        <p className="dot">&#903;</p>
-        <div className="event-detail_event-status">
-          <p>{event.private ? "Private" : "Public"}</p>
-        </div>
-        <div className="event-detail_event-members">
-          <p>
-            {event.numAttending <= 1
-              ? `${event.numAttending} Attending`
-              : `${event.numAttending} Attending`}
-          </p>
-        </div>
         <div className="event-detail_event-join">
-          <button style={{ display: buttonVisibility ? "none" : "block" }}>
+          <button className="join" onClick={() => alert('function coming soon')} style={{ display: buttonVisibility ? "none" : "block" }}>
             Join the Event
           </button>
           <div className="organizer-only">
-            <button
+            {/* <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={() => history.push(`/groups/${groupId}/events/new`)}
             >
               Create Event
-            </button>
+            </button> */}
             <button
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={handleShowModal}
@@ -160,41 +170,32 @@ function EventDetail() {
             </button>
           </div>
         </div>
-        <div className="event-info-box">
-          <div className="event-info-box_row">
-            <i className="far fa-clock"></i>
-            <div className="event-info-box_column">
-              <p>Start</p>
-              <p>{`Date: ${startDateFormatted}`}</p>
-              <p>{`Time: ${startTimeFormatted}`}</p>
-            </div>
-            <p className="dot">&#183;</p>
-            <div className="event-info-box_column">
-              <p>End</p>
-              <p>{`Date: ${endDateFromatted}`}</p>
-              <p>{`Time: ${endTimeFormatted}`}</p>
-            </div>
-          </div>
-          <div className="event-info-box_row">
-            <i className="fas fa-money-bill-wave"></i>
-            <div className="event-info-box_column">
-              <p>Price</p>
-              <p>{event.price === 0 ? "FREE" : `${price}`}</p>
-            </div>
-          </div>
-          <div className="event-info-box_row">
-            <i className="fas fa-map-marker-alt"></i>
-            <div className="event-info-box_column">
-              <p>{event.location === "online" ? "Online" : "In person"}</p>
-              <p>{event.locationDetails}</p>
-            </div>
-          </div>
-          <h2>Description</h2>
-          <p>{event.description}</p>
+        
         </div>
+
+        <section className="bottom">
+        {/* <div className="event-detail_event-status">
+          <p>{event.private ? "Private" : "Public"}</p>
+        </div>
+        <div className="event-detail_event-members">
+          <p>
+            {event.numAttending <= 1
+              ? `${event.numAttending} Attending`
+              : `${event.numAttending} Attending`}
+          </p>
+        </div> */}
+       
+
+          <div className="event-detail_event-description">
+          <h2>Details</h2>
+          <p>{event.description}</p>
+          </div>
+
         </section>
-      </div>
+        </section>
+        
       </section>
+  
     </>
   );
 }

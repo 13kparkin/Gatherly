@@ -1,6 +1,12 @@
 
 
 
+.event-banner {
+    display: flex;
+    margin-left: 5rem;
+    padding-top: 2rem;
+}
+
 .event-detail_event-image {
     width: 544px;
     height: 320px;
@@ -9,12 +15,100 @@
 .group-card-img {
     width: 90px;
     height: 62px;
+    margin-left: 2rem;
 }
 
-.grey {
-    margin-right: -2rem;
-    margin-left: -2rem;
-    margin-bottom: -2rem;
+
+  
+.group-card_details {
+    display: flex;
+    background-color: white;
+    height: 5rem;
+    width: 25rem;
+    margin-left: 2rem;
+    padding-top: 1rem;
+    border-radius: 1rem;
+}
+
+.private {
+    position: absolute;
+    margin-left: 8.7rem;
+    margin-top: 1.4rem;
+    font-size: 12px;
+}
+
+.group-card_details h3 {
+    display: flex;
+    word-wrap: break-word;
+    margin: 0;
+    margin-right: 2rem;
+    font-size: 15px;
+}
+
+.event-detail_bread-crumb {
+    margin-left: 5rem;
+    padding-bottom: 1.5rem;
+}
+
+.event-detail_event-info{
+    position: absolute;
+    background-color: white;
+    margin-left: 36rem;
+    margin-top: 7rem;
+    border-radius: 12px;
+    width: 22rem;
+    padding-left: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+
+.event-info-box_row {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.start {
+    position: absolute;
+    margin-left: 1.7rem;
+    margin-bottom: 2.4rem;
+}
+
+.end {
+    position: absolute;
+    margin-left: 2.8rem;
+}
+
+.price {
+    margin-left: 1.7rem;
+}
+
+.location {
+    margin-left: 2.5rem;
+}
+
+.event-detail_event-join {
+    position: absolute;
+    margin-left: 54rem;
+    margin-top: 15rem;
+
+}
+
+.join {
+    margin-top: 1.5rem;
+    margin-left: -0.6rem;
+}
+
+.event-detail_event-description {
+    margin-left: 5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+}
+
+.main-container {
+    background-color: #eeeeee;
+    padding-bottom: 10rem;
 }
 
 

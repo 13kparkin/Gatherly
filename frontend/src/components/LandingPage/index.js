@@ -91,7 +91,7 @@ function LandingPage() {
           </div>
           <div className="landing-page_section-3_column_link">
             {!sessionUser ? (
-              <Link to="/" className="disabled">
+              <Link to="/" className="greyed">
                 Start a group
               </Link>
             ) : (

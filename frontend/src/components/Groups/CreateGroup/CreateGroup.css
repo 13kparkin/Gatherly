@@ -1,5 +1,127 @@
-/* todo need to style create a group page */
-
 .error {
-    color: red;
-  }
+  color: red;
+}
+
+form {
+  margin-left: 7rem;
+  padding-right: 5rem;
+}
+
+.title-container h1 {
+  color: teal;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  margin-left: 2.3rem;
+}
+
+.location {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.location h2 {
+  padding-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.location input {
+  background-color: #e8f0fe;
+  width: 20rem;
+}
+
+.groups-name h2 {
+  font-size: 1.5rem;
+  padding-top: 1rem;
+}
+
+.groups-name input {
+  background-color: #e8f0fe;
+  width: 20rem;
+}
+
+.groups-name {
+  padding-bottom: 1rem;
+  margin-left: 2.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-right: 0;
+}
+
+.groups-name p {
+  font-size: 1rem;
+}
+
+.abouts h2 {
+  padding-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.abouts p {
+  position: absolute;
+  margin-top: 0.5rem;
+}
+
+.abouts ol {
+  margin-top: 3rem;
+}
+
+.abouts textarea {
+  background-color: #e8f0fe;
+  width: 20rem;
+  height: 10rem;
+}
+
+.abouts {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  margin-left: 3rem;
+}
+
+.final-section {
+  margin-left: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.final-section label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.final-section h2 {
+  padding-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.final-section p {
+  font-size: 1rem;
+}
+
+.final-section input {
+  background-color: #e8f0fe;
+  width: 20rem;
+}
+
+.submit-button {
+  background-color: red;
+  color: white;
+  width: 8rem;
+  height: 2rem;
+  margin-top: 1rem;
+  margin-left: 3rem;
+  -webkit-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: grey;
+  color: white;
+  width: 8rem;
+  height: 2rem;
+  margin-top: 1rem;
+  margin-left: 3rem;
+  -webkit-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+}

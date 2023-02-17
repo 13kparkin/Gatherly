@@ -15,15 +15,15 @@ header {
 
 .profile-button-container {
   position: absolute;
-  padding-bottom: 10px;
-  right: 10px;
+  padding-bottom: .5rem;
+  right: 2rem;
 }
 
 
 .create-group {
   position: absolute;
-  right: 50px;
-  padding-bottom: 10px;
+  right: 5rem;
+  padding-bottom: .5rem;
   text-decoration: none;
   color: #ff6560;
   font-weight: bold;

@@ -31,44 +31,61 @@ function LoginFormModal() {
       .then(closeModal)
   }
 
+  const isButtonDisabled = credential.length < 4 || password.length < 6;
+
+  const button = isButtonDisabled ? 'disabled-login' : 'submit-button-login';
+
   return (
     <>
-    <div className="login-form">
-      <h1>Log In</h1>
+    
+      
       <form onSubmit={handleSubmit}>
+      <div className="login-form">
+      <h1>Log In</h1>
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
+        <div className="login-form-username">
         <label>
           Username or Email
+          </label>
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
+        
+        </div>
+        <div className="login-form-password">
         <label>
           Password
+          </label>
           <input
-            style={{marginBottom: "10px"}}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <button 
+        
+        </div>
+        <button
+        className={button}
         type="submit"
-        disabled={credential.length < 4 || password.length < 6}
+        disabled={isButtonDisabled}
         >Log In</button>
-      </form>
-      <button
+
+
+        <button
+        className="demo-button"
         type="button"
         onClick={handleDemoLogin}>Demo User</button> 
-    </div>
+        </div>
+      </form>
+      
+
     </>
   );
 }
