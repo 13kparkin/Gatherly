@@ -28,6 +28,7 @@
     flex-direction: row;
     margin: 0 0 0 1rem;
     padding: 0 0 2rem 1rem;
+    width: 50rem;
     
   }
   
@@ -73,6 +74,12 @@
     font-size: 13px;
     margin: 1rem 0 0 5rem;
     padding: 0 0 0 1rem;
+    word-wrap: break-word;
+    overflow-y: hidden;
+    max-width: 50rem;
+    max-height: 2rem;
+    text-overflow: hidden;
+    white-space: wrap;
 
   }
   

@@ -66,8 +66,8 @@ function ProfileButton({ user }) {
           {user ? (
             <>
               {`Hello, ${user.firstName}`}
-              <li>{user.email}</li>
-              <Link onClick={logout}>Log Out</Link>
+              <div>{user.email}</div>
+              <Link className="view-groups" onClick={logout}>Log Out</Link>
               <Link className="view-groups" to='/groups'>View Groups</Link>
               <Link className="view-events" to='/events'>View Events</Link>
             </>

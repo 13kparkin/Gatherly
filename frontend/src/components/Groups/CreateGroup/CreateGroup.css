@@ -14,17 +14,18 @@ form {
   margin-left: 2.3rem;
 }
 
-.location {
+.location-create-group {
   border-bottom: 1px solid #ccc;
   padding-bottom: 1rem;
+  margin-left: 2.5rem;
 }
 
-.location h2 {
+.location-create-group h2 {
   padding-top: 1rem;
   font-size: 1.5rem;
 }
 
-.location input {
+.location-create-group input {
   background-color: #e8f0fe;
   width: 20rem;
 }

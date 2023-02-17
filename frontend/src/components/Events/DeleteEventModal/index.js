@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { deleteGroup, getGroupsDetails, getGroups } from "../../../store/groups";
+import { deleteEvent} from "../../../store/events";
+import { getGroups } from "../../../store/groups";
 import "./DeleteEventModal.css";
 
 
@@ -15,7 +16,7 @@ function DeleteEvent({ setShowModal }) {
 
   
   const handleDeleteEvent = () => {
-    dispatch(deleteGroup(eventId)).then(() => {
+    dispatch(deleteEvent(eventId)).then(() => {
       dispatch(getGroups());
     history.push("/events");
     })

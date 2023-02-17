@@ -19,7 +19,7 @@ function GroupDetail() {
   const allEventsByGroup = useSelector(
     (state) => state.events.allEventsByGroup
   );
-  const events = allEventsByGroup.Events;
+  let events = allEventsByGroup.Events;
   let buttonVisibilityOrganizer;
   const [showModal, setShowModal] = useState(false);
   const divRef = useRef(null);
@@ -36,9 +36,28 @@ function GroupDetail() {
     history.push(`/groups/${group.id}/events/new`);
   };
 
+  
+
   useEffect(() => {
     dispatch(getGroupsDetails(groupId));
-    dispatch(getEventsDetailsByGroupId(groupId));
+
+    const eventData = async () => {
+
+
+      const newEvent = await dispatch(getEventsDetailsByGroupId(groupId));
+  
+    
+  
+        if (newEvent) {
+          setEvent('')
+        } else{
+          setEvent('')
+        }
+  
+  
+      }
+      
+      eventData();
 
     function handleCloseModal(event) {
       if (divRef.current && !divRef.current.contains(event.target)) {
@@ -65,74 +84,75 @@ function GroupDetail() {
   }
 
   // Sort the events array by date
-  const sortedEvents = events.slice().sort((a, b) => {
-    const aStartDate = new Date(a.startDate);
-    const bStartDate = new Date(b.startDate);
-    if (aStartDate < bStartDate) {
-      return -1;
-    } else if (aStartDate > bStartDate) {
-      return 1;
-    } else {
-      const aEndDate = new Date(a.endDate);
-      const bEndDate = new Date(b.endDate);
-      if (aEndDate < bEndDate) {
+  let sortedEvents;
+  let startDateFormatted;
+  let startTimeFormatted;
+  let endDateFormatted;
+  let endTimeFormatted;
+  let upcomingEvents;
+  let totalUpcomingEvents;
+  let pastEvents;
+  let totalPastEvents;
+
+  if (events !== undefined) {
+    sortedEvents = events.slice().sort((a, b) => {
+      const aStartDate = new Date(a.startDate);
+      const bStartDate = new Date(b.startDate);
+      if (aStartDate < bStartDate) {
         return -1;
-      } else if (aEndDate > bEndDate) {
+      } else if (aStartDate > bStartDate) {
         return 1;
       } else {
-        return 0;
+        const aEndDate = new Date(a.endDate);
+        const bEndDate = new Date(b.endDate);
+        if (aEndDate < bEndDate) {
+          return -1;
+        } else if (aEndDate > bEndDate) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
+    });
+
+    // time and date formatting
+
+    for (let i = 0; i < events.length; i++) {
+      const [startDateString, startTimeString] = events[i].startDate.split("T");
+
+      const startDateObj = new Date(startDateString);
+      const startTimeObj = new Date(`1970-01-01T${startTimeString}`);
+
+      startDateFormatted = startDateObj.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      startTimeFormatted = startTimeObj.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      });
     }
-  });
 
-   // time and date formatting
+    // Split the sorted events array into upcoming and past events
+    upcomingEvents = sortedEvents.filter((event) => {
+      return new Date(event.endDate) >= new Date();
+    });
 
-    let startDateFormatted;
-    let startTimeFormatted;
+    totalUpcomingEvents = upcomingEvents.length;
 
-   for (let i = 0; i < events.length; i++) {
-    const [startDateString, startTimeString] = events[i].startDate.split("T");
+    // sort the past events
+    pastEvents = sortedEvents.filter((event) => {
+      return new Date(event.endDate) < new Date();
+    });
 
- 
-   const startDateObj = new Date(startDateString);
-   const startTimeObj = new Date(`1970-01-01T${startTimeString}`);
-
- 
-    startDateFormatted = startDateObj.toLocaleDateString("en-US", {
-     month: "long",
-     day: "numeric",
-     year: "numeric",
-   });
-
- 
-    startTimeFormatted = startTimeObj.toLocaleTimeString("en-US", {
-     hour: "numeric",
-     minute: "numeric",
-   });
-
+    totalPastEvents = pastEvents.length;
   }
-
-
-
-
 
   const handleJoinGroup = () => {
     alert("Function coming soon!");
   };
-
-  // Split the sorted events array into upcoming and past events
-  const upcomingEvents = sortedEvents.filter((event) => {
-    return new Date(event.endDate) >= new Date();
-  });
-
-  const totalUpcomingEvents = upcomingEvents.length;
-
-  // sort the past events
-  const pastEvents = sortedEvents.filter((event) => {
-    return new Date(event.endDate) < new Date();
-  });
-
-  const totalPastEvents = pastEvents.length;
 
   return (
     <>
@@ -173,55 +193,65 @@ function GroupDetail() {
             </p>
             <section className="buttons">
               <span>
-            <button className="join-group-button" onClick={handleJoinGroup} style={{ display: buttonVisibility ? "none" : "block" }}>
-              Join the Group
-            </button>
-            </span>
-            <span>
-            <button
-              className="create-button"
-              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
-              onClick={handleCreateEvent}
-            >
-              Create event
-            </button>
-            </span>
-            <span>
-            <button
-              className="update-button"
-              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
-              onClick={handleUpdateGroup}
-            >
-              Update
-            </button>
-            </span>
-            <span>
-            <button
-              className="delete-button"
-              style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
-              onClick={handleShowModal}
-            >
-              Delete
-            </button>
-            </span>
+                <button
+                  className="join-group-button"
+                  onClick={handleJoinGroup}
+                  style={{ display: buttonVisibility ? "none" : "block" }}
+                >
+                  Join the Group
+                </button>
+              </span>
+              <span>
+                <button
+                  className="create-button"
+                  style={{
+                    display: buttonVisibilityOrganizer ? "block" : "none",
+                  }}
+                  onClick={handleCreateEvent}
+                >
+                  Create event
+                </button>
+              </span>
+              <span>
+                <button
+                  className="update-button"
+                  style={{
+                    display: buttonVisibilityOrganizer ? "block" : "none",
+                  }}
+                  onClick={handleUpdateGroup}
+                >
+                  Update
+                </button>
+              </span>
+              <span>
+                <button
+                  className="delete-button"
+                  style={{
+                    display: buttonVisibilityOrganizer ? "block" : "none",
+                  }}
+                  onClick={handleShowModal}
+                >
+                  Delete
+                </button>
+              </span>
             </section>
           </div>
         </div>
       </section>
 
       <section className="grey">
-        <section className="bottom-section"> 
-        <h2> Organizer </h2>
-        <p className="small">
-          {group.Organizer.firstName} {group.Organizer.lastName}
-        </p>
+        <section className="bottom-section">
+          <h2> Organizer </h2>
+          <p className="small">
+            {group.Organizer.firstName} {group.Organizer.lastName}
+          </p>
 
-        <div className="group-detail_group-about">
-          <h2>What we are about</h2>
-          <p>{group.about}</p>
-        </div>
+          <div className="group-detail_group-about">
+            <h2>What we are about</h2>
+            <p>{group.about}</p>
+          </div>
 
-        {/* <div className="group-detail_group-members">
+          {/* <div className="group-detail_group-members">
           <p>
             {group.numMembers <= 1
               ? `${group.numMembers} Member`
@@ -229,59 +259,77 @@ function GroupDetail() {
           </p>
         </div> */}
 
-        <div className="upcoming-event-list_details">
-          <h2>Upcoming Events {`(${totalUpcomingEvents})`}</h2>
-          <div key={event.id}>
-            {upcomingEvents.length &&
-              upcomingEvents.map((event) => (
-                <Link
-                  to={`/events/${event.id}`}
-                  key={event.id}
-                  style={{ color: "black", textDecoration: "none"}}
-                >
-                  <div className="events-list_item" key={event.id}>
-                    <img src={event.previewImage} />
-                    <div className="events-info">
-                      
-                      <p className="events-date"> {` ${startDateFormatted} • ${startTimeFormatted}`} </p>
-                      <h3 className="events-name">{event.name}</h3>
-                      <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
-                      <p className="events-about">{event.description}</p>
-                     
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-          <div> 
-            
+          <div style={
+                      upcomingEvents === undefined
+                        ? { display: "none" }
+                        : { display: "block" }
+                    }  
+              className="upcoming-event-list_details">
+            {totalUpcomingEvents && (
+              <>
+                <h2>Upcoming Events ({totalUpcomingEvents})</h2>
+                <div  key={event.id}>
+                  {upcomingEvents &&
+                    upcomingEvents.map((event) => (
+                      <Link
+                        to={`/events/${event.id}`}
+                        key={event.id}
+                        style={{ color: "black", textDecoration: "none" }}
+                      >
+                        <div className="events-list_item" key={event.id}>
+                          <img src={event.previewImage} />
+                          <div className="events-info">
+                            <p className="events-date">
+                              {` ${startDateFormatted} • ${startTimeFormatted}`}{" "}
+                            </p>
+                            <h3 className="events-name">{event.name}</h3>
+                            <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
+                            <p className="events-about">{event.description}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                </div>
 
-            <div className="past-event-list_details" style={pastEvents.length < 1 ? {display:'none'}: {display: 'block'}}>
-            <h2>Past Events {`(${totalPastEvents})`} </h2>
-            <div key={event.id}>
-            {pastEvents.length &&
-              pastEvents.map((event) => (
-                <Link
-                  to={`/events/${event.id}`}
-                  key={event.id}
-                  style={{ color: "black", textDecoration: "none"}}
-                >
-                  <div className="events-list_item" key={event.id}>
-                    <img src={event.previewImage} />
-                    <div className="events-info">
-                    <p className="events-date"> {` ${startDateFormatted} • ${startTimeFormatted}`} </p>
-                      <h3 className="events-name">{event.name}</h3>
-                      <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
-                      <p className="events-about">{event.description}</p>
-                      
+                <div>
+                  <div
+                    className="past-event-list_details"
+                    style={
+                      pastEvents.length < 1
+                        ? { display: "none" }
+                        : { display: "block" }
+                    }
+                  >
+                    <h2>Past Events ({totalPastEvents}) </h2>
+                    <div key={event.id}>
+                      {pastEvents &&
+                        pastEvents.map((event) => (
+                          <Link
+                            to={`/events/${event.id}`}
+                            key={event.id}
+                            style={{ color: "black", textDecoration: "none" }}
+                          >
+                            <div className="events-list_item" key={event.id}>
+                              <img src={event.previewImage} />
+                              <div className="events-info">
+                                <p className="events-date">
+                                  {` ${startDateFormatted} • ${startTimeFormatted}`}{" "}
+                                </p>
+                                <h3 className="events-name">{event.name}</h3>
+                                <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
+                                <p className="events-about">
+                                  {event.description}
+                                </p>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+              </>
+            )}
           </div>
-          </div>
-        </div>
         </section>
       </section>
     </>
