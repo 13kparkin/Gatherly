@@ -126,12 +126,7 @@ function GroupDetail() {
         startTimeFormatted,
       };
     });
-
-  }
-
-  
-
-    // Split the sorted events array into upcoming and past events
+       // Split the sorted events array into upcoming and past events
     upcomingEvents = sortedEvents.filter((event) => {
       return new Date(event.endDate) >= new Date();
     });
@@ -144,6 +139,14 @@ function GroupDetail() {
     });
 
     totalPastEvents = pastEvents.length;
+
+
+  }
+
+  
+
+ 
+   
 
    
 
