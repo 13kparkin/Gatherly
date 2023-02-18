@@ -66,8 +66,8 @@ function GroupDetail() {
 
   // Sort the events array by date
   let sortedEvents;
-  let startDateFormatted
-  let startTimeFormatted
+  let startDateFormatted;
+  let startTimeFormatted;
   let endDateFormatted;
   let endTimeFormatted;
   let upcomingEvents;
@@ -94,39 +94,41 @@ function GroupDetail() {
 
     return {
       startDateFormatted,
-      startTimeFormatted
-    }
-  }
+      startTimeFormatted,
+    };
+  };
 
   if (events !== undefined) {
-    sortedEvents = events.slice().sort((a, b) => {
-      const aStartDate = new Date(a.startDate);
-      const bStartDate = new Date(b.startDate);
-      if (aStartDate < bStartDate) {
-        return -1;
-      } else if (aStartDate > bStartDate) {
-        return 1;
-      } else {
-        const aEndDate = new Date(a.endDate);
-        const bEndDate = new Date(b.endDate);
-        if (aEndDate < bEndDate) {
+    sortedEvents = events
+      .slice()
+      .sort((a, b) => {
+        const aStartDate = new Date(a.startDate);
+        const bStartDate = new Date(b.startDate);
+        if (aStartDate < bStartDate) {
           return -1;
-        } else if (aEndDate > bEndDate) {
+        } else if (aStartDate > bStartDate) {
           return 1;
         } else {
-          return 0;
+          const aEndDate = new Date(a.endDate);
+          const bEndDate = new Date(b.endDate);
+          if (aEndDate < bEndDate) {
+            return -1;
+          } else if (aEndDate > bEndDate) {
+            return 1;
+          } else {
+            return 0;
+          }
         }
-      }
-    })
-    .map((event) => {
-      const { startDateFormatted, startTimeFormatted } = date(event);
-      return {
-        ...event,
-        startDateFormatted,
-        startTimeFormatted,
-      };
-    });
-       // Split the sorted events array into upcoming and past events
+      })
+      .map((event) => {
+        const { startDateFormatted, startTimeFormatted } = date(event);
+        return {
+          ...event,
+          startDateFormatted,
+          startTimeFormatted,
+        };
+      });
+    // Split the sorted events array into upcoming and past events
     upcomingEvents = sortedEvents.filter((event) => {
       return new Date(event.endDate) >= new Date();
     });
@@ -139,21 +141,7 @@ function GroupDetail() {
     });
 
     totalPastEvents = pastEvents.length;
-
-
   }
-
-  
-
- 
-   
-
-   
-
-
-
-
-
 
   const handleJoinGroup = () => {
     alert("Function coming soon!");
@@ -287,7 +275,8 @@ function GroupDetail() {
                           <img src={event.previewImage} />
                           <div className="events-info">
                             <p className="events-date">
-                              {`${date(event).startDateFormatted} • ${ date(event).startTimeFormatted
+                              {`${date(event).startDateFormatted} • ${
+                                date(event).startTimeFormatted
                               }`}{" "}
                             </p>
                             <h3 className="events-name">{event.name}</h3>
@@ -321,7 +310,9 @@ function GroupDetail() {
                               <img src={event.previewImage} />
                               <div className="events-info">
                                 <p className="events-date">
-                                  {` ${date(event).startDateFormatted} • ${date(event).startTimeFormatted}`}{" "}
+                                  {` ${date(event).startDateFormatted} • ${
+                                    date(event).startTimeFormatted
+                                  }`}{" "}
                                 </p>
                                 <h3 className="events-name">{event.name}</h3>
                                 <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>

@@ -92,16 +92,21 @@ function UpdateGroup() {
       const privateOrPublic =
         groupDetails.private === true ? "private" : "public";
         setPrivateOrPublic(privateOrPublic);
-      setInPersonOrOnline(groupDetails.type)
-
-      setGroupLocation(`${groupDetails.city}, ${groupDetails.state}`);
-      setGroupName(groupDetails.name);
-      setGroupDescription(groupDetails.about);
+        setInPersonOrOnline(groupDetails.type)
+        setGroupLocation(`${groupDetails.city}, ${groupDetails.state}`);
+        setGroupName(groupDetails.name);
+        setGroupDescription(groupDetails.about);
     };
     updateFields();
   }, [dispatch]);
 
+  
+
+  
+
   const isButtonDisabled = !groupName || !groupDescription;
+
+  const buttonClass = isButtonDisabled ? "disabled" : "submit-button";
 
   return (
     <>
@@ -114,10 +119,13 @@ function UpdateGroup() {
           </div>
         )}
         {submitted && <div className="alert alert-success">Group created!</div>}
+        <div className='title-container'> 
         <h1>Update your Group</h1>
-        <h2>Set your group's location</h2>
+        </div>
+        <div className="location-create-group">
+        <h2>Update your group's location</h2>
         <p>
-          Meetup groups meet locally, in person, and online. We'll connect you
+          Gatherly groups meet locally, in person, and online. We'll connect you
           with people in your area.
         </p>
         {errors["groupLocation"] && (
@@ -129,11 +137,13 @@ function UpdateGroup() {
           value={groupLocation}
           onChange={(e) => setGroupLocation(e.target.value)}
         />
+        </div>
+        <div className="groups-name">
 
         <h2>What will your group's name be?</h2>
         <p>
           Choose a name that will give people a clear idea of what the group is
-          about. Feel free to get creative! You can edit this later if you
+          about. <br/> Feel free to get creative! You can edit this later if you
           change your mind.
         </p>
         {errors["groupName"] && (
@@ -145,13 +155,14 @@ function UpdateGroup() {
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
         />
-        <div className="section">
+        </div>
+        <div className="abouts">
           <h2>Describe the purpose of your group.</h2>
           <p>
             People will see this when we promote your group, but you'll be able
             to add to it later, too.
           </p>
-          <ol>
+          <ol className="list">
             <li>What's the purpose of the group?</li>
             <li>Who should join?</li>
             <li>What will you do at your events?</li>
@@ -168,39 +179,50 @@ function UpdateGroup() {
         </div>
 
         <div className="final-section">
-          <p>Final steps..</p>
-        </div>
-        <div className="section">
+          <h2>Final steps..</h2>
+
           <label>Is this an in-person or online group?</label>
           {errors["inPersonOrOnline"] && (
             <div className="error">{errors["inPersonOrOnline"]}</div>
           )}
           <select
+            name="inPersonOrOnline"
             value={inPersonOrOnline}
             onChange={(e) => setInPersonOrOnline(e.target.value)}
           >
+            <option value="">Select one</option>
+            <option value="in person">In Person</option>
             <option value="online">Online</option>
-            <option value="in person">
-              In person
-            </option>
           </select>
 
           <label>Is this group private or public?</label>
           {errors["privateOrPublic"] && (
             <div className="error">{errors["privateOrPublic"]}</div>
           )}
-
           <select
+            name="privateOrPublic"
             value={privateOrPublic}
             onChange={(e) => setPrivateOrPublic(e.target.value)}
           >
+            <option value="">Select one</option>
             <option value="private">Private</option>
-            <option value="public">
-              Public
-            </option>
+            <option value="public">Public</option>
           </select>
+
+          {/* <label>Please add an image URL for your group below:</label>
+          {errors["imageUrl"] && (
+            <div className="error">{errors["imageUrl"]}</div>
+          )}
+          <input
+            type="text"
+            name="imageUrl"
+            placeholder="Image Url"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+          /> */}
         </div>
-        <button type="submit" disabled={isButtonDisabled}>
+
+        <button className={buttonClass} type="submit" disabled={isButtonDisabled}>
           Update Group
         </button>
       </form>
