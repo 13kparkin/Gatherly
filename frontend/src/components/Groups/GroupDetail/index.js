@@ -66,8 +66,8 @@ function GroupDetail() {
 
   // Sort the events array by date
   let sortedEvents;
-  let startDateFormatted;
-  let startTimeFormatted;
+  let startDateFormatted
+  let startTimeFormatted
   let endDateFormatted;
   let endTimeFormatted;
   let upcomingEvents;
@@ -75,6 +75,28 @@ function GroupDetail() {
   let pastEvents;
   let totalPastEvents;
 
+  const date = (event) => {
+    const [startDateString, startTimeString] = event.startDate.split("T");
+
+    const startDateObj = new Date(startDateString);
+    const startTimeObj = new Date(`1970-01-01T${startTimeString}`);
+
+    startDateFormatted = startDateObj.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    startTimeFormatted = startTimeObj.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+
+    return {
+      startDateFormatted,
+      startTimeFormatted
+    }
+  }
 
   if (events !== undefined) {
     sortedEvents = events.slice().sort((a, b) => {
@@ -95,29 +117,16 @@ function GroupDetail() {
           return 0;
         }
       }
+    })
+    .map((event) => {
+      const { startDateFormatted, startTimeFormatted } = date(event);
+      return {
+        ...event,
+        startDateFormatted,
+        startTimeFormatted,
+      };
     });
-
-    // time and date formatting
-
-    for (let i = 0; i < events.length; i++) {
-      const [startDateString, startTimeString] = events[i].startDate.split("T");
-
-      const startDateObj = new Date(startDateString);
-      const startTimeObj = new Date(`1970-01-01T${startTimeString}`);
-
-      startDateFormatted = startDateObj.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-
-      startTimeFormatted = startTimeObj.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-      });
-    }
-
-    // Split the sorted events array into upcoming and past events
+       // Split the sorted events array into upcoming and past events
     upcomingEvents = sortedEvents.filter((event) => {
       return new Date(event.endDate) >= new Date();
     });
@@ -130,7 +139,21 @@ function GroupDetail() {
     });
 
     totalPastEvents = pastEvents.length;
+
+
   }
+
+  
+
+ 
+   
+
+   
+
+
+
+
+
 
   const handleJoinGroup = () => {
     alert("Function coming soon!");
@@ -241,16 +264,18 @@ function GroupDetail() {
           </p>
         </div> */}
 
-          <div style={
-                      upcomingEvents === undefined
-                        ? { display: "none" }
-                        : { display: "block" }
-                    }  
-                    className="upcoming-event-list_details">
+          <div
+            style={
+              upcomingEvents === undefined
+                ? { display: "none" }
+                : { display: "block" }
+            }
+            className="upcoming-event-list_details"
+          >
             {totalUpcomingEvents && (
               <>
                 <h2>Upcoming Events ({totalUpcomingEvents})</h2>
-                <div  key={event.id}>
+                <div key={event.id}>
                   {upcomingEvents &&
                     upcomingEvents.map((event) => (
                       <Link
@@ -262,7 +287,8 @@ function GroupDetail() {
                           <img src={event.previewImage} />
                           <div className="events-info">
                             <p className="events-date">
-                              {` ${startDateFormatted} • ${startTimeFormatted}`}{" "}
+                              {`${date(event).startDateFormatted} • ${ date(event).startTimeFormatted
+                              }`}{" "}
                             </p>
                             <h3 className="events-name">{event.name}</h3>
                             <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
@@ -295,7 +321,7 @@ function GroupDetail() {
                               <img src={event.previewImage} />
                               <div className="events-info">
                                 <p className="events-date">
-                                  {` ${startDateFormatted} • ${startTimeFormatted}`}{" "}
+                                  {` ${date(event).startDateFormatted} • ${date(event).startTimeFormatted}`}{" "}
                                 </p>
                                 <h3 className="events-name">{event.name}</h3>
                                 <p className="events-city">{`${event.Venue.city}, ${event.Venue.state}`}</p>
