@@ -67,6 +67,7 @@ router.get("/", async (req, res, next) => {
 
 // finished route
 router.post("/", async (req, res, next) => {
+  // console.log("postGroup");
   const { user } = req;
   if (!user) {
     err = {};
@@ -209,6 +210,7 @@ router.post("/:groupId/images", async (req, res, next) => {
 // finished route
 router.put("/:groupId", async (req, res, next) => {
   const { user } = req;
+  console.log("putGroup asdjfhas;ldfkjasl;kdfja;lskdfas;lddkfjas;ldfk")
   if (!user) {
     err = {};
     err.message = "Authentication required";
@@ -220,19 +222,19 @@ router.put("/:groupId", async (req, res, next) => {
     const { groupId } = req.params;
     const { id } = req.user;
     let { name, about, type, isPrivate, city, state } = req.body;
+    // console.log("req.body", typeof isPrivate)
     const group = await Group.findByPk(groupId);
     const lowerCaseType = type.toLowerCase();
-    isPrivate = isPrivate.toString();
-    const lowerCaseIsPrivate = isPrivate.toLowerCase();
+    // isPrivate = isPrivate.toString();
+    const lowerCaseIsPrivate = isPrivate
 
-    console.log(about.length);
 
     if (
       name.length >= 60 ||
       name.length === 0 ||
       about.length <= 50 ||
       (lowerCaseType !== "online" && lowerCaseType !== "in person") ||
-      (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") ||
+      (typeof isPrivate !== "boolean") ||
       !city ||
       !state
     ) {
@@ -251,7 +253,7 @@ router.put("/:groupId", async (req, res, next) => {
         err.errors.type = "Type must be 'Online' or 'In person'";
         err.statusCode = 400;
       }
-      if (lowerCaseIsPrivate !== "true" && lowerCaseIsPrivate !== "false") {
+      if (typeof isPrivate !== "boolean") {
         err.errors.isPrivate = "Private must be a boolean";
         err.statusCode = 400;
       }
@@ -278,10 +280,11 @@ router.put("/:groupId", async (req, res, next) => {
         name,
         about,
         type: lowerCaseType,
-        isPrivate,
+        isPrivate: lowerCaseIsPrivate,
         city,
         state,
       });
+
 
       res.status(200);
       return res.json(updatedGroup);

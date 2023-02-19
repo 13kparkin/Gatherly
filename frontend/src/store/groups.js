@@ -71,7 +71,7 @@ export const createGroup = (group, currentUser) => async (dispatch) => {
 
 export const updateGroup = (group) => async (dispatch) => {
   const { id, name, about, type, isPrivate, city, state } = group;
-  console.log('group', group)
+  
   const groupResponse = await csrfFetch(`/api/groups/${id}`, {
     method: "PUT",
     body: JSON.stringify({
@@ -86,7 +86,7 @@ export const updateGroup = (group) => async (dispatch) => {
   });
 
   const data = await groupResponse.json();
-  console.log(data)
+  // console.log('update group ', data)
   dispatch(setSingleGroup(data));
   return data;
 };

@@ -129,7 +129,7 @@ function EventDetail() {
         <Link className="group-card_details" style={{color: 'black', textDecoration: 'none'}} to={`/groups/${event.groupId}`}>
           <img className="group-card-img" src={event.GroupImages[0]?.url}/>
           <h3 className="group-name"> {event.Group.name}</h3>
-          <span className="private"> {event.Group.private ? "Private" : "Public"}</span>
+          <span className="private"> {event.Group.isPrivate ? "Private" : "Public"}</span>
           </Link>
         </div>
 

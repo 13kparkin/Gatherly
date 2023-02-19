@@ -26,6 +26,7 @@ function GroupDetail() {
   const history = useHistory();
   const [event, setEvent] = useState("");
 
+
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -177,7 +178,7 @@ function GroupDetail() {
                   : `${group.numEvents} Events`}{" "}
               </span>{" "}
               <span> &#903; </span>{" "}
-              <span> {group.private ? "Private" : "Public"} </span>
+              <span> {group.isPrivate ? "Private" : "Public"} </span>
             </p>
 
             <p>

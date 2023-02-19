@@ -126,7 +126,6 @@ const eventsReducer = (state = initialState, action) => {
     case REMOVE_EVENT:
       return { ...state, singleEvent: {} };
     case SET_ALL_EVENTS_BY_GROUP:
-      console.log(action.payload)
       return { ...state, allEventsByGroup: action.payload };
     default:
       return state;
