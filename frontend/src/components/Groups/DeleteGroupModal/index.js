@@ -30,8 +30,8 @@ function DeleteGroup({ setShowModal }) {
   return (
     <div className="modal">
       <h3>Are you sure you want to delete this group?</h3>
-      <button onClick={handleDeleteGroup}>Yes</button>
-      <button onClick={handleCloseModal}>No</button>
+      <button className="delete-button-model" onClick={handleDeleteGroup}>Yes</button>
+      <button className="delete-button-model" onClick={handleCloseModal}>No</button>
     </div>
   );
 }

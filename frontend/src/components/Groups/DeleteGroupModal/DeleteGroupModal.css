@@ -26,4 +26,15 @@
     padding-right: 2rem;
 }
 
-/* todo to css style for button and polishing */
+.delete-button-model {
+    background-color: red;
+    color: white;
+    width: 10rem;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: -1rem;
+    -webkit-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+    box-shadow: 1px 0px 0px 2px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
