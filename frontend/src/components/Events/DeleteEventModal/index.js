@@ -31,8 +31,8 @@ function DeleteEvent({ setShowModal }) {
   return (
     <div className="modal">
       <h3>Are you sure you want to delete this Event?</h3>
-      <button onClick={handleDeleteEvent}>Yes</button>
-      <button onClick={handleCloseModal}>No</button>
+      <button className="delete-button-model" onClick={handleDeleteEvent}>Yes</button>
+      <button className="delete-button-model" onClick={handleCloseModal}>No</button>
     </div>
   );
 }

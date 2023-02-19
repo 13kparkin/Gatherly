@@ -161,7 +161,7 @@ function EventDetail() {
         
 
         <div className="event-detail_event-join">
-          <button className="join" onClick={() => alert('function coming soon')} style={{ display: buttonVisibility ? "none" : "block" }}>
+          <button className="join-event-button" onClick={() => alert('function coming soon')} style={{ display: buttonVisibility ? "none" : "block" }}>
             Join the Event
           </button>
           <div className="organizer-only">
@@ -172,6 +172,7 @@ function EventDetail() {
               Create Event
             </button> */}
             <button
+              className="delete-event-button"
               style={{ display: buttonVisibilityOrganizer ? "block" : "none" }}
               onClick={handleShowModal}
             >
