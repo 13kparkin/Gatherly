@@ -26,6 +26,9 @@ function UpdateGroup() {
   const [submitted, setSubmitted] = useState(false);
   const history = useHistory();
   const currentUser = useSelector((state) => state.session.user);
+  let group = {}
+
+
 
   
 
@@ -52,20 +55,26 @@ function UpdateGroup() {
     } else {
       const cityState = groupLocation.split(",");
       const [city, state] = cityState;
-      let isPrivate;
+      
 
       if (privateOrPublic === "private") {
-        setPrivateOrPublic(true)
-        isPrivate = true;
+        
+        setPrivateOrPublic('private')
+        group.isPrivate = true;
 
       } else {
-        setPrivateOrPublic(false)
-        isPrivate = false;
+        
+        setPrivateOrPublic(privateOrPublic)
+        group.isPrivate = false;
+        
       }
 
-       
 
-      const group = {
+       let isPrivate = group.isPrivate
+
+
+      
+      group = {
         id: groupId,
         name: groupName,
         about: groupDescription,
@@ -74,7 +83,9 @@ function UpdateGroup() {
         city,
         state,
       };
+
       const singleGroup = await dispatch(updateGroup(group));
+
 
       if (singleGroup) {
         setSubmitted(true);
@@ -90,7 +101,7 @@ function UpdateGroup() {
         history.push(`/groups/${groupId}`);
       }
       const privateOrPublic =
-        groupDetails.private === true ? "private" : "public";
+        groupDetails.isPrivate === true ? "private" : "public";
         setPrivateOrPublic(privateOrPublic);
         setInPersonOrOnline(groupDetails.type)
         setGroupLocation(`${groupDetails.city}, ${groupDetails.state}`);

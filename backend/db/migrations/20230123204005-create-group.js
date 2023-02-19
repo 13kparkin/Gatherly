@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.ENUM('in person', 'online'),
         allowNull: false,
       },
-      private: {
+      isPrivate: {
         type: Sequelize.BOOLEAN,
       },
       city: {
