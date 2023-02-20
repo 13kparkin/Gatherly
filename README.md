@@ -28,10 +28,11 @@ To get started with the project, follow these steps:
 Getting started with the backend server:
 
 1. Clone the repository: `git clone https://github.com/13kparkin/Meetup-API-Project`
-2. Install dependencies: `npm install`
-3. Set up the database: `npm run db:create && npm run db:migrate`
-4. Start the server: `npm run dev`
-5. Navigate to `http://localhost:3000` in your browser.
+2. Navigate to the backend directory 
+3. Install dependencies: `npm install`
+4. Set up the database: `npm run db:create && npm run db:migrate`
+5. Start the server: `npm run dev`
+6. Navigate to `http://localhost:3000` in your browser.
 
 Starting the react server: 
 
