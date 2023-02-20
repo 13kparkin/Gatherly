@@ -27,7 +27,7 @@ To get started with the project, follow these steps:
 
 Getting started with the backend server:
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repository.git`
+1. Clone the repository: `git clone https://github.com/13kparkin/Meetup-API-Project`
 2. Install dependencies: `npm install`
 3. Set up the database: `npm run db:create && npm run db:migrate`
 4. Start the server: `npm run dev`
