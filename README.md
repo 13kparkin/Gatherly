@@ -1,4 +1,4 @@
-# Meetup Clone
+# Gatherly (Meetup Clone)
 
 ## Database Schema Design
 
