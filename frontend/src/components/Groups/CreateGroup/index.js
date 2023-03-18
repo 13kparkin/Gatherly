@@ -23,7 +23,7 @@ function CreateGroup() {
     let errors = {};
     const groupLocation1 = groupLocation.split(",");
     const [city, state] = groupLocation1;
-    console.log(city, state)
+
 
     if (!groupLocation || !groupLocation.includes(",") || city.length === 0 || state.length === 0) {
       errors["groupLocation"] = "Location is required with proper format (City, State)";
