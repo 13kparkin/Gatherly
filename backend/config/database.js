@@ -10,7 +10,7 @@ module.exports = {
     typeValidation: true,
     username: "Kyle",
     password: null,
-    database: 'database_development',
+    database: 'dev_Gatherly',
     host: "localhost",
     port: 5432,
   },

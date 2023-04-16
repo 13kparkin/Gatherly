@@ -126,6 +126,23 @@
     display: inline;
     margin: 0 0 0 1rem;
   }
+
+  .past-event-date {
+    display: inline-block;
+    flex-direction: row;
+    font-size: 14px;
+    margin-left: 5rem;
+    color: red;
+    padding: 0 0 0 1rem;
+  }
+
+  .upcoming-event-date {
+    display: inline-block;
+    flex-direction: row;
+    font-size: 14px;
+    margin-left: 5rem;
+    padding: 0 0 0 1rem;
+  }
   
 
 /* todo: need to make this wrap better and adjust as the screen shrinks */
