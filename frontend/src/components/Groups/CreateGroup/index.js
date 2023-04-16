@@ -23,7 +23,7 @@ function CreateGroup() {
     let errors = {};
     const groupLocation1 = groupLocation.split(",");
     const [city, state] = groupLocation1;
-    console.log(city, state)
+
 
     if (!groupLocation || !groupLocation.includes(",") || city.length === 0 || state.length === 0) {
       errors["groupLocation"] = "Location is required with proper format (City, State)";
@@ -36,10 +36,10 @@ function CreateGroup() {
     if (groupDescription.length < 50) {
       errors["groupDescription"] = "Description needs 50 or more characters";
     }
-    if (!inPersonOrOnline) {
+    if (inPersonOrOnline === "") {
         errors["inPersonOrOnline"] = "Please select in person or online";
     }
-    if (!privateOrPublic) {
+    if (privateOrPublic === "") {
         errors["privateOrPublic"] = "Please select private or public";
     }
     if (!imageUrl) {

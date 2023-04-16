@@ -51,6 +51,15 @@ function EventList() {
 
   upcomingEvents.push(...pastEvents);
 
+  // convert the date to a readable format
+  const convertDate = (date) => {
+    const newDate = new Date(date);
+    const month = newDate.toLocaleString("default", { month: "long" });
+    const day = newDate.getDate();
+    const year = newDate.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+
   return (
     <>
       <div className="event-list">
@@ -88,6 +97,11 @@ function EventList() {
                     <p className="event-city">{event.Venue.city}</p>
                     <p className="event-state">{event.Venue.state}</p>
                     <p className="about">{event.description}</p>
+                    {event.startDate > new Date() && (
+                    <p className="upcoming-event-date">{convertDate(event.startDate)} - {convertDate(event.endDate)} </p>
+                    )}
+                    <p className="past-event-date">Event has passed</p>
+
                     <p className="event-events">
                       {event.numAttending <= 1
                         ? `${event.numAttending} Attending`

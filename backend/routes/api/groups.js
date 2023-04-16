@@ -210,7 +210,7 @@ router.post("/:groupId/images", async (req, res, next) => {
 // finished route
 router.put("/:groupId", async (req, res, next) => {
   const { user } = req;
-  console.log("putGroup asdjfhas;ldfkjasl;kdfja;lskdfas;lddkfjas;ldfk")
+
   if (!user) {
     err = {};
     err.message = "Authentication required";
