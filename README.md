@@ -31,6 +31,14 @@ This project was built using the following technologies:
 
 To get started with the project, follow these steps:
 
+### Create a .env file in the frontend directory with the following values:
+```
+PORT=8000
+JWT_SECRET=4zDQXwUMtkLKlA==
+JWT_EXPIRES_IN=604800
+SCHEMA=my_gatherly_schema
+```
+
 Getting started with the backend server:
 
 1. Clone the repository: `git clone https://github.com/13kparkin/Meetup-API-Project`
@@ -45,6 +53,8 @@ Starting the react server:
 1. Navigate to frontend directory
 2. Install dependencies: `npm install`
 3. Start the server: `npm run start` (this should launch it in your browser and take you to your local host)
+
+This project assumes you have a PostgreSQL setup on your machine.
 
 
 ## Usage
