@@ -38,7 +38,10 @@ function CreateEvent(){
       if (!startDate) {
         errors.startDate = 'Start date is required';
       }
-  
+      if (eventType === 'Select one') {
+        errors.eventType = 'Event type is required';
+      }
+
       if (!endDate) {
         errors.endDate = 'End date is required';
       }
@@ -105,7 +108,7 @@ function CreateEvent(){
           
           </div>
         </div>
-  
+        {errors.eventName && <div className='errors'>{errors.eventName}</div>}
         <div className='section-one'>
           <div className='event-type'>
           <label htmlFor="eventType">Is this an in-person or online group?</label>

@@ -36,10 +36,10 @@ function CreateGroup() {
     if (groupDescription.length < 50) {
       errors["groupDescription"] = "Description needs 50 or more characters";
     }
-    if (!inPersonOrOnline) {
+    if (inPersonOrOnline === "") {
         errors["inPersonOrOnline"] = "Please select in person or online";
     }
-    if (!privateOrPublic) {
+    if (privateOrPublic === "") {
         errors["privateOrPublic"] = "Please select private or public";
     }
     if (!imageUrl) {
