@@ -1,5 +1,14 @@
 "use strict";
-const moment = require("moment");
+function generateRandomDates() {
+  const today = new Date();
+  const maxDays = 90;
+  const start = new Date(today.getTime() + Math.random() * maxDays * 24 * 60 * 60 * 1000);
+  const duration = Math.random() * 30 + 1;
+  const end = new Date(start.getTime() + duration * 24 * 60 * 60 * 1000);
+  return { startDate: start, endDate: end };
+}
+
+const { startDate, endDate } = generateRandomDates();
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -21,8 +30,8 @@ module.exports = {
           type: "in person",
           capacity: 1000,
           price: 75.0,
-          startDate: moment().add(2, 'months').startOf('day').hour(17).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(2, 'months').startOf('day').add(2, 'days').hour(23).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -32,8 +41,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 250.0,
-          startDate: moment().add(3, 'months').startOf('day').hour(9).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(3, 'months').startOf('day').add(3, 'days').hour(17).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -43,8 +52,8 @@ module.exports = {
           type: "online",
           capacity: 1000,
           price: 20.0,
-          startDate: moment().add(1, 'month').startOf('day').hour(10).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(1, 'month').startOf('day').add(1, 'week').hour(18).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -54,8 +63,8 @@ module.exports = {
           type: "in person",
           capacity: 50,
           price: 150.0,
-          startDate: moment().add(4, 'months').startOf('day').hour(19).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(4, 'months').startOf('day').add(1, 'days').hour(22).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -65,8 +74,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 100.0,
-          startDate: moment().add(5, 'months').startOf('day').hour(8).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(5, 'months').startOf('day').add(2, 'days').hour(18).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -76,8 +85,8 @@ module.exports = {
           type: "in person",
           capacity: 1000,
           price: 75.0,
-          startDate: moment().add(2, 'months').startOf('day').hour(17).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(2, 'months').startOf('day').add(2, 'days').hour(23).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
         {
           venueId: 1,
@@ -87,8 +96,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 250.0,
-          startDate: moment().add(3, 'months').startOf('day').hour(9).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: moment().add(3, 'months').startOf('day').add(3, 'days').hour(17).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss')
+          startDate: startDate.toLocaleString(),
+          endDate: endDate.toLocaleString(),
         },
       ],
       {}
