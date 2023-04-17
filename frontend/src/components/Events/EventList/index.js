@@ -60,6 +60,13 @@ function EventList() {
     return `${month} ${day}, ${year}`;
   };
 
+
+
+
+  // today's date
+  const today = new Date();
+
+
   return (
     <>
       <div className="event-list">
@@ -97,10 +104,9 @@ function EventList() {
                     <p className="event-city">{event.Venue.city}</p>
                     <p className="event-state">{event.Venue.state}</p>
                     <p className="about">{event.description}</p>
-                    {event.startDate > new Date() && (
+
                     <p className="upcoming-event-date">{convertDate(event.startDate)} - {convertDate(event.endDate)} </p>
-                    )}
-                    <p className="past-event-date">Event has passed</p>
+
 
                     <p className="event-events">
                       {event.numAttending <= 1

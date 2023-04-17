@@ -8,7 +8,6 @@ function generateRandomDates() {
   return { startDate: start, endDate: end };
 }
 
-const { startDate, endDate } = generateRandomDates();
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -30,8 +29,8 @@ module.exports = {
           type: "in person",
           capacity: 1000,
           price: 75.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -41,8 +40,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 250.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -52,8 +51,8 @@ module.exports = {
           type: "online",
           capacity: 1000,
           price: 20.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -63,8 +62,8 @@ module.exports = {
           type: "in person",
           capacity: 50,
           price: 150.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -74,8 +73,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 100.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -85,8 +84,8 @@ module.exports = {
           type: "in person",
           capacity: 1000,
           price: 75.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
         {
           venueId: 1,
@@ -96,8 +95,8 @@ module.exports = {
           type: "in person",
           capacity: 500,
           price: 250.0,
-          startDate: startDate.toLocaleString(),
-          endDate: endDate.toLocaleString(),
+          startDate:  `${generateRandomDates().startDate.toLocaleString()}`,
+          endDate: `${generateRandomDates().endDate.toLocaleString()}`,
         },
       ],
       {}
