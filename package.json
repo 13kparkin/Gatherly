@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/13kparkin/meetup-clone-api/issues"
   },
-  "homepage": "https://github.com/13kparkin/meetup-clone-api#readme"
+  "homepage": "https://github.com/13kparkin/meetup-clone-api#readme",
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
 }
