@@ -4,8 +4,6 @@
 
 This is a meetup clone built as a full-stack web application, with a full API, sequelize database backend, and a HTML, CSS, and React frontend. The application allows users to create and join events, edit events or groups and create an account.
 
-Live Demo:
-https://gatherly.onrender.com
 
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/105998439/220147966-45287a77-324f-44dc-af52-945bbbb1af86.gif)
 
